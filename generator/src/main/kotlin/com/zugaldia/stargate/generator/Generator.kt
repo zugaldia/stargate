@@ -52,13 +52,16 @@ class GenerateJava : CliktCommand(name = "generate-java") {
     override fun help(context: Context) = "Generate Java source files (in the sdk module)"
     override fun run() {
         val inputFile = File(OUTPUT_DIR, OUTPUT_FILE)
-        val introspectionData: String = inputFile.readText()
+        introspect(inputFile)
+    }
 
-        val disableFilter: Boolean = true
+    private fun introspect(inputFile: File) {
+        val disableFilter = true
+        val introspectionData: String = inputFile.readText()
         val objectPath: String = OBJECT_PATH
         val busName: String = BUS_NAME
         val packageName: String? = null
-        val propertyMethods: Boolean = true
+        val propertyMethods = true
         val argumentPrefix: String? = null
         val generator = InterfaceCodeGenerator(
             disableFilter,
@@ -70,7 +73,7 @@ class GenerateJava : CliktCommand(name = "generate-java") {
             argumentPrefix
         )
 
-        val ignoreDtd: Boolean = true
+        val ignoreDtd = true
         val result: Map<File, String> = generator.analyze(ignoreDtd)
 
         val outputBaseDir = File(SDK_GENERATED_DIR)
