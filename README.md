@@ -17,13 +17,13 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 | Portal                | Low Level | High Level | Example |
 |-----------------------|-----------|------------|---------|
 | Account               | ❌         | ❌          | ❌       |
-| Background            | ❌         | ❌          | ❌       |
+| Background            | ✅         | ❌          | ❌       |
 | Camera                | ❌         | ❌          | ❌       |
 | Clipboard             | ❌         | ❌          | ❌       |
 | Documents             | ❌         | ❌          | ❌       |
 | Dynamic Launcher      | ❌         | ❌          | ❌       |
 | Email                 | ❌         | ❌          | ❌       |
-| File Chooser          | ❌         | ❌          | ❌       |
+| File Chooser          | ✅         | ❌          | ❌       |
 | File Transfer         | ❌         | ❌          | ❌       |
 | Game Mode             | ❌         | ❌          | ❌       |
 | Global Shortcuts      | ❌         | ❌          | ❌       |
@@ -32,19 +32,19 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 | Location              | ❌         | ❌          | ❌       |
 | Memory Monitor        | ❌         | ❌          | ❌       |
 | Network Monitor       | ❌         | ❌          | ❌       |
-| Notification          | ❌         | ❌          | ❌       |
-| OpenURI               | ❌         | ❌          | ❌       |
+| Notification          | ✅         | ❌          | ❌       |
+| OpenURI               | ✅         | ❌          | ❌       |
 | Power Profile Monitor | ❌         | ❌          | ❌       |
 | Print                 | ❌         | ❌          | ❌       |
 | Proxy Resolver        | ❌         | ❌          | ❌       |
 | Realtime              | ❌         | ❌          | ❌       |
-| Remote Desktop        | ❌         | ❌          | ❌       |
+| Remote Desktop        | ✅         | ❌          | ❌       |
 | Request               | ❌         | ❌          | ❌       |
 | ScreenCast            | ❌         | ❌          | ❌       |
 | Screenshot            | ❌         | ❌          | ❌       |
-| Secret                | ❌         | ❌          | ❌       |
+| Secret                | ✅         | ❌          | ❌       |
 | Session               | ❌         | ❌          | ❌       |
-| Settings              | ❌         | ❌          | ❌       |
+| Settings              | ✅         | ❌          | ❌       |
 | Trash                 | ❌         | ❌          | ❌       |
 | Usb                   | ❌         | ❌          | ❌       |
 | Wallpaper             | ❌         | ❌          | ❌       |
