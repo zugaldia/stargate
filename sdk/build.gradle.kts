@@ -8,8 +8,21 @@ plugins {
     alias(libs.plugins.kotlinPluginSerialization)
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir("src/main/generated")
+        }
+    }
+}
+
 dependencies {
     // Apply the kotlinx bundle of dependencies from the version catalog (`gradle/libs.versions.toml`).
     implementation(libs.bundles.kotlinxEcosystem)
+    implementation(libs.dbusJavaCore)
+    implementation(libs.dbusJavaTransportNativeUnixsocket)
+    implementation(libs.log4jApi)
+    implementation(libs.log4jCore)
+    implementation(libs.log4jSlf4jImpl)
     testImplementation(kotlin("test"))
 }
