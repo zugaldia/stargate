@@ -19,10 +19,10 @@ sourceSets {
 dependencies {
     // Apply the kotlinx bundle of dependencies from the version catalog (`gradle/libs.versions.toml`).
     implementation(libs.bundles.kotlinxEcosystem)
-    implementation(libs.dbusJavaCore)
+    api(libs.dbusJavaCore)
     implementation(libs.dbusJavaTransportNativeUnixsocket)
     implementation(libs.log4jApi)
     implementation(libs.log4jCore)
-    implementation(libs.log4jSlf4jImpl)
+    implementation(libs.log4jSlf4j2Impl)
     testImplementation(kotlin("test"))
 }

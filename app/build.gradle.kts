@@ -10,6 +10,9 @@ plugins {
 dependencies {
     // Project "app" depends on project "sdk". (Project paths are separated with ":", so ":sdk" refers to the top-level "sdk" project.)
     implementation(project(":sdk"))
+
+    // SLF4J 2.x provider via Log4j
+    runtimeOnly(libs.log4jSlf4j2Impl)
 }
 
 application {
