@@ -1,4 +1,4 @@
-package com.zugaldia.stargate.utils
+package com.zugaldia.stargate.sdk
 
 import kotlin.time.Instant
 import kotlin.time.Clock

@@ -1,4 +1,4 @@
-package com.zugaldia.stargate.utils
+package com.zugaldia.stargate.sdk
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
