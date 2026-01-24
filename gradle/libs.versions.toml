@@ -6,6 +6,7 @@
 clikt = "5.1.0"
 dbusJava = "5.2.0"
 detekt = "2.0.0-alpha.1"
+javaGi = "0.13.1"
 kotlin = "2.3.0"
 kotlinxCoroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
@@ -17,6 +18,8 @@ clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 dbusJavaCore = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbusJava" }
 dbusJavaTransportNativeUnixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbusJava" }
 dbusJavaUtils = { module = "com.github.hypfvieh:dbus-java-utils", version.ref = "dbusJava" }
+javaGiAdw = { module = "org.java-gi:adw", version.ref = "javaGi" }
+javaGiGtk = { module = "org.java-gi:gtk", version.ref = "javaGi" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }

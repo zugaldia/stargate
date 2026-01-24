@@ -12,8 +12,8 @@ plugins {
 }
 
 kotlin {
-    // Use a specific Java version to make it easier to work in different environments.
-    jvmToolchain(21)
+    // Use JDK 22+ for Java-GI GTK bindings, which use the "Panama" Foreign Function & Memory API.
+    jvmToolchain(22)
 }
 
 tasks.withType<Test>().configureEach {
