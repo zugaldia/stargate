@@ -1,7 +1,7 @@
 .PHONY: run build check clean generate-java generate-xml
 
 run:
-	./gradlew run
+	./gradlew :app:run
 
 build:
 	./gradlew build

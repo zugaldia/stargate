@@ -1,16 +1,26 @@
 package com.zugaldia.stargate.app
 
-import com.zugaldia.stargate.sdk.Printer
-
-private const val LOOP_COUNT = 5
+import com.zugaldia.stargate.sdk.DesktopPortal
 
 fun main() {
-    val name = "Kotlin"
-    val message = "Hello, $name!"
-    val printer = Printer(message)
-    printer.printMessage()
+    DesktopPortal.connect().use { portal ->
+        println("Name: Settings Portal")
+        println("Version: ${portal.settings.version}")
 
-    for (i in 1..LOOP_COUNT) {
-        println("i = $i")
+        portal.settings.getColorScheme()
+            .onSuccess { println("Color Scheme: $it") }
+            .onFailure { println("Color Scheme: Failed to read (${it.message})") }
+
+        portal.settings.getAccentColor()
+            .onSuccess { println("Accent Color: RGB(${it.red}, ${it.green}, ${it.blue})") }
+            .onFailure { println("Accent Color: Failed to read (${it.message})") }
+
+        portal.settings.getContrast()
+            .onSuccess { println("Contrast: $it") }
+            .onFailure { println("Contrast: Failed to read (${it.message})") }
+
+        portal.settings.getReducedMotion()
+            .onSuccess { println("Reduced Motion: $it") }
+            .onFailure { println("Reduced Motion: Failed to read (${it.message})") }
     }
 }
