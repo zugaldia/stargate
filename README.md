@@ -44,7 +44,7 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 | Screenshot            | ❌         | ❌          | ❌       |
 | Secret                | ✅         | ❌          | ❌       |
 | Session               | ❌         | ❌          | ❌       |
-| Settings              | ✅         | ❌          | ❌       |
+| Settings              | ✅         | ✅          | ✅       |
 | Trash                 | ❌         | ❌          | ❌       |
 | Usb                   | ❌         | ❌          | ❌       |
 | Wallpaper             | ❌         | ❌          | ❌       |
