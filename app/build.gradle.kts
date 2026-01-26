@@ -7,16 +7,20 @@ plugins {
 
 dependencies {
     implementation(project(":sdk"))
+    implementation(libs.kotlinxCoroutines)
 
     // GTK bindings for Java
     implementation(libs.javaGiAdw)
     implementation(libs.javaGiGtk)
 
-    // SLF4J 2.x provider via Log4j
+    // Logging
+    implementation(libs.log4jApi)
     runtimeOnly(libs.log4jSlf4j2Impl)
 }
 
 application {
     mainClass = "com.zugaldia.stargate.app.AppKt"
+
+    // See: https://java-gi.org/usage/#linux
     applicationDefaultJvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
 }
