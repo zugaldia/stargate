@@ -38,8 +38,8 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 | Print                 | ❌         | ❌          | ❌       |
 | Proxy Resolver        | ❌         | ❌          | ❌       |
 | Realtime              | ❌         | ❌          | ❌       |
-| Remote Desktop        | ✅         | ❌          | ❌       |
-| Request               | ❌         | ❌          | ❌       |
+| Remote Desktop        | ✅         | ✅          | ✅       |
+| Request               | ✅         | ❌          | ❌       |
 | ScreenCast            | ❌         | ❌          | ❌       |
 | Screenshot            | ❌         | ❌          | ❌       |
 | Secret                | ✅         | ❌          | ❌       |
