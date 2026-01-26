@@ -1,73 +1,65 @@
 package com.zugaldia.stargate.app
 
+import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopScreen
+import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopViewModel
+import com.zugaldia.stargate.app.settings.SettingsScreen
+import com.zugaldia.stargate.app.settings.SettingsViewModel
 import com.zugaldia.stargate.sdk.DesktopPortal
-import org.gnome.gtk.Align
+import kotlinx.coroutines.runBlocking
+import org.gnome.gio.ApplicationFlags
 import org.gnome.gtk.Application
 import org.gnome.gtk.ApplicationWindow
 import org.gnome.gtk.Box
-import org.gnome.gtk.Button
-import org.gnome.gtk.Label
 import org.gnome.gtk.Orientation
+import org.gnome.gtk.Stack
+import org.gnome.gtk.StackSidebar
 
+private const val APPLICATION_ID = "com.zugaldia.stargate.App"
+private const val APPLICATION_NAME = "Stargate"
 private const val DEFAULT_WINDOW_WIDTH = 800
 private const val DEFAULT_WINDOW_HEIGHT = 600
-private const val DEFAULT_BOX_SPACING = 10
 
 fun main(args: Array<String>) {
-    val app = Application("com.zugaldia.stargate.App")
-    app.onActivate { activate(app) }
+    val portal = DesktopPortal.connect()
+    val settingsViewModel = SettingsViewModel(portal)
+    val remoteDesktopViewModel = RemoteDesktopViewModel(portal)
+
+    val app = Application(APPLICATION_ID, ApplicationFlags.DEFAULT_FLAGS)
+    app.onActivate { activate(app, settingsViewModel, remoteDesktopViewModel) }
+    app.onShutdown {
+        runBlocking {
+            settingsViewModel.closeAndJoin()
+            remoteDesktopViewModel.closeAndJoin()
+        }
+        portal.close()
+    }
     app.run(args)
 }
 
-private fun activate(app: Application) {
+private fun activate(
+    app: Application,
+    settingsViewModel: SettingsViewModel,
+    remoteDesktopViewModel: RemoteDesktopViewModel
+) {
     val window = ApplicationWindow(app)
-    window.title = "Stargate"
+    window.title = APPLICATION_NAME
     window.setDefaultSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
 
-    val box = Box.builder()
-        .setOrientation(Orientation.VERTICAL)
-        .setHalign(Align.CENTER)
-        .setValign(Align.CENTER)
-        .setSpacing(DEFAULT_BOX_SPACING)
-        .build()
+    val stack = Stack()
 
-    DesktopPortal.connect().use { portal ->
-        box.append(Label.builder().setLabel("Settings Portal").build())
-        box.append(Label.builder().setLabel("Version: ${portal.settings.version}").build())
+    val remoteDesktopScreen = RemoteDesktopScreen(remoteDesktopViewModel)
+    stack.addTitled(remoteDesktopScreen.build(), "remote-desktop", "Remote Desktop")
 
-        val colorSchemeText = portal.settings.getColorScheme()
-            .fold(
-                onSuccess = { "Color Scheme: $it" },
-                onFailure = { "Color Scheme: Failed to read (${it.message})" }
-            )
-        box.append(Label.builder().setLabel(colorSchemeText).build())
+    val settingsScreen = SettingsScreen(settingsViewModel)
+    stack.addTitled(settingsScreen.build(), "settings", "Settings")
 
-        val accentColorText = portal.settings.getAccentColor()
-            .fold(
-                onSuccess = { "Accent Color: RGB(${it.red}, ${it.green}, ${it.blue})" },
-                onFailure = { "Accent Color: Failed to read (${it.message})" }
-            )
-        box.append(Label.builder().setLabel(accentColorText).build())
+    val sidebar = StackSidebar()
+    sidebar.stack = stack
 
-        val contrastText = portal.settings.getContrast()
-            .fold(
-                onSuccess = { "Contrast: $it" },
-                onFailure = { "Contrast: Failed to read (${it.message})" }
-            )
-        box.append(Label.builder().setLabel(contrastText).build())
+    val mainBox = Box(Orientation.HORIZONTAL, 0)
+    mainBox.append(sidebar)
+    mainBox.append(stack)
 
-        val reducedMotionText = portal.settings.getReducedMotion()
-            .fold(
-                onSuccess = { "Reduced Motion: $it" },
-                onFailure = { "Reduced Motion: Failed to read (${it.message})" }
-            )
-        box.append(Label.builder().setLabel(reducedMotionText).build())
-    }
-
-    val button = Button.withLabel("Exit")
-    button.onClicked(window::close)
-
-    box.append(button)
-    window.child = box
+    window.child = mainBox
     window.present()
 }
