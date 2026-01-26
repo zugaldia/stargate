@@ -1,20 +1,9 @@
 package com.zugaldia.stargate.sdk
 
+import com.zugaldia.stargate.sdk.remotedesktop.RemoteDesktopPortal
 import com.zugaldia.stargate.sdk.settings.SettingsPortal
 import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder
-import org.freedesktop.dbus.interfaces.DBusInterface
-import org.freedesktop.portal.Settings
-
-/**
- * D-Bus bus name for the desktop portal.
- */
-private const val BUS_NAME = "org.freedesktop.portal.Desktop"
-
-/**
- * D-Bus object path for the desktop portal.
- */
-private const val OBJECT_PATH = "/org/freedesktop/portal/desktop"
 
 /**
  * Main entry point for accessing XDG Desktop Portal interfaces.
@@ -25,13 +14,12 @@ class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
     /**
      * Access to the Settings portal for reading desktop appearance preferences.
      */
-    val settings: SettingsPortal by lazy { SettingsPortal(getRemoteObject()) }
+    val settings: SettingsPortal by lazy { SettingsPortal(connection) }
 
     /**
-     * Gets a remote D-Bus object for the specified interface type.
+     * Access to the RemoteDesktop portal for remote desktop functionality.
      */
-    private inline fun <reified T : DBusInterface> getRemoteObject(): T =
-        connection.getRemoteObject(BUS_NAME, OBJECT_PATH, T::class.java)
+    val remoteDesktop: RemoteDesktopPortal by lazy { RemoteDesktopPortal(connection) }
 
     /**
      * Closes the underlying D-Bus connection.
