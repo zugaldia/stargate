@@ -51,11 +51,16 @@ class GenerateXml : CliktCommand(name = "generate-xml") {
 class GenerateJava : CliktCommand(name = "generate-java") {
     override fun help(context: Context) = "Generate Java source files (in the sdk module)"
     override fun run() {
-        val inputFile = File(OUTPUT_DIR, OUTPUT_FILE)
-        introspect(inputFile)
+        val xmlDir = File(OUTPUT_DIR)
+        val xmlFiles = xmlDir.listFiles { file -> file.extension == "xml" } ?: emptyArray()
+        xmlFiles.forEach { xmlFile ->
+            echo("Processing: ${xmlFile.name}")
+            val applyTargetFilter = (xmlFile.name == OUTPUT_FILE)
+            introspect(xmlFile, applyTargetFilter)
+        }
     }
 
-    private fun introspect(inputFile: File) {
+    private fun introspect(inputFile: File, applyTargetFilter: Boolean) {
         val disableFilter = true
         val introspectionData: String = inputFile.readText()
         val objectPath: String = OBJECT_PATH
@@ -78,7 +83,7 @@ class GenerateJava : CliktCommand(name = "generate-java") {
 
         val outputBaseDir = File(SDK_GENERATED_DIR)
         result.forEach { (file, content) ->
-            if (file.path in TARGET_PORTALS) {
+            if (!applyTargetFilter || file.path in TARGET_PORTALS) {
                 val outputFile = File(outputBaseDir, file.path)
                 outputFile.parentFile.mkdirs()
                 outputFile.writeText(content)
