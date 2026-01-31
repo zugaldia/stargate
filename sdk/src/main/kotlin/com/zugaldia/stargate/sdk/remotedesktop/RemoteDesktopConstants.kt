@@ -1,17 +1,6 @@
 package com.zugaldia.stargate.sdk.remotedesktop
 
 /**
- * Option key for the session handle token.
- * Used in RemoteDesktop.CreateSession.
- */
-const val OPTION_SESSION_HANDLE_TOKEN = "session_handle_token"
-
-/**
- * Result key for the session handle returned in responses.
- */
-const val RESULT_SESSION_HANDLE = "session_handle"
-
-/**
  * Option key for device types bitmask.
  * Used in RemoteDesktop.SelectDevices.
  */

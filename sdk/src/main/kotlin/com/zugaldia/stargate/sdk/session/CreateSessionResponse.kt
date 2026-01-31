@@ -1,9 +1,9 @@
-package com.zugaldia.stargate.sdk.remotedesktop
+package com.zugaldia.stargate.sdk.session
 
 import org.freedesktop.dbus.DBusPath
 
 /**
- * Response from RemoteDesktop.CreateSession containing the session handle.
+ * Response from CreateSession containing the session handle.
  *
  * @property sessionHandle Object path for the created session.
  */
