@@ -1,6 +1,7 @@
 package com.zugaldia.stargate.app.remotedesktop
 
 import com.zugaldia.stargate.app.DEFAULT_TEXT
+import com.zugaldia.stargate.app.ERROR_LABEL_MAX_WIDTH_CHARS
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.app.SPACING
 import com.zugaldia.stargate.app.TEXT_VIEW_HEIGHT
@@ -64,6 +65,8 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
 
         errorLabel = Label("")
         errorLabel.addCssClass("error")
+        errorLabel.wrap = true
+        errorLabel.maxWidthChars = ERROR_LABEL_MAX_WIDTH_CHARS
         errorLabel.visible = false
         box.append(errorLabel)
 
