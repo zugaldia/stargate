@@ -4,8 +4,9 @@ import com.zugaldia.stargate.sdk.BUS_NAME
 import com.zugaldia.stargate.sdk.OBJECT_PATH
 import com.zugaldia.stargate.sdk.OPTION_HANDLE_TOKEN
 import com.zugaldia.stargate.sdk.generateToken
-import com.zugaldia.stargate.sdk.request.RequestResponse
-import kotlinx.coroutines.suspendCancellableCoroutine
+import com.zugaldia.stargate.sdk.request.awaitPortalResponse
+import com.zugaldia.stargate.sdk.session.CreateSessionResponse
+import com.zugaldia.stargate.sdk.session.PortalSession
 import org.apache.logging.log4j.LogManager
 import org.freedesktop.dbus.DBusPath
 import org.freedesktop.dbus.FileDescriptor
@@ -13,9 +14,6 @@ import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.types.UInt32
 import org.freedesktop.dbus.types.Variant
 import org.freedesktop.portal.RemoteDesktop
-import org.freedesktop.portal.Request
-import java.util.concurrent.atomic.AtomicReference
-import kotlin.coroutines.resume
 
 private val EMPTY_OPTIONS = emptyMap<String, Variant<*>>()
 
@@ -34,23 +32,19 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
     private val remoteDesktop: RemoteDesktop =
         connection.getRemoteObject(BUS_NAME, OBJECT_PATH, RemoteDesktop::class.java)
 
+    private val session = PortalSession()
+
     /**
      * The currently active session handle, set automatically by [startSession].
      */
-    var activeSession: DBusPath? = null
-        private set
+    val activeSession: DBusPath?
+        get() = session.active
 
     /**
      * Clears the active session.
      */
     fun clearSession() {
-        activeSession = null
-    }
-
-    private inline fun <T> withSession(block: (DBusPath) -> T): Result<T> {
-        val session = activeSession
-            ?: return Result.failure(IllegalStateException("No active session. Call startSession() first."))
-        return runCatching { block(session) }
+        session.clear()
     }
 
     /**
@@ -70,45 +64,10 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      *
      * @return Result containing [CreateSessionResponse] with the session handle.
      */
-    suspend fun createSession(): Result<CreateSessionResponse> =
-        suspendCancellableCoroutine { continuation ->
-            val requestPathRef = AtomicReference<String?>(null)
-            var handler: AutoCloseable? = null
-            handler = connection.addSigHandler(Request.Response::class.java) { signal ->
-                val path = requestPathRef.get()
-                if (path != null && signal.path == path) {
-                    try {
-                        when (val response = RequestResponse.fromValue(signal.response)) {
-                            RequestResponse.SUCCESS -> {
-                                val sessionHandlePath = signal.results[RESULT_SESSION_HANDLE]?.value as? String
-                                val result = CreateSessionResponse(sessionHandle = DBusPath(sessionHandlePath))
-                                continuation.resume(Result.success(result))
-                            }
-                            else -> {
-                                val error = "CreateSession failed ($response)"
-                                continuation.resume(Result.failure(IllegalStateException(error)))
-                            }
-                        }
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                        continuation.resume(Result.failure(e))
-                    } finally {
-                        handler?.close()
-                    }
-                }
-            }
-
-            val handleToken = generateToken()
-            val sessionHandleToken = generateToken()
-            logger.debug("createSession: handleToken={}, sessionHandleToken={}", handleToken, sessionHandleToken)
-            val options = mapOf(
-                OPTION_HANDLE_TOKEN to Variant(handleToken),
-                OPTION_SESSION_HANDLE_TOKEN to Variant(sessionHandleToken)
-            )
-
-            val requestHandle = remoteDesktop.CreateSession(options)
-            requestPathRef.set(requestHandle.path)
-            continuation.invokeOnCancellation { handler?.close() }
-        }
+    suspend fun createSession(): Result<CreateSessionResponse> = session.createSession(
+        connection = connection,
+        call = { options -> remoteDesktop.CreateSession(options) }
+    )
 
     /**
      * Select input devices to remote control.
@@ -124,42 +83,21 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
         types: Set<DeviceType>? = null,
         restoreToken: String? = null,
         persistMode: PersistMode? = null
-    ): Result<Unit> =
-        suspendCancellableCoroutine { continuation ->
-            val requestPathRef = AtomicReference<String?>(null)
-            var handler: AutoCloseable? = null
-            handler = connection.addSigHandler(Request.Response::class.java) { signal ->
-                val path = requestPathRef.get()
-                if (path != null && signal.path == path) {
-                    try {
-                        when (val response = RequestResponse.fromValue(signal.response)) {
-                            RequestResponse.SUCCESS -> {
-                                continuation.resume(Result.success(Unit))
-                            }
-                            else -> {
-                                val error = "SelectDevices request failed ($response)"
-                                continuation.resume(Result.failure(IllegalStateException(error)))
-                            }
-                        }
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                        continuation.resume(Result.failure(e))
-                    } finally {
-                        handler?.close()
-                    }
-                }
-            }
-
-            val options = buildMap<String, Variant<*>> {
-                put(OPTION_HANDLE_TOKEN, Variant(generateToken()))
-                types?.let { put(OPTION_TYPES, Variant(DeviceType.toBitmask(it))) }
-                restoreToken?.let { put(OPTION_RESTORE_TOKEN, Variant(it)) }
-                persistMode?.let { put(OPTION_PERSIST_MODE, Variant(it.value)) }
-            }
-
-            val requestHandle = remoteDesktop.SelectDevices(sessionHandle, options)
-            requestPathRef.set(requestHandle.path)
-            continuation.invokeOnCancellation { handler?.close() }
+    ): Result<Unit> {
+        val options = buildMap<String, Variant<*>> {
+            put(OPTION_HANDLE_TOKEN, Variant(generateToken()))
+            types?.let { put(OPTION_TYPES, Variant(DeviceType.toBitmask(it))) }
+            restoreToken?.let { put(OPTION_RESTORE_TOKEN, Variant(it)) }
+            persistMode?.let { put(OPTION_PERSIST_MODE, Variant(it.value)) }
         }
+
+        return awaitPortalResponse(
+            connection = connection,
+            methodName = "SelectDevices",
+            call = { remoteDesktop.SelectDevices(sessionHandle, options) },
+            parseSuccess = { }
+        )
+    }
 
     /**
      * Start the remote desktop session. This will typically result in the portal
@@ -174,42 +112,23 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
     suspend fun start(
         sessionHandle: DBusPath,
         parentWindow: String = ""
-    ): Result<StartResponse> =
-        suspendCancellableCoroutine { continuation ->
-            val requestPathRef = AtomicReference<String?>(null)
-            var handler: AutoCloseable? = null
-            handler = connection.addSigHandler(Request.Response::class.java) { signal ->
-                val path = requestPathRef.get()
-                if (path != null && signal.path == path) {
-                    try {
-                        when (val response = RequestResponse.fromValue(signal.response)) {
-                            RequestResponse.SUCCESS -> {
-                                val devicesBitmask = signal.results[RESULT_DEVICES]?.value as? UInt32
-                                val result = StartResponse(
-                                    devices = devicesBitmask?.let { DeviceType.fromBitmask(it) } ?: emptySet(),
-                                    clipboardEnabled = signal.results[RESULT_CLIPBOARD_ENABLED]?.value as? Boolean,
-                                    restoreToken = signal.results[RESULT_RESTORE_TOKEN]?.value as? String
-                                )
-                                continuation.resume(Result.success(result))
-                            }
-                            else -> {
-                                val error = "Start failed ($response)"
-                                continuation.resume(Result.failure(IllegalStateException(error)))
-                            }
-                        }
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                        continuation.resume(Result.failure(e))
-                    } finally {
-                        handler?.close()
-                    }
-                }
-            }
+    ): Result<StartResponse> {
+        val options = mapOf(OPTION_HANDLE_TOKEN to Variant(generateToken()))
 
-            val options = mapOf(OPTION_HANDLE_TOKEN to Variant(generateToken()))
-            val requestHandle = remoteDesktop.Start(sessionHandle, parentWindow, options)
-            requestPathRef.set(requestHandle.path)
-            continuation.invokeOnCancellation { handler?.close() }
-        }
+        return awaitPortalResponse(
+            connection = connection,
+            methodName = "Start",
+            call = { remoteDesktop.Start(sessionHandle, parentWindow, options) },
+            parseSuccess = { results ->
+                val devicesBitmask = results[RESULT_DEVICES]?.value as? UInt32
+                StartResponse(
+                    devices = devicesBitmask?.let { DeviceType.fromBitmask(it) } ?: emptySet(),
+                    clipboardEnabled = results[RESULT_CLIPBOARD_ENABLED]?.value as? Boolean,
+                    restoreToken = results[RESULT_RESTORE_TOKEN]?.value as? String
+                )
+            }
+        )
+    }
 
     /**
      * Convenience function that performs the complete remote desktop session flow:
@@ -232,7 +151,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
     ): Result<StartResponse> {
         // Step 1: Create the session
         val sessionHandle = createSession().getOrElse { return Result.failure(it) }.sessionHandle
-        activeSession = sessionHandle
+        session.set(sessionHandle)
 
         // Step 2: Select devices
         selectDevices(sessionHandle, types, restoreToken, persistMode).getOrElse {
@@ -255,7 +174,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param dy Relative movement on the y-axis.
      * @return Result indicating success or failure.
      */
-    fun notifyPointerMotion(dx: Double, dy: Double): Result<Unit> = withSession { session ->
+    fun notifyPointerMotion(dx: Double, dy: Double): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyPointerMotion(session, EMPTY_OPTIONS, dx, dy)
     }
 
@@ -267,9 +186,10 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param y Pointer motion y coordinate.
      * @return Result indicating success or failure.
      */
-    fun notifyPointerMotionAbsolute(stream: UInt32, x: Double, y: Double): Result<Unit> = withSession { session ->
-        remoteDesktop.NotifyPointerMotionAbsolute(session, EMPTY_OPTIONS, stream, x, y)
-    }
+    fun notifyPointerMotionAbsolute(stream: UInt32, x: Double, y: Double): Result<Unit> =
+        session.withSession { session ->
+            remoteDesktop.NotifyPointerMotionAbsolute(session, EMPTY_OPTIONS, stream, x, y)
+        }
 
     /**
      * Notify about a pointer button event.
@@ -278,7 +198,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param state The button state.
      * @return Result indicating success or failure.
      */
-    fun notifyPointerButton(button: Int, state: InputState): Result<Unit> = withSession { session ->
+    fun notifyPointerButton(button: Int, state: InputState): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyPointerButton(session, EMPTY_OPTIONS, button, state.value)
     }
 
@@ -290,10 +210,15 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param finish If true, this is the last axis event in a series (e.g., fingers lifted from touchpad).
      * @return Result indicating success or failure.
      */
-    fun notifyPointerAxis(dx: Double, dy: Double, finish: Boolean = false): Result<Unit> = withSession { session ->
-        val options = if (finish) { mapOf(OPTION_FINISH to Variant(finish)) } else { EMPTY_OPTIONS }
-        remoteDesktop.NotifyPointerAxis(session, options, dx, dy)
-    }
+    fun notifyPointerAxis(dx: Double, dy: Double, finish: Boolean = false): Result<Unit> =
+        session.withSession { session ->
+            val options = if (finish) {
+                mapOf(OPTION_FINISH to Variant(finish))
+            } else {
+                EMPTY_OPTIONS
+            }
+            remoteDesktop.NotifyPointerAxis(session, options, dx, dy)
+        }
 
     /**
      * Notify about a discrete pointer axis event (e.g., mouse wheel click).
@@ -302,7 +227,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param steps The number of steps scrolled.
      * @return Result indicating success or failure.
      */
-    fun notifyPointerAxisDiscrete(axis: AxisDirection, steps: Int): Result<Unit> = withSession { session ->
+    fun notifyPointerAxisDiscrete(axis: AxisDirection, steps: Int): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyPointerAxisDiscrete(session, EMPTY_OPTIONS, axis.value, steps)
     }
 
@@ -315,7 +240,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param state The key state.
      * @return Result indicating success or failure.
      */
-    fun notifyKeyboardKeycode(keycode: Int, state: InputState): Result<Unit> = withSession { session ->
+    fun notifyKeyboardKeycode(keycode: Int, state: InputState): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyKeyboardKeycode(session, EMPTY_OPTIONS, keycode, state.value)
     }
 
@@ -326,7 +251,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param state The key state.
      * @return Result indicating success or failure.
      */
-    fun notifyKeyboardKeySym(keySym: Int, state: InputState): Result<Unit> = withSession { session ->
+    fun notifyKeyboardKeySym(keySym: Int, state: InputState): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyKeyboardKeysym(session, EMPTY_OPTIONS, keySym, state.value)
     }
 
@@ -341,9 +266,10 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param y Touch down y coordinate.
      * @return Result indicating success or failure.
      */
-    fun notifyTouchDown(stream: UInt32, slot: UInt32, x: Double, y: Double): Result<Unit> = withSession { session ->
-        remoteDesktop.NotifyTouchDown(session, EMPTY_OPTIONS, stream, slot, x, y)
-    }
+    fun notifyTouchDown(stream: UInt32, slot: UInt32, x: Double, y: Double): Result<Unit> =
+        session.withSession { session ->
+            remoteDesktop.NotifyTouchDown(session, EMPTY_OPTIONS, stream, slot, x, y)
+        }
 
     /**
      * Notify about a touch motion event.
@@ -354,9 +280,10 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param y Touch motion y coordinate.
      * @return Result indicating success or failure.
      */
-    fun notifyTouchMotion(stream: UInt32, slot: UInt32, x: Double, y: Double): Result<Unit> = withSession { session ->
-        remoteDesktop.NotifyTouchMotion(session, EMPTY_OPTIONS, stream, slot, x, y)
-    }
+    fun notifyTouchMotion(stream: UInt32, slot: UInt32, x: Double, y: Double): Result<Unit> =
+        session.withSession { session ->
+            remoteDesktop.NotifyTouchMotion(session, EMPTY_OPTIONS, stream, slot, x, y)
+        }
 
     /**
      * Notify about a touch-up event.
@@ -364,7 +291,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @param slot The touch slot where the touchpoint was removed.
      * @return Result indicating success or failure.
      */
-    fun notifyTouchUp(slot: UInt32): Result<Unit> = withSession { session ->
+    fun notifyTouchUp(slot: UInt32): Result<Unit> = session.withSession { session ->
         remoteDesktop.NotifyTouchUp(session, EMPTY_OPTIONS, slot)
     }
 
@@ -377,7 +304,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      *
      * @return Result containing a file descriptor for the EIS connection.
      */
-    fun connectToEIS(): Result<FileDescriptor> = withSession { session ->
+    fun connectToEIS(): Result<FileDescriptor> = session.withSession { session ->
         remoteDesktop.ConnectToEIS(session, EMPTY_OPTIONS)
     }
 
