@@ -26,7 +26,7 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 | File Chooser          | ✅         | ❌          | ❌       |
 | File Transfer         | ❌         | ❌          | ❌       |
 | Game Mode             | ❌         | ❌          | ❌       |
-| Global Shortcuts      | ❌         | ❌          | ❌       |
+| Global Shortcuts      | ✅         | ✅          | ✅       |
 | Inhibit               | ❌         | ❌          | ❌       |
 | Input Capture         | ❌         | ❌          | ❌       |
 | Location              | ❌         | ❌          | ❌       |
