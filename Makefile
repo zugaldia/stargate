@@ -1,3 +1,5 @@
+export GRADLE_OPTS = --enable-native-access=ALL-UNNAMED
+
 .PHONY: run build check clean generate-java generate-xml
 
 run:
