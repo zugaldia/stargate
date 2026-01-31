@@ -1,5 +1,6 @@
 package com.zugaldia.stargate.sdk
 
+import com.zugaldia.stargate.sdk.globalshortcuts.GlobalShortcutsPortal
 import com.zugaldia.stargate.sdk.remotedesktop.RemoteDesktopPortal
 import com.zugaldia.stargate.sdk.settings.SettingsPortal
 import org.freedesktop.dbus.connections.impl.DBusConnection
@@ -20,6 +21,11 @@ class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
      * Access to the RemoteDesktop portal for remote desktop functionality.
      */
     val remoteDesktop: RemoteDesktopPortal by lazy { RemoteDesktopPortal(connection) }
+
+    /**
+     * Access to the GlobalShortcuts portal for registering global keyboard shortcuts.
+     */
+    val globalShortcuts: GlobalShortcutsPortal by lazy { GlobalShortcutsPortal(connection) }
 
     /**
      * Closes the underlying D-Bus connection.
