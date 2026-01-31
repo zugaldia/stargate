@@ -1,5 +1,7 @@
 package com.zugaldia.stargate.app
 
+import com.zugaldia.stargate.app.globalshortcuts.GlobalShortcutsScreen
+import com.zugaldia.stargate.app.globalshortcuts.GlobalShortcutsViewModel
 import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopScreen
 import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopViewModel
 import com.zugaldia.stargate.app.settings.SettingsScreen
@@ -21,15 +23,17 @@ private const val DEFAULT_WINDOW_HEIGHT = 600
 
 fun main(args: Array<String>) {
     val portal = DesktopPortal.connect()
-    val settingsViewModel = SettingsViewModel(portal)
+    val globalShortcutsViewModel = GlobalShortcutsViewModel(portal)
     val remoteDesktopViewModel = RemoteDesktopViewModel(portal)
+    val settingsViewModel = SettingsViewModel(portal)
 
     val app = Application(APPLICATION_ID, ApplicationFlags.DEFAULT_FLAGS)
-    app.onActivate { activate(app, settingsViewModel, remoteDesktopViewModel) }
+    app.onActivate { activate(app, globalShortcutsViewModel, remoteDesktopViewModel, settingsViewModel) }
     app.onShutdown {
         runBlocking {
-            settingsViewModel.closeAndJoin()
+            globalShortcutsViewModel.closeAndJoin()
             remoteDesktopViewModel.closeAndJoin()
+            settingsViewModel.closeAndJoin()
         }
         portal.close()
     }
@@ -38,14 +42,18 @@ fun main(args: Array<String>) {
 
 private fun activate(
     app: Application,
-    settingsViewModel: SettingsViewModel,
-    remoteDesktopViewModel: RemoteDesktopViewModel
+    globalShortcutsViewModel: GlobalShortcutsViewModel,
+    remoteDesktopViewModel: RemoteDesktopViewModel,
+    settingsViewModel: SettingsViewModel
 ) {
     val window = ApplicationWindow(app)
     window.title = APPLICATION_NAME
     window.setDefaultSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
 
     val stack = Stack()
+
+    val globalShortcutsScreen = GlobalShortcutsScreen(globalShortcutsViewModel)
+    stack.addTitled(globalShortcutsScreen.build(), "global-shortcuts", "Global Shortcuts")
 
     val remoteDesktopScreen = RemoteDesktopScreen(remoteDesktopViewModel)
     stack.addTitled(remoteDesktopScreen.build(), "remote-desktop", "Remote Desktop")
