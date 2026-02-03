@@ -8,14 +8,12 @@ plugins {
 dependencies {
     implementation(project(":sdk"))
     implementation(libs.kotlinxCoroutines)
+    implementation(libs.log4jCore)
+    implementation(libs.log4jSlf4j2Impl)
 
     // GTK bindings for Java
-    implementation(libs.javaGiAdw)
     implementation(libs.javaGiGtk)
-
-    // Logging
-    implementation(libs.log4jApi)
-    runtimeOnly(libs.log4jSlf4j2Impl)
+    implementation(libs.javaGiAdw)
 }
 
 application {

@@ -7,7 +7,7 @@ import com.zugaldia.stargate.sdk.generateToken
 import com.zugaldia.stargate.sdk.request.awaitPortalResponse
 import com.zugaldia.stargate.sdk.session.CreateSessionResponse
 import com.zugaldia.stargate.sdk.session.PortalSession
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.freedesktop.dbus.DBusPath
 import org.freedesktop.dbus.FileDescriptor
 import org.freedesktop.dbus.connections.impl.DBusConnection
@@ -27,7 +27,7 @@ private val EMPTY_OPTIONS = emptyMap<String, Variant<*>>()
 @Suppress("TooManyFunctions")
 class RemoteDesktopPortal(private val connection: DBusConnection) {
 
-    private val logger = LogManager.getLogger(RemoteDesktopPortal::class.java)
+    private val logger = LoggerFactory.getLogger(RemoteDesktopPortal::class.java)
 
     private val remoteDesktop: RemoteDesktop =
         connection.getRemoteObject(BUS_NAME, OBJECT_PATH, RemoteDesktop::class.java)

@@ -1,9 +1,9 @@
 package com.zugaldia.stargate.app
 
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.gnome.gdk.Gdk
 
-private val logger = LogManager.getLogger("AppUtils")
+private val logger = LoggerFactory.getLogger("AppUtils")
 
 // Gdk.unicodeToKeyval returns this if there is no corresponding symbol
 private const val UNICODE_KEYSYM_FLAG = 0x01000000

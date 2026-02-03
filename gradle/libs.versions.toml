@@ -12,22 +12,23 @@ kotlinxCoroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJSON = "1.9.0"
 log4j = "2.25.3"
+slf4j = "2.0.17"
 
 [libraries]
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 dbusJavaCore = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbusJava" }
 dbusJavaTransportNativeUnixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbusJava" }
 dbusJavaUtils = { module = "com.github.hypfvieh:dbus-java-utils", version.ref = "dbusJava" }
+detektGradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 javaGiAdw = { module = "org.java-gi:adw", version.ref = "javaGi" }
 javaGiGtk = { module = "org.java-gi:gtk", version.ref = "javaGi" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJSON" }
-log4jApi = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 log4jCore = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 log4jSlf4j2Impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
-detektGradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
 [bundles]
 kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutines"]

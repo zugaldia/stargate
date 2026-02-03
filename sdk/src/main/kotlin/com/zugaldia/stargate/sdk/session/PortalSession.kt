@@ -5,7 +5,7 @@ import com.zugaldia.stargate.sdk.OPTION_SESSION_HANDLE_TOKEN
 import com.zugaldia.stargate.sdk.RESULT_SESSION_HANDLE
 import com.zugaldia.stargate.sdk.generateToken
 import com.zugaldia.stargate.sdk.request.awaitPortalResponse
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.freedesktop.dbus.DBusPath
 import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.types.Variant
@@ -14,7 +14,7 @@ import org.freedesktop.dbus.types.Variant
  * Manages session state for portals that require an active session.
  */
 class PortalSession {
-    private val logger = LogManager.getLogger(PortalSession::class.java)
+    private val logger = LoggerFactory.getLogger(PortalSession::class.java)
 
     /**
      * The currently active session handle.

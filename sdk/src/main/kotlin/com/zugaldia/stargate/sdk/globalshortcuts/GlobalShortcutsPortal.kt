@@ -10,7 +10,7 @@ import com.zugaldia.stargate.sdk.session.PortalSession
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.freedesktop.dbus.DBusPath
 import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.types.Variant
@@ -28,7 +28,7 @@ import org.freedesktop.portal.GlobalShortcuts
 @Suppress("TooManyFunctions")
 class GlobalShortcutsPortal(private val connection: DBusConnection) {
 
-    private val logger = LogManager.getLogger(GlobalShortcutsPortal::class.java)
+    private val logger = LoggerFactory.getLogger(GlobalShortcutsPortal::class.java)
 
     private val globalShortcuts: GlobalShortcuts =
         connection.getRemoteObject(BUS_NAME, OBJECT_PATH, GlobalShortcuts::class.java)

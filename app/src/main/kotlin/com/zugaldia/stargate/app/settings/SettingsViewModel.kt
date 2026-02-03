@@ -8,13 +8,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
 
 class SettingsViewModel(private val portal: DesktopPortal) : GObject() {
-    private val logger = LogManager.getLogger()
+    private val logger = LoggerFactory.getLogger(SettingsViewModel::class.java)
 
     private val job: Job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
