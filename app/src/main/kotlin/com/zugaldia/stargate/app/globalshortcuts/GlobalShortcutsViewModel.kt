@@ -9,16 +9,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
-import org.slf4j.LoggerFactory
 import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
+import org.slf4j.LoggerFactory
 
 class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
     private val logger = LoggerFactory.getLogger(GlobalShortcutsViewModel::class.java)
 
     private val job: Job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
+
+    private var sessionClosedObserver: Job? = null
 
     private var _state: GlobalShortcutsState = GlobalShortcutsState()
     val state: GlobalShortcutsState
@@ -67,18 +69,29 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                             shortcut.triggerDescription
                         )
                     }
-                    updateState(
-                        _state.copy(
-                            isLoading = false,
-                            isSessionActive = true
-                        )
-                    )
+                    updateState(_state.copy(isLoading = false, isSessionActive = true))
+                    startObservingSessionClosed()
                 },
                 onFailure = { error ->
                     logger.error("Failed to create session", error)
                     updateState(_state.copy(isLoading = false, error = error.message))
                 }
             )
+        }
+    }
+
+    private fun startObservingSessionClosed() {
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = scope.launch {
+            @Suppress("TooGenericExceptionCaught")
+            try {
+                portal.globalShortcuts.observeSessionClosed().collect { event ->
+                    logger.warn("Session was closed: sessionHandle={}, details={}", event.sessionHandle, event.details)
+                    updateState(GlobalShortcutsState(error = "Session was closed by the system"))
+                }
+            } catch (e: Exception) {
+                logger.error("Error observing session closed events", e)
+            }
         }
     }
 
@@ -89,6 +102,8 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
 
         logger.info("Stopping global shortcuts session")
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = null
         portal.globalShortcuts.clearSession()
         updateState(GlobalShortcutsState())
     }
@@ -132,6 +147,8 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
 
     suspend fun closeAndJoin() {
         logger.info("Closing GlobalShortcutsViewModel, cancelling coroutine scope and awaiting completion")
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = null
         portal.globalShortcuts.clearSession()
         job.cancelAndJoin()
     }

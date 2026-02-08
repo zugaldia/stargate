@@ -13,16 +13,18 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.slf4j.LoggerFactory
 import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
+import org.slf4j.LoggerFactory
 
 class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
     private val logger = LoggerFactory.getLogger(RemoteDesktopViewModel::class.java)
 
     private val job: Job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
+
+    private var sessionClosedObserver: Job? = null
 
     private var _state: RemoteDesktopState = RemoteDesktopState()
     val state: RemoteDesktopState
@@ -79,6 +81,7 @@ class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
                             restoreToken = response.restoreToken
                         )
                     )
+                    startObservingSessionClosed()
                 },
                 onFailure = { error ->
                     logger.error("Failed to start session", error)
@@ -122,6 +125,26 @@ class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
         }
     }
 
+    private fun startObservingSessionClosed() {
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = scope.launch {
+            @Suppress("TooGenericExceptionCaught")
+            try {
+                portal.remoteDesktop.observeSessionClosed().collect { event ->
+                    logger.warn("Session was closed: sessionHandle={}, details={}", event.sessionHandle, event.details)
+                    updateState(
+                        RemoteDesktopState(
+                            restoreToken = _state.restoreToken,
+                            error = "Session was closed by the system"
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                logger.error("Error observing session closed events", e)
+            }
+        }
+    }
+
     fun stopSession() {
         if (!_state.isSessionActive) {
             logger.warn("No active session to stop")
@@ -129,6 +152,8 @@ class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
         }
 
         logger.info("Stopping remote desktop session, preserving restoreToken")
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = null
         portal.remoteDesktop.clearSession()
 
         // Keep the restore token so it can be used to restore the session later
@@ -137,6 +162,8 @@ class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
 
     suspend fun closeAndJoin() {
         logger.info("Closing RemoteDesktopViewModel, cancelling coroutine scope and awaiting completion")
+        sessionClosedObserver?.cancel()
+        sessionClosedObserver = null
         portal.remoteDesktop.clearSession()
         job.cancelAndJoin()
     }
