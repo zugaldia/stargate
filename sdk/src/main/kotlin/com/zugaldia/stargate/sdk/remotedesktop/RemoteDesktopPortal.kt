@@ -7,6 +7,8 @@ import com.zugaldia.stargate.sdk.generateToken
 import com.zugaldia.stargate.sdk.request.awaitPortalResponse
 import com.zugaldia.stargate.sdk.session.CreateSessionResponse
 import com.zugaldia.stargate.sdk.session.PortalSession
+import com.zugaldia.stargate.sdk.session.SessionClosedEvent
+import kotlinx.coroutines.flow.Flow
 import org.slf4j.LoggerFactory
 import org.freedesktop.dbus.DBusPath
 import org.freedesktop.dbus.FileDescriptor
@@ -32,7 +34,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
     private val remoteDesktop: RemoteDesktop =
         connection.getRemoteObject(BUS_NAME, OBJECT_PATH, RemoteDesktop::class.java)
 
-    private val session = PortalSession()
+    private val session = PortalSession(connection)
 
     /**
      * The currently active session handle, set automatically by [startSession].
@@ -46,6 +48,17 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
     fun clearSession() {
         session.clear()
     }
+
+    /**
+     * Returns a Flow that emits when the active session is closed.
+     *
+     * This flow emits [SessionClosedEvent] with details about why the session was closed.
+     * The flow will only emit events for the current [activeSession].
+     *
+     * @return Flow of session closed events.
+     * @throws IllegalStateException if no active session exists when the flow is collected.
+     */
+    fun observeSessionClosed(): Flow<SessionClosedEvent> = session.observeClosed()
 
     /**
      * Returns the interface version.
@@ -65,7 +78,6 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * @return Result containing [CreateSessionResponse] with the session handle.
      */
     suspend fun createSession(): Result<CreateSessionResponse> = session.createSession(
-        connection = connection,
         call = { options -> remoteDesktop.CreateSession(options) }
     )
 
