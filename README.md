@@ -15,20 +15,11 @@ Add the dependency to your project (requires JDK 22+):
 **Gradle (Kotlin DSL)**
 ```kotlin
 dependencies {
-    implementation("com.github.zugaldia:stargate:0.1.0-SNAPSHOT")
+    implementation("com.github.zugaldia:stargate:0.1.0")
 }
 ```
 
-For Snapshots, add the following repository:
-```kotlin
-    repositories {
-        maven {
-            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
-        }
-    }
-```
-
-Check out the [sample app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples.
+Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples.
 
 # Supported Portals
 
