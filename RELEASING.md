@@ -30,7 +30,7 @@ The git tag determines the actual published version in step 3 below, via the `re
 3. GitHub Actions runs automatically: builds, tests, publishes to Maven Central, and creates a GitHub Release.
    All required credentials (Maven Central, GPG signing) are already configured as GitHub secrets in the repo.
 
-4. Verify the release at [central.sonatype.com](https://central.sonatype.com)
+4. Verify the release at [central.sonatype.com](https://central.sonatype.com/artifact/com.github.zugaldia/stargate)
    and on the [GitHub Releases](https://github.com/zugaldia/stargate/releases) page.
 
 5. Profit.
