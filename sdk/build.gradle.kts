@@ -26,12 +26,6 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(22))
-    }
-}
-
 val releaseVersion: String? = project.findProperty("releaseVersion") as String?
 val baseVersion: String = releaseVersion ?: "0.2.0"
 val isSnapshot: Boolean = releaseVersion == null

@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Stargate is a Kotlin JVM library and GTK4 GUI example application providing access to XDG Desktop Portals on Linux.
 It uses D-Bus for portal communication and Java-GI for GTK bindings.
 
-**Requirements**: JDK 22+ (for Panama Foreign Function & Memory API)
+**Requirements**: JDK 25
 
 ## Build Commands
 

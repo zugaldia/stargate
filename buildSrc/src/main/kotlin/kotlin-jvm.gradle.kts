@@ -1,5 +1,5 @@
 // The code in this file is a convention plugin - a Gradle mechanism for sharing reusable build logic.
-// `buildSrc` is a Gradle-recognized directory and every plugin there will be easily available in the rest of the build.
+// `buildSrc` is a Gradle-recognized directory, and every plugin there will be available in the rest of the build.
 package buildsrc.convention
 
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -12,12 +12,12 @@ plugins {
 }
 
 kotlin {
-    // Use JDK 22+ for Java-GI GTK bindings, which use the "Panama" Foreign Function & Memory API.
-    jvmToolchain(22)
+    // JDK 25 is the latest LTS. Java-GI requires JDK 22+ for the Panama Foreign Function & Memory API,
+    // making JDK 25 the best LTS that satisfies this requirement.
+    jvmToolchain(25)
 }
 
 tasks.withType<Test>().configureEach {
-    // Configure all test Gradle tasks to use JUnitPlatform.
     useJUnitPlatform()
 
     // Log information about all test results, not only the failed ones.
