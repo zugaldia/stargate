@@ -1,6 +1,6 @@
 # Stargate
 
-A Kotlin library that provides JVM applications with easy access to
+A Kotlin library that provides JVM applications with access to
 [XDG Desktop Portals](https://flatpak.github.io/xdg-desktop-portal/docs) on Linux.
 
 XDG Desktop Portals originated from the Flatpak project but have since become a widely adopted Linux desktop standard,
@@ -10,7 +10,25 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 
 # Getting Started
 
-## Examples
+Add the dependency to your project (requires JDK 22+):
+
+**Gradle (Kotlin DSL)**
+```kotlin
+dependencies {
+    implementation("com.github.zugaldia:stargate:0.1.0-SNAPSHOT")
+}
+```
+
+For Snapshots, add the following repository:
+```kotlin
+    repositories {
+        maven {
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        }
+    }
+```
+
+Check out the [sample app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples.
 
 # Supported Portals
 
