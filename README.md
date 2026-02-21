@@ -1,7 +1,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.zugaldia/stargate)](https://central.sonatype.com/artifact/com.github.zugaldia/stargate)
 [![Build](https://github.com/zugaldia/stargate/actions/workflows/build.yml/badge.svg)](https://github.com/zugaldia/stargate/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![JVM](https://img.shields.io/badge/JVM-22+-blue)
+![JVM](https://img.shields.io/badge/JVM-25-blue)
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey)
 
 # Stargate
@@ -16,7 +16,7 @@ GNOME and KDE, and across display servers including X11 and Wayland.
 
 # Getting Started
 
-Add the dependency to your project (requires JDK 22+):
+Add the dependency to your project (requires JDK 25):
 
 **Gradle (Kotlin DSL)**
 ```kotlin
