@@ -17,6 +17,9 @@ clean:
 publish-local:
 	./gradlew :sdk:publishToMavenLocal
 
+publish-central:
+	./gradlew :sdk:publishToMavenCentral
+
 generate-xml:
 	rm -f generator/src/main/resources/xml/desktop.xml
 	./gradlew :generator:run --args="generate-xml"
