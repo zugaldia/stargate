@@ -32,8 +32,9 @@ java {
     }
 }
 
-val baseVersion: String = "0.1.0"
-val isSnapshot: Boolean = true
+val releaseVersion: String? = project.findProperty("releaseVersion") as String?
+val baseVersion: String = releaseVersion ?: "0.1.0"
+val isSnapshot: Boolean = releaseVersion == null
 val projectVersion: String = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 
 mavenPublishing {
