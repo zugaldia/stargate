@@ -42,6 +42,4 @@ bin/
 .DS_Store
 
 ### Stargate ###
-generator/src/main/resources/xml/desktop.xml
-sdk/src/main/generated
 BACKLOG.md
