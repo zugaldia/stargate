@@ -12,9 +12,8 @@ plugins {
 }
 
 kotlin {
-    // JDK 25 is the latest LTS. Java-GI requires JDK 22+ for the Panama Foreign Function & Memory API,
-    // making JDK 25 the best LTS that satisfies this requirement.
-    jvmToolchain(25)
+    // Java-GI requires JDK 22+ for the Panama Foreign Function & Memory API.
+    jvmToolchain(22)
 }
 
 tasks.withType<Test>().configureEach {
