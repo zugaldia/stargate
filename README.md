@@ -76,3 +76,5 @@ Stargate stands on the shoulders of these excellent open source projects:
 
 - [dbus-java](https://github.com/hypfvieh/dbus-java) — A native Java implementation of the D-Bus protocol,
   enabling JVM applications to communicate over the Linux desktop bus.
+- [Java-GI](https://github.com/jwharm/java-gi) — GTK/GNOME bindings for Java, enabling access to native libraries
+  via the modern Panama framework, aka the Foreign Function & Memory API.
