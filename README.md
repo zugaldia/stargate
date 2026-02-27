@@ -69,3 +69,10 @@ Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) fo
 - [Speed of Sound](https://github.com/zugaldia/speedofsound) — Voice typing for the Linux desktop.
 
 If your application, project, or CLI depends on Stargate, feel free to open a PR to add it to this list.
+
+# Built With
+
+Stargate stands on the shoulders of these excellent open source projects:
+
+- [dbus-java](https://github.com/hypfvieh/dbus-java) — A native Java implementation of the D-Bus protocol,
+  enabling JVM applications to communicate over the Linux desktop bus.
