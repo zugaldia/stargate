@@ -63,3 +63,9 @@ Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) fo
 | Trash                 | ❌         | ❌          | ❌       |
 | Usb                   | ❌         | ❌          | ❌       |
 | Wallpaper             | ❌         | ❌          | ❌       |
+
+# Projects Using Stargate
+
+- [Speed of Sound](https://github.com/zugaldia/speedofsound) — Voice typing for the Linux desktop.
+
+If your application, project, or CLI depends on Stargate, feel free to open a PR to add it to this list.
