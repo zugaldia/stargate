@@ -77,7 +77,7 @@ Entry point: `DesktopPortal` manages the D-Bus session bus connection and lazy-i
 ## Portal Implementation Status
 
 The README.md is the source of truth for portal status.
-BACKLOG.md lists known missing features that need to be implemented next, instead of TODO comments.
+Known missing features and issues are tracked on GitHub Issues, instead of TODO comments.
 
 ## Dependencies
 
