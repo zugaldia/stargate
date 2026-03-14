@@ -4,16 +4,12 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
-import org.freedesktop.dbus.connections.impl.DBusConnection
-import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder
-import org.freedesktop.dbus.interfaces.Introspectable
 import org.freedesktop.dbus.utils.generator.InterfaceCodeGenerator
 import java.io.File
 
 const val BUS_NAME = "org.freedesktop.portal.Desktop"
 const val OBJECT_PATH = "/org/freedesktop/portal/desktop"
-const val OUTPUT_DIR = "src/main/resources/xml"
-const val OUTPUT_FILE = "desktop.xml"
+const val XML_DIR = "src/main/resources/xml"
 const val SDK_GENERATED_DIR = "../sdk/src/main/generated"
 
 val TARGET_PORTALS = listOf(
@@ -31,36 +27,18 @@ class Generator : CliktCommand() {
     override fun run() = Unit
 }
 
-class GenerateXml : CliktCommand(name = "generate-xml") {
-    override fun help(context: Context) = "Generate XML source files (in the generator module)"
-
-    override fun run() {
-        val conn: DBusConnection = DBusConnectionBuilder.forType(DBusConnection.DBusBusType.SESSION).build()
-        val introspectable: Introspectable = conn.getRemoteObject(BUS_NAME, OBJECT_PATH, Introspectable::class.java)
-        val data: String = introspectable.Introspect()
-
-        val outputDir = File(OUTPUT_DIR)
-        outputDir.mkdirs()
-
-        val outputFile = File(outputDir, OUTPUT_FILE)
-        outputFile.writeText(data)
-        echo("Generated: ${outputFile.absolutePath}")
-    }
-}
-
 class GenerateJava : CliktCommand(name = "generate-java") {
     override fun help(context: Context) = "Generate Java source files (in the sdk module)"
     override fun run() {
-        val xmlDir = File(OUTPUT_DIR)
+        val xmlDir = File(XML_DIR)
         val xmlFiles = xmlDir.listFiles { file -> file.extension == "xml" } ?: emptyArray()
         xmlFiles.forEach { xmlFile ->
             echo("Processing: ${xmlFile.name}")
-            val applyTargetFilter = (xmlFile.name == OUTPUT_FILE)
-            introspect(xmlFile, applyTargetFilter)
+            introspect(xmlFile)
         }
     }
 
-    private fun introspect(inputFile: File, applyTargetFilter: Boolean) {
+    private fun introspect(inputFile: File) {
         val disableFilter = true
         val introspectionData: String = inputFile.readText()
         val objectPath: String = OBJECT_PATH
@@ -83,7 +61,7 @@ class GenerateJava : CliktCommand(name = "generate-java") {
 
         val outputBaseDir = File(SDK_GENERATED_DIR)
         result.forEach { (file, content) ->
-            if (!applyTargetFilter || file.path in TARGET_PORTALS) {
+            if (file.path in TARGET_PORTALS) {
                 val outputFile = File(outputBaseDir, file.path)
                 outputFile.parentFile.mkdirs()
                 outputFile.writeText(content)
@@ -96,5 +74,5 @@ class GenerateJava : CliktCommand(name = "generate-java") {
 }
 
 fun main(args: Array<String>) = Generator()
-    .subcommands(GenerateXml(), GenerateJava())
+    .subcommands(GenerateJava())
     .main(args)

@@ -27,9 +27,8 @@ Or with Gradle directly:
 
 ## Code Generation
 
-Generate D-Bus interface files from system introspection:
+Generate Java interfaces from XML definitions:
 ```bash
-make generate-xml    # Introspect D-Bus to XML
 make generate-java   # Generate Java interfaces from XML
 ```
 
