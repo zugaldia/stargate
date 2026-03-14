@@ -2,6 +2,7 @@ package com.zugaldia.stargate.sdk
 
 import com.zugaldia.stargate.sdk.globalshortcuts.GlobalShortcutsPortal
 import com.zugaldia.stargate.sdk.notification.NotificationPortal
+import com.zugaldia.stargate.sdk.openuri.OpenUriPortal
 import com.zugaldia.stargate.sdk.remotedesktop.RemoteDesktopPortal
 import com.zugaldia.stargate.sdk.settings.SettingsPortal
 import org.freedesktop.dbus.connections.impl.DBusConnection
@@ -32,6 +33,11 @@ class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
      * Access to the Notification portal for sending desktop notifications.
      */
     val notification: NotificationPortal by lazy { NotificationPortal(connection) }
+
+    /**
+     * Access to the OpenURI portal for opening URIs in the user's preferred application.
+     */
+    val openUri: OpenUriPortal by lazy { OpenUriPortal(connection) }
 
     /**
      * Closes the underlying D-Bus connection.

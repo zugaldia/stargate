@@ -4,6 +4,8 @@ import com.zugaldia.stargate.app.globalshortcuts.GlobalShortcutsScreen
 import com.zugaldia.stargate.app.globalshortcuts.GlobalShortcutsViewModel
 import com.zugaldia.stargate.app.notification.NotificationScreen
 import com.zugaldia.stargate.app.notification.NotificationViewModel
+import com.zugaldia.stargate.app.openuri.OpenUriScreen
+import com.zugaldia.stargate.app.openuri.OpenUriViewModel
 import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopScreen
 import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopViewModel
 import com.zugaldia.stargate.app.settings.SettingsScreen
@@ -27,16 +29,21 @@ fun main(args: Array<String>) {
     val portal = DesktopPortal.connect()
     val globalShortcutsViewModel = GlobalShortcutsViewModel(portal)
     val notificationViewModel = NotificationViewModel(portal)
+    val openUriViewModel = OpenUriViewModel(portal)
     val remoteDesktopViewModel = RemoteDesktopViewModel(portal)
     val settingsViewModel = SettingsViewModel(portal)
 
     val app = Application(APPLICATION_ID, ApplicationFlags.DEFAULT_FLAGS)
     app.onActivate {
-        activate(app, globalShortcutsViewModel, notificationViewModel, remoteDesktopViewModel, settingsViewModel)
+        activate(
+            app, globalShortcutsViewModel, notificationViewModel, openUriViewModel,
+            remoteDesktopViewModel, settingsViewModel
+        )
     }
     app.onShutdown {
         runBlocking {
             globalShortcutsViewModel.closeAndJoin()
+            openUriViewModel.closeAndJoin()
             remoteDesktopViewModel.closeAndJoin()
             settingsViewModel.closeAndJoin()
         }
@@ -49,6 +56,7 @@ private fun activate(
     app: Application,
     globalShortcutsViewModel: GlobalShortcutsViewModel,
     notificationViewModel: NotificationViewModel,
+    openUriViewModel: OpenUriViewModel,
     remoteDesktopViewModel: RemoteDesktopViewModel,
     settingsViewModel: SettingsViewModel
 ) {
@@ -63,6 +71,9 @@ private fun activate(
 
     val notificationScreen = NotificationScreen(notificationViewModel)
     stack.addTitled(notificationScreen.build(), "notification", "Notification")
+
+    val openUriScreen = OpenUriScreen(openUriViewModel)
+    stack.addTitled(openUriScreen.build(), "open-uri", "Open URI")
 
     val remoteDesktopScreen = RemoteDesktopScreen(remoteDesktopViewModel)
     stack.addTitled(remoteDesktopScreen.build(), "remote-desktop", "Remote Desktop")
