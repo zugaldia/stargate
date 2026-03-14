@@ -5,6 +5,7 @@ plugins {
     `java-library`
     alias(libs.plugins.kotlinPluginSerialization)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.versions)
 }
 
 sourceSets {
