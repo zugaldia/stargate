@@ -17,9 +17,6 @@ import org.freedesktop.dbus.types.Variant;
  */
 public interface GlobalShortcuts extends DBusInterface {
 
-    @DBusBoundProperty
-    UInt32 getversion();
-
     DBusPath CreateSession(Map<String, Variant<?>> options);
 
     DBusPath BindShortcuts(DBusPath sessionHandle, List<BindShortcutsShortcutsStruct> shortcuts, String parentWindow, Map<String, Variant<?>> options);
@@ -27,6 +24,9 @@ public interface GlobalShortcuts extends DBusInterface {
     DBusPath ListShortcuts(DBusPath sessionHandle, Map<String, Variant<?>> options);
 
     void ConfigureShortcuts(DBusPath sessionHandle, String parentWindow, Map<String, Variant<?>> options);
+
+    @DBusBoundProperty
+    UInt32 getversion();
 
     public static class Activated extends DBusSignal {
 

@@ -12,15 +12,11 @@ import org.freedesktop.dbus.types.Variant;
 /**
  * Auto-generated class.
  */
-public interface OpenURI extends DBusInterface {
+public interface Wallpaper extends DBusInterface {
 
-    DBusPath OpenURI(String parentWindow, String uri, Map<String, Variant<?>> options);
+    DBusPath SetWallpaperURI(String parentWindow, String uri, Map<String, Variant<?>> options);
 
-    DBusPath OpenFile(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
-
-    DBusPath OpenDirectory(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
-
-    boolean SchemeSupported(String scheme, Map<String, Variant<?>> options);
+    DBusPath SetWallpaperFile(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
 
     @DBusBoundProperty
     UInt32 getversion();

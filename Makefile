@@ -1,6 +1,6 @@
 export GRADLE_OPTS = --enable-native-access=ALL-UNNAMED
 
-.PHONY: run build check clean publish-local generate-java generate-xml
+.PHONY: run build check clean publish-local generate-java
 
 run:
 	./gradlew :app:run
@@ -19,10 +19,6 @@ publish-local:
 
 publish-central:
 	./gradlew :sdk:publishToMavenCentral
-
-generate-xml:
-	rm -f generator/src/main/resources/xml/desktop.xml
-	./gradlew :generator:run --args="generate-xml"
 
 generate-java:
 	rm -rf sdk/src/main/generated
