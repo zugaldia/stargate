@@ -29,6 +29,8 @@ Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) fo
 
 # Supported Portals
 
+Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/xdg-desktop-portal) version [1.21.0](https://github.com/flatpak/xdg-desktop-portal/releases/tag/1.21.0).
+
 | Portal                | Low Level | High Level | Example |
 |-----------------------|-----------|------------|---------|
 | Account               | ❌         | ❌          | ❌       |
