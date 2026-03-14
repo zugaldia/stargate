@@ -12,15 +12,11 @@ import org.freedesktop.dbus.types.Variant;
 /**
  * Auto-generated class.
  */
-public interface OpenURI extends DBusInterface {
+public interface Print extends DBusInterface {
 
-    DBusPath OpenURI(String parentWindow, String uri, Map<String, Variant<?>> options);
+    DBusPath PreparePrint(String parentWindow, String title, Map<String, Variant<?>> settings, Map<String, Variant<?>> pageSetup, Map<String, Variant<?>> options);
 
-    DBusPath OpenFile(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
-
-    DBusPath OpenDirectory(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
-
-    boolean SchemeSupported(String scheme, Map<String, Variant<?>> options);
+    DBusPath Print(String parentWindow, String title, FileDescriptor fd, Map<String, Variant<?>> options);
 
     @DBusBoundProperty
     UInt32 getversion();

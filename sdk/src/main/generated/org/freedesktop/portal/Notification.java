@@ -2,6 +2,7 @@ package org.freedesktop.portal;
 
 import java.util.List;
 import java.util.Map;
+import org.freedesktop.dbus.TypeRef;
 import org.freedesktop.dbus.annotations.DBusBoundProperty;
 import org.freedesktop.dbus.annotations.DBusProperty.Access;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -19,8 +20,15 @@ public interface Notification extends DBusInterface {
 
     void RemoveNotification(String id);
 
+    @DBusBoundProperty(type = PropertySupportedOptionsType.class)
+    Map<String, Variant<?>> getSupportedOptions();
+
     @DBusBoundProperty
     UInt32 getversion();
+
+    public static interface PropertySupportedOptionsType extends TypeRef<Map<String, Variant>> {
+
+    }
 
     public static class ActionInvoked extends DBusSignal {
 
