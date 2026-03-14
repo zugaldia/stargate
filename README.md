@@ -50,7 +50,7 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Memory Monitor            | ✅         | ❌          | ❌       |
 | Network Monitor           | ✅         | ❌          | ❌       |
 | Notification              | ✅         | ✅          | ✅       |
-| OpenURI                   | ✅         | ❌          | ❌       |
+| OpenURI                   | ✅         | ✅          | ✅       |
 | Power Profile Monitor [3] | ✅         | ❌          | ❌       |
 | Print                     | ✅         | ❌          | ❌       |
 | Proxy Resolver            | ✅         | ❌          | ❌       |
