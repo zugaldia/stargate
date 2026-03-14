@@ -49,7 +49,7 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Location                  | ✅         | ❌          | ❌       |
 | Memory Monitor            | ✅         | ❌          | ❌       |
 | Network Monitor           | ✅         | ❌          | ❌       |
-| Notification              | ✅         | ❌          | ❌       |
+| Notification              | ✅         | ✅          | ✅       |
 | OpenURI                   | ✅         | ❌          | ❌       |
 | Power Profile Monitor [3] | ✅         | ❌          | ❌       |
 | Print                     | ✅         | ❌          | ❌       |
