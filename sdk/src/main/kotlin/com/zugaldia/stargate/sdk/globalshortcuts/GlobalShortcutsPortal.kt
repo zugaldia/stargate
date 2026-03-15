@@ -64,7 +64,7 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
      * Returns the interface version.
      */
     val version: Int
-        get() = globalShortcuts.getversion().toInt()
+        get() = globalShortcuts.getVersion().toInt()
 
     /**
      * Creates a new global shortcuts session.
