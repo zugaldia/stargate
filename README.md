@@ -36,14 +36,14 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Account                   | ✅         | ❌          | ❌       |
 | Background                | ✅         | ❌          | ❌       |
 | Camera                    | ✅         | ❌          | ❌       |
-| Clipboard [1]             | ✅         | ❌          | ❌       |
+| Clipboard                 | ✅         | ❌          | ❌       |
 | Documents                 | ✅         | ❌          | ❌       |
 | Dynamic Launcher          | ✅         | ❌          | ❌       |
 | Email                     | ✅         | ❌          | ❌       |
 | File Chooser              | ✅         | ❌          | ❌       |
 | File Transfer             | ✅         | ❌          | ❌       |
 | Game Mode                 | ✅         | ❌          | ❌       |
-| Global Shortcuts [2]      | ✅         | ✅          | ✅       |
+| Global Shortcuts          | ✅         | ✅          | ✅       |
 | Inhibit                   | ✅         | ❌          | ❌       |
 | Input Capture             | ✅         | ❌          | ❌       |
 | Location                  | ✅         | ❌          | ❌       |
@@ -51,7 +51,7 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Network Monitor           | ✅         | ❌          | ❌       |
 | Notification              | ✅         | ✅          | ✅       |
 | OpenURI                   | ✅         | ✅          | ✅       |
-| Power Profile Monitor [3] | ✅         | ❌          | ❌       |
+| Power Profile Monitor     | ✅         | ❌          | ❌       |
 | Print                     | ✅         | ❌          | ❌       |
 | Proxy Resolver            | ✅         | ❌          | ❌       |
 | Realtime                  | ✅         | ❌          | ❌       |
@@ -63,14 +63,8 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Session                   | ✅         | ❌          | ❌       |
 | Settings                  | ✅         | ✅          | ✅       |
 | Trash                     | ✅         | ❌          | ❌       |
-| Usb [4]                   | ✅         | ❌          | ❌       |
+| Usb                       | ✅         | ❌          | ❌       |
 | Wallpaper                 | ✅         | ❌          | ❌       |
-
-**Notes:**
-1. Clipboard: The `SelectionTransfer` signal is not supported (return type conflict with `Message.getSerial()`).
-2. Global Shortcuts: The `ShortcutsChanged` signal is not supported (struct type parameters not handled by the code generator).
-3. Power Profile Monitor: The `power-saver-enabled` property is not supported (hyphenated name produces invalid Java).
-4. Usb: The `DeviceEvents` signal is not supported (struct type parameters not handled by the code generator).
 
 # Projects Using Stargate
 
