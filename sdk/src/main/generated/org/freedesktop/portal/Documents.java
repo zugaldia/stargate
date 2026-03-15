@@ -23,9 +23,9 @@ public interface Documents extends DBusInterface {
 
     String AddNamed(FileDescriptor oPathParentFd, List<Byte> filename, boolean reuseExisting, boolean persistent);
 
-    AddFullTuple<List<String>, Map<String, Variant<?>>> AddFull(List<FileDescriptor> oPathFds, UInt32 flags, String appId, List<String> permissions);
+    AddFullStruct AddFull(List<FileDescriptor> oPathFds, UInt32 flags, String appId, List<String> permissions);
 
-    AddNamedFullTuple<String, Map<String, Variant<?>>> AddNamedFull(FileDescriptor oPathFd, List<Byte> filename, UInt32 flags, String appId, List<String> permissions);
+    AddNamedFullStruct AddNamedFull(FileDescriptor oPathFd, List<Byte> filename, UInt32 flags, String appId, List<String> permissions);
 
     void GrantPermissions(String docId, String appId, List<String> permissions);
 
@@ -35,7 +35,7 @@ public interface Documents extends DBusInterface {
 
     String Lookup(List<Byte> filename);
 
-    InfoTuple<List<Byte>, Map<String, List<String>>> Info(String docId);
+    InfoStruct Info(String docId);
 
     Map<String, List<Byte>> List(String appId);
 

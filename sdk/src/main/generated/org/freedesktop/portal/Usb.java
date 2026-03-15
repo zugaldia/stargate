@@ -22,7 +22,7 @@ public interface Usb extends DBusInterface {
 
     DBusPath AcquireDevices(String parentWindow, List<AcquireDevicesDevicesStruct> devices, Map<String, Variant<?>> options);
 
-    FinishAcquireDevicesTuple<List<FinishAcquireDevicesResultsStruct>, Boolean> FinishAcquireDevices(DBusPath handle, Map<String, Variant<?>> options);
+    FinishAcquireDevicesStruct FinishAcquireDevices(DBusPath handle, Map<String, Variant<?>> options);
 
     void ReleaseDevices(List<String> devices, Map<String, Variant<?>> options);
 

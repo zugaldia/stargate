@@ -23,7 +23,7 @@ public interface DynamicLauncher extends DBusInterface {
 
     String GetDesktopEntry(String desktopFileId);
 
-    GetIconTuple<Variant<?>, String, UInt32> GetIcon(String desktopFileId);
+    GetIconStruct GetIcon(String desktopFileId);
 
     void Launch(String desktopFileId, Map<String, Variant<?>> options);
 
