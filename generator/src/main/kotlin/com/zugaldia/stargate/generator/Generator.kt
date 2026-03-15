@@ -40,7 +40,7 @@ class GenerateJava : CliktCommand(name = "generate-java") {
         val packageName: String? = null
         val propertyMethods = true
         val argumentPrefix: String? = null
-        val avoidUsingTuple = false
+        val avoidUsingTuple = true
         val generator = InterfaceCodeGenerator(
             disableFilter,
             introspectionData,
