@@ -20,7 +20,7 @@ public interface Notification extends DBusInterface {
 
     void RemoveNotification(String id);
 
-    @DBusBoundProperty(type = "PropertySupportedOptionsType.class")
+    @DBusBoundProperty(type = PropertySupportedOptionsType.class)
     Map<String, Variant<?>> getSupportedOptions();
 
     @DBusBoundProperty
