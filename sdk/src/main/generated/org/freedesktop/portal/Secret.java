@@ -17,6 +17,6 @@ public interface Secret extends DBusInterface {
     DBusPath RetrieveSecret(FileDescriptor fd, Map<String, Variant<?>> options);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
 }

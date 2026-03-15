@@ -14,6 +14,6 @@ public interface Trash extends DBusInterface {
     UInt32 TrashFile(FileDescriptor fd);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
 }

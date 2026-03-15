@@ -22,7 +22,7 @@ public interface Settings extends DBusInterface {
     Variant<?> ReadOne(String namespace, String key);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static class SettingChanged extends DBusSignal {
 
@@ -31,9 +31,10 @@ public interface Settings extends DBusInterface {
         private final Variant<?> value;
 
         public SettingChanged(String path, String namespace, String key, Variant<?> value) throws DBusException {
-                super(path, namespace, key, value);        this.namespace = namespace;
-                this.key = key;
-                this.value = value;
+            super(path, namespace, key, value);
+            this.namespace = namespace;
+            this.key = key;
+            this.value = value;
         }
 
         public String getNamespace() {
