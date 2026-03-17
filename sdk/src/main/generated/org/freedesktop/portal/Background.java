@@ -18,6 +18,6 @@ public interface Background extends DBusInterface {
     void SetStatus(Map<String, Variant<?>> options);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
 }

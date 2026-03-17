@@ -22,7 +22,7 @@ public interface Inhibit extends DBusInterface {
     void QueryEndResponse(DBusPath sessionHandle);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static class StateChanged extends DBusSignal {
 
@@ -30,8 +30,9 @@ public interface Inhibit extends DBusInterface {
         private final Map<String, Variant<?>> state;
 
         public StateChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> state) throws DBusException {
-                super(path, sessionHandle, state);        this.sessionHandle = sessionHandle;
-                this.state = state;
+            super(path, sessionHandle, state);
+            this.sessionHandle = sessionHandle;
+            this.state = state;
         }
 
         public DBusPath getSessionHandle() {

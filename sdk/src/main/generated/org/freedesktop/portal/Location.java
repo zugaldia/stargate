@@ -20,7 +20,7 @@ public interface Location extends DBusInterface {
     DBusPath Start(DBusPath sessionHandle, String parentWindow, Map<String, Variant<?>> options);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static class LocationUpdated extends DBusSignal {
 
@@ -28,8 +28,9 @@ public interface Location extends DBusInterface {
         private final Map<String, Variant<?>> location;
 
         public LocationUpdated(String path, DBusPath sessionHandle, Map<String, Variant<?>> location) throws DBusException {
-                super(path, sessionHandle, location);        this.sessionHandle = sessionHandle;
-                this.location = location;
+            super(path, sessionHandle, location);
+            this.sessionHandle = sessionHandle;
+            this.location = location;
         }
 
         public DBusPath getSessionHandle() {

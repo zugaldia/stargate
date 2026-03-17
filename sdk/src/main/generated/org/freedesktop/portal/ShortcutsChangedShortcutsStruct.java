@@ -8,13 +8,13 @@ import org.freedesktop.dbus.types.Variant;
 /**
  * Auto-generated class.
  */
-public class AcquireDevicesDevicesStruct extends Struct {
+public class ShortcutsChangedShortcutsStruct extends Struct {
     @Position(0)
     private final String member0;
     @Position(1)
     private final Map<String, Variant<?>> member1;
 
-    public AcquireDevicesDevicesStruct(String member0, Map<String, Variant<?>> member1) {
+    public ShortcutsChangedShortcutsStruct(String member0, Map<String, Variant<?>> member1) {
       this.member0 = member0;
       this.member1 = member1;
     }

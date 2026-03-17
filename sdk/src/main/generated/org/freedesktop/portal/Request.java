@@ -20,8 +20,9 @@ public interface Request extends DBusInterface {
         private final Map<String, Variant<?>> results;
 
         public Response(String path, UInt32 response, Map<String, Variant<?>> results) throws DBusException {
-                super(path, response, results);        this.response = response;
-                this.results = results;
+            super(path, response, results);
+            this.response = response;
+            this.results = results;
         }
 
         public UInt32 getResponse() {

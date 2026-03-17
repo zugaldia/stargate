@@ -14,6 +14,6 @@ public interface ProxyResolver extends DBusInterface {
     List<String> Lookup(String uri);
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
 }

@@ -35,7 +35,7 @@ public interface InputCapture extends DBusInterface {
     UInt32 getSupportedCapabilities();
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static class Disabled extends DBusSignal {
 
@@ -43,8 +43,9 @@ public interface InputCapture extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public Disabled(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, options);        this.sessionHandle = sessionHandle;
-                this.options = options;
+            super(path, sessionHandle, options);
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -63,8 +64,9 @@ public interface InputCapture extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public Activated(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, options);        this.sessionHandle = sessionHandle;
-                this.options = options;
+            super(path, sessionHandle, options);
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -83,8 +85,9 @@ public interface InputCapture extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public Deactivated(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, options);        this.sessionHandle = sessionHandle;
-                this.options = options;
+            super(path, sessionHandle, options);
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -103,8 +106,9 @@ public interface InputCapture extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public ZonesChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, options);        this.sessionHandle = sessionHandle;
-                this.options = options;
+            super(path, sessionHandle, options);
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {

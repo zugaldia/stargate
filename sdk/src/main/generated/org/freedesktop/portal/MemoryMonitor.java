@@ -13,14 +13,15 @@ import org.freedesktop.dbus.types.UInt32;
 public interface MemoryMonitor extends DBusInterface {
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static class LowMemoryWarning extends DBusSignal {
 
         private final byte level;
 
         public LowMemoryWarning(String path, byte level) throws DBusException {
-                super(path, level);        this.level = level;
+            super(path, level);
+            this.level = level;
         }
 
         public byte getLevel() {

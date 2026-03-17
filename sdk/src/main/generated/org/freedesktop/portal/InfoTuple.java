@@ -1,6 +1,7 @@
 package org.freedesktop.portal;
 
 import org.freedesktop.dbus.Tuple;
+import org.freedesktop.dbus.annotations.DBusMemberName;
 import org.freedesktop.dbus.annotations.Position;
 
 /**
@@ -13,15 +14,17 @@ public class InfoTuple<A, B> extends Tuple {
     private B apps;
 
     public InfoTuple(A path, B apps) {
-        this.path = path;
-        this.apps = apps;
+      this.path = path;
+      this.apps = apps;
     }
 
-    public void setPath(A arg) {
+    @DBusMemberName("Path")
+    public void setPathFromBus(A arg) {
         path = arg;
     }
 
-    public A getPath() {
+    @DBusMemberName("Path")
+    public A getPathFromBus() {
         return path;
     }
 

@@ -24,7 +24,7 @@ public interface Notification extends DBusInterface {
     Map<String, Variant<?>> getSupportedOptions();
 
     @DBusBoundProperty
-    UInt32 getversion();
+    UInt32 getVersion();
 
     public static interface PropertySupportedOptionsType extends TypeRef<Map<String, Variant>> {
 
@@ -37,9 +37,10 @@ public interface Notification extends DBusInterface {
         private final List<Variant<?>> parameter;
 
         public ActionInvoked(String path, String id, String action, List<Variant<?>> parameter) throws DBusException {
-                super(path, id, action, parameter);        this.id = id;
-                this.action = action;
-                this.parameter = parameter;
+            super(path, id, action, parameter);
+            this.id = id;
+            this.action = action;
+            this.parameter = parameter;
         }
 
         public String getId() {
