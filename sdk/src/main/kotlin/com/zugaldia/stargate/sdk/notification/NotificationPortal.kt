@@ -22,7 +22,7 @@ class NotificationPortal(private val connection: DBusConnection) {
      * Returns the interface version.
      */
     val version: Int
-        get() = notification.getversion().toInt()
+        get() = notification.getVersion().toInt()
 
     /**
      * Sends a notification with the given ID and content.

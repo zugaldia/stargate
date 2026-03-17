@@ -64,7 +64,7 @@ class RemoteDesktopPortal(private val connection: DBusConnection) {
      * Returns the interface version.
      */
     val version: Int
-        get() = remoteDesktop.getversion().toInt()
+        get() = remoteDesktop.getVersion().toInt()
 
     /**
      * Returns the available device types as a bitmask.
