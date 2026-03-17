@@ -40,6 +40,10 @@ class GenerateJava : CliktCommand(name = "generate-java") {
         val packageName: String? = null
         val propertyMethods = true
         val argumentPrefix: String? = null
+        // New in dbus-java V6: when true, generates Struct-based return values instead of Tuples.
+        // We keep this false so the generated code uses Tuples, which are compatible with dbus-java V5.
+        // See: https://github.com/hypfvieh/dbus-java/blob/master/UPGRADE_TO_6x.md
+        val avoidUsingTuple = false
         val generator = InterfaceCodeGenerator(
             disableFilter,
             introspectionData,
@@ -47,7 +51,8 @@ class GenerateJava : CliktCommand(name = "generate-java") {
             busName,
             packageName,
             propertyMethods,
-            argumentPrefix
+            argumentPrefix,
+            avoidUsingTuple
         )
 
         val ignoreDtd = true
