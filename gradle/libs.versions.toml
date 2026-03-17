@@ -4,7 +4,8 @@
 
 [versions]
 clikt = "5.1.0"
-dbusJava = "5.2.0"
+dbusJavaV5 = "5.2.0"
+dbusJavaV6 = "6.0.0-SNAPSHOT"
 detekt = "2.0.0-alpha.2"
 javaGi = "0.14.1"
 kotlin = "2.3.10"
@@ -18,9 +19,9 @@ versionsPlugin = "0.53.0"
 
 [libraries]
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
-dbusJavaCore = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbusJava" }
-dbusJavaTransportNativeUnixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbusJava" }
-dbusJavaUtils = { module = "com.github.hypfvieh:dbus-java-utils", version.ref = "dbusJava" }
+dbusJavaV5Core = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbusJavaV5" }
+dbusJavaV5TransportNativeUnixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbusJavaV5" }
+dbusJavaV6Utils = { module = "com.github.hypfvieh:dbus-java-utils", version.ref = "dbusJavaV6" }
 detektGradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 javaGiAdw = { module = "org.java-gi:adw", version.ref = "javaGi" }
 javaGiGtk = { module = "org.java-gi:gtk", version.ref = "javaGi" }

@@ -21,8 +21,8 @@ dependencies {
     implementation(libs.slf4jApi)
 
     // DBus-Java library
-    api(libs.dbusJavaCore)
-    implementation(libs.dbusJavaTransportNativeUnixsocket)
+    api(libs.dbusJavaV5Core)
+    implementation(libs.dbusJavaV5TransportNativeUnixsocket)
 
     testImplementation(kotlin("test"))
 }
