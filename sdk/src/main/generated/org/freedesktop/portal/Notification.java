@@ -23,7 +23,7 @@ public interface Notification extends DBusInterface {
     @DBusBoundProperty(type = PropertySupportedOptionsType.class)
     Map<String, Variant<?>> getSupportedOptions();
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static interface PropertySupportedOptionsType extends TypeRef<Map<String, Variant>> {

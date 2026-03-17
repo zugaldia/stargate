@@ -15,7 +15,7 @@ public interface Email extends DBusInterface {
 
     DBusPath ComposeEmail(String parentWindow, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }

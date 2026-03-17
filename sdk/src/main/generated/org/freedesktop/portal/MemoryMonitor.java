@@ -12,7 +12,7 @@ import org.freedesktop.dbus.types.UInt32;
  */
 public interface MemoryMonitor extends DBusInterface {
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class LowMemoryWarning extends DBusSignal {

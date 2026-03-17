@@ -22,7 +22,7 @@ public interface OpenURI extends DBusInterface {
 
     boolean SchemeSupported(String scheme, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }

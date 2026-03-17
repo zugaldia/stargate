@@ -27,7 +27,7 @@ public interface Clipboard extends DBusInterface {
 
     FileDescriptor SelectionRead(DBusPath sessionHandle, String mimeType);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class SelectionOwnerChanged extends DBusSignal {

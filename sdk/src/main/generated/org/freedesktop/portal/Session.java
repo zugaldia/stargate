@@ -16,7 +16,7 @@ public interface Session extends DBusInterface {
 
     void Close();
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class Closed extends DBusSignal {

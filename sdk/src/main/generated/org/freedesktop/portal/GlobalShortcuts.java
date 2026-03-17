@@ -25,7 +25,7 @@ public interface GlobalShortcuts extends DBusInterface {
 
     void ConfigureShortcuts(DBusPath sessionHandle, String parentWindow, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class Activated extends DBusSignal {

@@ -13,7 +13,7 @@ public interface PowerProfileMonitor extends DBusInterface {
     @DBusBoundProperty(name = "power-saver-enabled")
     boolean isPowerSaverEnabled();
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }
