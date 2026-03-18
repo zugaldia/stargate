@@ -4,6 +4,7 @@ import java.util.Map;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.annotations.DBusBoundProperty;
+import org.freedesktop.dbus.annotations.DBusMemberName;
 import org.freedesktop.dbus.annotations.DBusProperty.Access;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
@@ -26,8 +27,8 @@ public interface Clipboard extends DBusInterface {
 
     FileDescriptor SelectionRead(DBusPath sessionHandle, String mimeType);
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
     public static class SelectionOwnerChanged extends DBusSignal {
 
@@ -35,8 +36,9 @@ public interface Clipboard extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public SelectionOwnerChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, options);        this.sessionHandle = sessionHandle;
-                this.options = options;
+            super(path, sessionHandle, options);
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -45,6 +47,34 @@ public interface Clipboard extends DBusInterface {
 
         public Map<String, Variant<?>> getOptions() {
             return options;
+        }
+
+    }
+
+    public static class SelectionTransfer extends DBusSignal {
+
+        private final DBusPath sessionHandle;
+        private final String mimeType;
+        private final UInt32 serial;
+
+        public SelectionTransfer(String path, DBusPath sessionHandle, String mimeType, UInt32 serial) throws DBusException {
+            super(path, sessionHandle, mimeType, serial);
+            this.sessionHandle = sessionHandle;
+            this.mimeType = mimeType;
+            this.serial = serial;
+        }
+
+        public DBusPath getSessionHandle() {
+            return sessionHandle;
+        }
+
+        public String getMimeType() {
+            return mimeType;
+        }
+
+        @DBusMemberName("Serial")
+        public UInt32 getSerialFromBus() {
+            return serial;
         }
 
     }

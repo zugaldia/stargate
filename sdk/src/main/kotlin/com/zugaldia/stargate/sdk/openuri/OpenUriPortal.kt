@@ -22,7 +22,7 @@ class OpenUriPortal(private val connection: DBusConnection) {
      * Returns the interface version.
      */
     val version: Int
-        get() = openUri.getversion().toInt()
+        get() = openUri.getVersion().toInt()
 
     /**
      * Opens a URI (e.g. https://example.com) in the user's preferred application.

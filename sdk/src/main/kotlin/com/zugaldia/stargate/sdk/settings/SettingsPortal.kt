@@ -36,7 +36,7 @@ class SettingsPortal(private val connection: DBusConnection) {
      * Returns the interface version.
      */
     val version: Int
-        get() = settings.getversion().toInt()
+        get() = settings.getVersion().toInt()
 
     /**
      * Reads the user's preferred color scheme.

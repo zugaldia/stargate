@@ -16,15 +16,16 @@ public interface Session extends DBusInterface {
 
     void Close();
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
     public static class Closed extends DBusSignal {
 
         private final Map<String, Variant<?>> details;
 
         public Closed(String path, Map<String, Variant<?>> details) throws DBusException {
-                super(path, details);        this.details = details;
+            super(path, details);
+            this.details = details;
         }
 
         public Map<String, Variant<?>> getDetails() {

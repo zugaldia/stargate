@@ -15,9 +15,9 @@ public class GetIconTuple<A, B, C> extends Tuple {
     private C iconSize;
 
     public GetIconTuple(A iconV, B iconFormat, C iconSize) {
-        this.iconV = iconV;
-        this.iconFormat = iconFormat;
-        this.iconSize = iconSize;
+      this.iconV = iconV;
+      this.iconFormat = iconFormat;
+      this.iconSize = iconSize;
     }
 
     public void setIconV(A arg) {

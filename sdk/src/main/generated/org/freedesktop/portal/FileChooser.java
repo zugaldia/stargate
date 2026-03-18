@@ -19,7 +19,7 @@ public interface FileChooser extends DBusInterface {
 
     DBusPath SaveFiles(String parentWindow, String title, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
 }

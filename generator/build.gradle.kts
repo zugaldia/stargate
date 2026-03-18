@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(libs.clikt)
-    implementation(libs.dbusJavaUtils)
+    implementation(libs.dbusJavaV6Utils)
 }
 
 application {

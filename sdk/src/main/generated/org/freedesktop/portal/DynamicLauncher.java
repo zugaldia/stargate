@@ -30,7 +30,7 @@ public interface DynamicLauncher extends DBusInterface {
     @DBusBoundProperty
     UInt32 getSupportedLauncherTypes();
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
 }

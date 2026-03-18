@@ -25,8 +25,8 @@ public interface GlobalShortcuts extends DBusInterface {
 
     void ConfigureShortcuts(DBusPath sessionHandle, String parentWindow, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
     public static class Activated extends DBusSignal {
 
@@ -36,10 +36,11 @@ public interface GlobalShortcuts extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public Activated(String path, DBusPath sessionHandle, String shortcutId, UInt64 timestamp, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, shortcutId, timestamp, options);        this.sessionHandle = sessionHandle;
-                this.shortcutId = shortcutId;
-                this.timestamp = timestamp;
-                this.options = options;
+            super(path, sessionHandle, shortcutId, timestamp, options);
+            this.sessionHandle = sessionHandle;
+            this.shortcutId = shortcutId;
+            this.timestamp = timestamp;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -68,10 +69,11 @@ public interface GlobalShortcuts extends DBusInterface {
         private final Map<String, Variant<?>> options;
 
         public Deactivated(String path, DBusPath sessionHandle, String shortcutId, UInt64 timestamp, Map<String, Variant<?>> options) throws DBusException {
-                super(path, sessionHandle, shortcutId, timestamp, options);        this.sessionHandle = sessionHandle;
-                this.shortcutId = shortcutId;
-                this.timestamp = timestamp;
-                this.options = options;
+            super(path, sessionHandle, shortcutId, timestamp, options);
+            this.sessionHandle = sessionHandle;
+            this.shortcutId = shortcutId;
+            this.timestamp = timestamp;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
@@ -88,6 +90,27 @@ public interface GlobalShortcuts extends DBusInterface {
 
         public Map<String, Variant<?>> getOptions() {
             return options;
+        }
+
+    }
+
+    public static class ShortcutsChanged extends DBusSignal {
+
+        private final DBusPath sessionHandle;
+        private final List<ShortcutsChangedShortcutsStruct> shortcuts;
+
+        public ShortcutsChanged(String path, DBusPath sessionHandle, List<ShortcutsChangedShortcutsStruct> shortcuts) throws DBusException {
+            super(path, sessionHandle, shortcuts);
+            this.sessionHandle = sessionHandle;
+            this.shortcuts = shortcuts;
+        }
+
+        public DBusPath getSessionHandle() {
+            return sessionHandle;
+        }
+
+        public List<ShortcutsChangedShortcutsStruct> getShortcuts() {
+            return shortcuts;
         }
 
     }

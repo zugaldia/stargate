@@ -10,7 +10,10 @@ import org.freedesktop.dbus.types.UInt32;
  */
 public interface PowerProfileMonitor extends DBusInterface {
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "power-saver-enabled")
+    boolean isPowerSaverEnabled();
+
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
 }

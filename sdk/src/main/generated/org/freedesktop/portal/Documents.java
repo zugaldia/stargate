@@ -14,8 +14,8 @@ import org.freedesktop.dbus.types.Variant;
  */
 public interface Documents extends DBusInterface {
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
     List<Byte> GetMountPoint();
 

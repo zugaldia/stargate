@@ -18,7 +18,7 @@ public interface Print extends DBusInterface {
 
     DBusPath Print(String parentWindow, String title, FileDescriptor fd, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
 }

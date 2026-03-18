@@ -24,13 +24,14 @@ public interface NetworkMonitor extends DBusInterface {
 
     boolean CanReach(String hostname, UInt32 port);
 
-    @DBusBoundProperty
-    UInt32 getversion();
+    @DBusBoundProperty(name = "version")
+    UInt32 getVersion();
 
     public static class changed extends DBusSignal {
 
         public changed(String path) throws DBusException {
-                super(path);
+            super(path);
+        
         }
 
     }
