@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Stargate
+Comment=XDG Desktop Portal reference application
+Exec=stargate
+Icon=com.zugaldia.stargate.App
+Type=Application
+Categories=Development;
