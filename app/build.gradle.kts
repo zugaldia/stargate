@@ -2,6 +2,7 @@ plugins {
     // Apply the shared build logic from a convention plugin.
     // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
+    alias(libs.plugins.flatpakGradleGenerator)
     alias(libs.plugins.shadow)
     alias(libs.plugins.versions)
     application
@@ -27,4 +28,10 @@ application {
 
 tasks.shadowJar {
     archiveFileName.set("stargate.jar")
+}
+
+tasks.flatpakGradleGenerator {
+    outputFile = file("flatpak-sources.json")
+    downloadDirectory = "offline-repository"
+    excludeConfigurations = listOf("testCompileClasspath", "testRuntimeClasspath")
 }

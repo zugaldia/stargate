@@ -3,6 +3,7 @@ plugins {
     // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
     `java-library`
+    alias(libs.plugins.flatpakGradleGenerator)
     alias(libs.plugins.kotlinPluginSerialization)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.versions)
@@ -62,4 +63,10 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://github.com:zugaldia/stargate.git")
         }
     }
+}
+
+tasks.flatpakGradleGenerator {
+    outputFile = file("flatpak-sources.json")
+    downloadDirectory = "offline-repository"
+    excludeConfigurations = listOf("testCompileClasspath", "testRuntimeClasspath")
 }
