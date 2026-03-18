@@ -12,8 +12,8 @@ plugins {
 }
 
 kotlin {
-    // Java-GI requires JDK 22+ for the Panama Foreign Function & Memory API.
-    jvmToolchain(22)
+    // Java-GI requires JDK 22+ for the Panama Foreign Function & Memory API (using JDK 25 to match Flatpak SDK).
+    jvmToolchain(25)
 }
 
 tasks.withType<Test>().configureEach {
