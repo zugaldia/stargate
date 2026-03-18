@@ -20,7 +20,7 @@ import org.gnome.gtk.Orientation
 import org.gnome.gtk.Stack
 import org.gnome.gtk.StackSidebar
 
-private const val APPLICATION_ID = "com.zugaldia.stargate.App"
+private const val APPLICATION_ID = "com.zugaldia.Stargate"
 private const val APPLICATION_NAME = "Stargate"
 private const val DEFAULT_WINDOW_WIDTH = 800
 private const val DEFAULT_WINDOW_HEIGHT = 600
