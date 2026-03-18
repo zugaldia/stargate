@@ -41,5 +41,11 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Flatpak ###
+.flatpak-builder/
+builddir/
+repo/
+*.flatpak
+
 ### Stargate ###
 BACKLOG.md

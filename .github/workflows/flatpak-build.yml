@@ -1,0 +1,27 @@
+name: Flatpak Build
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+jobs:
+  flatpak:
+    name: "Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint AppStream metadata and manifests
+        run: |
+          flatpak-builder-lint appstream data/com.zugaldia.Stargate.metainfo.xml.in
+          flatpak-builder-lint manifest com.zugaldia.Stargate.yml
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: com.zugaldia.Stargate.yml
+          bundle: stargate.flatpak
+          cache-key: flatpak-builder-${{ github.sha }}

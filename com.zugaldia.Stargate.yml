@@ -1,0 +1,38 @@
+id: com.zugaldia.Stargate
+runtime: org.gnome.Platform
+runtime-version: '49'
+
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk25
+
+command: stargate
+
+finish-args:
+  - --device=dri             # OpenGL rendering
+  - --share=network          # Access the network
+  - --socket=wayland         # Show windows with Wayland
+  - --socket=fallback-x11    # Show windows using X11 if Wayland is not available
+  - --share=ipc              # Share IPC namespace with the host (needed for X11 performance)
+  - --env=JAVA_HOME=/app/jre # See: https://github.com/flathub/org.freedesktop.Sdk.Extension.openjdk25
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk25/install.sh
+
+  - name: stargate
+    buildsystem: meson
+    build-options:
+      append-path: "/usr/lib/sdk/openjdk25/gradle/bin:/usr/lib/sdk/openjdk25/jvm/openjdk-25/bin"
+    sources:
+      - type: dir # During development
+        path: .
+#      - type: git # For actual releases
+#        url: https://github.com/zugaldia/stargate.git
+#        tag: v0.x.0
+#        commit: HASH # Use: git rev-list -n 1 v0.x.0
+      - buildSrc/flatpak-sources.json
+      - sdk/flatpak-sources.json
+      - app/flatpak-sources.json
