@@ -2,8 +2,9 @@ plugins {
     // Apply the shared build logic from a convention plugin.
     // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
-    application
+    alias(libs.plugins.shadow)
     alias(libs.plugins.versions)
+    application
 }
 
 dependencies {
@@ -22,4 +23,8 @@ application {
 
     // See: https://java-gi.org/usage/#linux
     applicationDefaultJvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
+}
+
+tasks.shadowJar {
+    archiveFileName.set("stargate.jar")
 }

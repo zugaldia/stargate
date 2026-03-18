@@ -15,6 +15,7 @@ kotlinxSerializationJSON = "1.10.0"
 log4j = "2.25.3"
 mavenPublish = "0.36.0"
 slf4j = "2.0.17"
+shadow = "9.3.2"
 versionsPlugin = "0.53.0"
 
 [libraries]
@@ -40,4 +41,5 @@ kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutine
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 kotlinPluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versionsPlugin" }
