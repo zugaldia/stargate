@@ -1,6 +1,6 @@
 export GRADLE_OPTS = --enable-native-access=ALL-UNNAMED
 
-.PHONY: run build check clean publish-local generate-java install-desktop
+.PHONY: run build check clean publish-local generate-java
 
 run:
 	./gradlew :app:run
@@ -23,6 +23,3 @@ publish-central:
 generate-java:
 	rm -rf sdk/src/main/generated
 	./gradlew :generator:run --args="generate-java"
-
-install-desktop:
-	cp app/src/main/resources/com.zugaldia.stargate.App.desktop ~/.local/share/applications/
