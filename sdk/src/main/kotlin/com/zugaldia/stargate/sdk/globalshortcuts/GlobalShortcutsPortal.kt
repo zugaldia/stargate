@@ -212,7 +212,8 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
     private fun parseShortcutsResult(results: Map<String, Variant<*>>): List<BoundShortcut> {
         val shortcutsRaw = results[RESULT_SHORTCUTS]?.value as? List<*> ?: return emptyList()
         return shortcutsRaw.mapNotNull { item ->
-            val struct = item as? List<*> ?: return@mapNotNull null
+            // D-Bus structs arrive as Object[] arrays from the signal response
+            val struct = (item as? Array<*>)?.toList() ?: return@mapNotNull null
             val id = struct.getOrNull(0) as? String ?: return@mapNotNull null
             val props = struct.getOrNull(1) as? Map<String, Variant<*>> ?: emptyMap()
             BoundShortcut(
