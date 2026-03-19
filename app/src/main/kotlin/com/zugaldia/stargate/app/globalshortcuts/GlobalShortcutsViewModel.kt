@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
@@ -158,6 +159,9 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                     logger.warn("Session was closed: sessionHandle={}, details={}", event.sessionHandle, event.details)
                     updateState(GlobalShortcutsState(message = "Session was closed by the system"))
                 }
+            } catch (e: CancellationException) {
+                logger.info("Session closed observer cancelled")
+                throw e
             } catch (e: Exception) {
                 logger.error("Error observing session closed events", e)
             }
@@ -180,6 +184,9 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                     val updated = (_state.activations + activation).takeLast(MAX_ACTIVATIONS)
                     updateState(_state.copy(activations = updated))
                 }
+            } catch (e: CancellationException) {
+                logger.info("Activations observer cancelled")
+                throw e
             } catch (e: Exception) {
                 logger.error("Error observing shortcut activations", e)
             }
