@@ -22,11 +22,10 @@ import org.freedesktop.portal.GlobalShortcuts
  * Wrapper around the org.freedesktop.portal.GlobalShortcuts D-Bus interface.
  * Provides convenient methods to register and listen for global keyboard shortcuts.
  *
- * This portal maintains an active session internally. After calling [startSession],
+ * This portal maintains an active session internally. After calling [createSession],
  * shortcuts can be bound using [bindShortcuts] and activation events can be observed
  * via [activations].
  */
-@Suppress("TooManyFunctions")
 class GlobalShortcutsPortal(private val connection: DBusConnection) {
 
     private val logger = LoggerFactory.getLogger(GlobalShortcutsPortal::class.java)
@@ -37,7 +36,7 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
     private val session = PortalSession(connection)
 
     /**
-     * The currently active session handle, set automatically by [startSession].
+     * The currently active session handle, set automatically by [createSession].
      */
     val activeSession: DBusPath?
         get() = session.active
@@ -67,17 +66,52 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
         get() = globalShortcuts.getVersion().toInt()
 
     /**
-     * Creates a new global shortcuts session.
+     * Creates a new global shortcuts session and sets it as the active session.
      *
      * @return Result containing [CreateSessionResponse] with the session handle.
      */
     suspend fun createSession(): Result<CreateSessionResponse> = session.createSession(
         call = { options -> globalShortcuts.CreateSession(options) }
-    )
+    ).onSuccess { response ->
+        session.set(response.sessionHandle)
+    }
+
+    /**
+     * Bind shortcuts to the active session. This allows the application to receive
+     * activation events when the user triggers the shortcuts.
+     *
+     * The first time a shortcut is bound, the portal presents a system dialog for the user
+     * to review and confirm. Subsequent calls with the same shortcut ID bind automatically
+     * without user interaction, as the portal remembers the user's prior approval.
+     *
+     * Shortcuts must be bound in every new session — [listShortcuts] will return an empty
+     * list until this method is called, even if shortcuts were bound in a previous session.
+     *
+     * Uses the session handle from [createSession] automatically.
+     *
+     * @param shortcuts List of shortcuts to bind.
+     * @param parentWindow Identifier for the application window. Use empty string if no parent window.
+     * @return Result containing the list of bound shortcuts with their assigned triggers.
+     */
+    suspend fun bindShortcuts(
+        shortcuts: List<Shortcut>,
+        parentWindow: String = ""
+    ): Result<List<BoundShortcut>> {
+        val sessionHandle = activeSession
+            ?: return Result.failure(IllegalStateException("No active session."))
+        return bindShortcuts(sessionHandle, shortcuts, parentWindow)
+    }
 
     /**
      * Bind shortcuts to the session. This allows the application to receive
      * activation events when the user triggers the shortcuts.
+     *
+     * The first time a shortcut is bound, the portal presents a system dialog for the user
+     * to review and confirm. Subsequent calls with the same shortcut ID bind automatically
+     * without user interaction, as the portal remembers the user's prior approval.
+     *
+     * Shortcuts must be bound in every new session — [listShortcuts] will return an empty
+     * list until this method is called, even if shortcuts were bound in a previous session.
      *
      * @param sessionHandle Object path for the session created via [createSession].
      * @param shortcuts List of shortcuts to bind.
@@ -107,6 +141,19 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
     }
 
     /**
+     * List all shortcuts bound to the active session.
+     *
+     * Uses the session handle from [createSession] automatically.
+     *
+     * @return Result containing the list of bound shortcuts.
+     */
+    suspend fun listShortcuts(): Result<List<BoundShortcut>> {
+        val sessionHandle = activeSession
+            ?: return Result.failure(IllegalStateException("No active session."))
+        return listShortcuts(sessionHandle)
+    }
+
+    /**
      * List all shortcuts bound to the session.
      *
      * @param sessionHandle Object path for the session created via [createSession].
@@ -126,6 +173,22 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
     }
 
     /**
+     * Opens the system dialog for configuring shortcuts using the active session.
+     *
+     * Uses the session handle from [createSession] automatically.
+     *
+     * @param parentWindow Identifier for the application window. Use empty string if no parent window.
+     * @return Result indicating success or failure.
+     */
+    fun configureShortcuts(
+        parentWindow: String = ""
+    ): Result<Unit> {
+        val sessionHandle = activeSession
+            ?: return Result.failure(IllegalStateException("No active session."))
+        return configureShortcuts(sessionHandle, parentWindow)
+    }
+
+    /**
      * Opens the system dialog for configuring shortcuts.
      *
      * @param sessionHandle Object path for the session created via [createSession].
@@ -141,28 +204,6 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
             OPTION_ACTIVATION_TOKEN to Variant(generateToken())
         )
         globalShortcuts.ConfigureShortcuts(sessionHandle, parentWindow, options)
-    }
-
-    /**
-     * Convenience function that creates a session and binds shortcuts in one call.
-     *
-     * @param shortcuts List of shortcuts to bind.
-     * @param parentWindow Identifier for the application window. Use empty string if no parent window.
-     * @return Result containing the list of bound shortcuts with their assigned triggers.
-     */
-    @Suppress("ReturnCount")
-    suspend fun startSession(
-        shortcuts: List<Shortcut>,
-        parentWindow: String = ""
-    ): Result<List<BoundShortcut>> {
-        // Step 1: Create the session
-        val sessionHandle = createSession().getOrElse { return Result.failure(it) }.sessionHandle
-        session.set(sessionHandle)
-
-        // Step 2: Bind shortcuts
-        return bindShortcuts(sessionHandle, shortcuts, parentWindow).onFailure {
-            clearSession()
-        }
     }
 
     /**
@@ -212,7 +253,8 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
     private fun parseShortcutsResult(results: Map<String, Variant<*>>): List<BoundShortcut> {
         val shortcutsRaw = results[RESULT_SHORTCUTS]?.value as? List<*> ?: return emptyList()
         return shortcutsRaw.mapNotNull { item ->
-            val struct = item as? List<*> ?: return@mapNotNull null
+            // D-Bus structs arrive as Object[] arrays from the signal response
+            val struct = (item as? Array<*>)?.toList() ?: return@mapNotNull null
             val id = struct.getOrNull(0) as? String ?: return@mapNotNull null
             val props = struct.getOrNull(1) as? Map<String, Variant<*>> ?: emptyMap()
             BoundShortcut(

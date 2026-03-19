@@ -3,6 +3,7 @@ package com.zugaldia.stargate.sdk
 import com.zugaldia.stargate.sdk.globalshortcuts.GlobalShortcutsPortal
 import com.zugaldia.stargate.sdk.notification.NotificationPortal
 import com.zugaldia.stargate.sdk.openuri.OpenUriPortal
+import com.zugaldia.stargate.sdk.registry.RegistryPortal
 import com.zugaldia.stargate.sdk.remotedesktop.RemoteDesktopPortal
 import com.zugaldia.stargate.sdk.settings.SettingsPortal
 import org.freedesktop.dbus.connections.impl.DBusConnection
@@ -13,6 +14,11 @@ import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder
  * Manages the D-Bus connection and provides access to individual portals.
  */
 class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
+
+    /**
+     * Access to the Registry portal for associating D-Bus peers with application IDs.
+     */
+    val registry: RegistryPortal by lazy { RegistryPortal(connection) }
 
     /**
      * Access to the Settings portal for reading desktop appearance preferences.

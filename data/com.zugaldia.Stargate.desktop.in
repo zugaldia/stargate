@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Stargate
+Comment=XDG Desktop Portals for the Linux desktop
+Categories=Development;Utility;
+Keywords=xdg;portal;dbus;desktop;
+Icon=com.zugaldia.Stargate
+Exec=stargate
+Terminal=false
+StartupNotify=true

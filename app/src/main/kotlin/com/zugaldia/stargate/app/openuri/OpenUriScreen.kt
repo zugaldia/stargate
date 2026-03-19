@@ -1,6 +1,6 @@
 package com.zugaldia.stargate.app.openuri
 
-import com.zugaldia.stargate.app.ERROR_LABEL_MAX_WIDTH_CHARS
+import com.zugaldia.stargate.app.LABEL_MAX_WIDTH_CHARS
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.app.SPACING
 import org.gnome.gtk.Align
@@ -39,7 +39,7 @@ class OpenUriScreen(private val viewModel: OpenUriViewModel) {
         }
 
         errorLabel = Label("")
-        errorLabel.maxWidthChars = ERROR_LABEL_MAX_WIDTH_CHARS
+        errorLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
         errorLabel.wrap = true
 
         box.append(uriEntry)
