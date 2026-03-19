@@ -19,7 +19,7 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
     private lateinit var stopButton: Button
     private lateinit var shortcutsLabel: Label
     private lateinit var activationsLabel: Label
-    private lateinit var errorLabel: Label
+    private lateinit var messageLabel: Label
 
     fun build(): Widget {
         val box = Box(Orientation.VERTICAL, SPACING)
@@ -58,12 +58,11 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
         activationsLabel.visible = false
         box.append(activationsLabel)
 
-        errorLabel = Label("")
-        errorLabel.addCssClass("error")
-        errorLabel.wrap = true
-        errorLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
-        errorLabel.visible = false
-        box.append(errorLabel)
+        messageLabel = Label("")
+        messageLabel.wrap = true
+        messageLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
+        messageLabel.visible = false
+        box.append(messageLabel)
 
         updateUI(viewModel.state)
         viewModel.connect(SIGNAL_STATE_CHANGED, object : GlobalShortcutsViewModel.StateChanged {
@@ -80,7 +79,7 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
         updateSessionButtons(state)
         updateShortcutsLabel(state)
         updateActivationsLabel(state)
-        updateErrorLabel(state)
+        updateMessageLabel(state)
     }
 
     private fun updateCreateSessionButton(state: GlobalShortcutsState) {
@@ -129,12 +128,12 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
         }
     }
 
-    private fun updateErrorLabel(state: GlobalShortcutsState) {
-        if (state.error != null) {
-            errorLabel.label = state.error
-            errorLabel.visible = true
+    private fun updateMessageLabel(state: GlobalShortcutsState) {
+        if (state.message != null) {
+            messageLabel.label = state.message
+            messageLabel.visible = true
         } else {
-            errorLabel.visible = false
+            messageLabel.visible = false
         }
     }
 }

@@ -8,5 +8,5 @@ data class GlobalShortcutsState(
     val isSessionActive: Boolean = false,
     val shortcuts: List<BoundShortcut>? = null,
     val activations: List<ShortcutActivation> = emptyList(),
-    val error: String? = null
+    val message: String? = null
 )

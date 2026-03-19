@@ -55,7 +55,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
             return
         }
 
-        updateState(_state.copy(isLoading = true, error = null))
+        updateState(_state.copy(isLoading = true, message = null))
 
         scope.launch {
             logger.info("Creating global shortcuts session")
@@ -70,7 +70,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                 },
                 onFailure = { error ->
                     logger.error("Failed to create session", error)
-                    updateState(_state.copy(isLoading = false, error = error.message))
+                    updateState(_state.copy(isLoading = false, message = error.message))
                 }
             )
         }
@@ -101,11 +101,11 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                             shortcut.triggerDescription
                         )
                     }
-                    updateState(_state.copy(shortcuts = boundShortcuts))
+                    updateState(_state.copy(shortcuts = boundShortcuts, message = "Shortcuts bound successfully"))
                 },
                 onFailure = { error ->
                     logger.error("Failed to bind shortcuts", error)
-                    updateState(_state.copy(error = error.message))
+                    updateState(_state.copy(message = error.message))
                 }
             )
         }
@@ -127,11 +127,11 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                             shortcut.triggerDescription
                         )
                     }
-                    updateState(_state.copy(shortcuts = shortcuts))
+                    updateState(_state.copy(shortcuts = shortcuts, message = "Shortcuts list updated"))
                 },
                 onFailure = { error ->
                     logger.error("Failed to list shortcuts", error)
-                    updateState(_state.copy(error = error.message))
+                    updateState(_state.copy(message = error.message))
                 }
             )
         }
@@ -144,7 +144,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
             logger.info("Opening shortcut configuration dialog")
             portal.globalShortcuts.configureShortcuts().onFailure { error ->
                 logger.error("Failed to configure shortcuts", error)
-                updateState(_state.copy(error = error.message))
+                updateState(_state.copy(message = error.message))
             }
         }
     }
@@ -156,7 +156,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
             try {
                 portal.globalShortcuts.observeSessionClosed().collect { event ->
                     logger.warn("Session was closed: sessionHandle={}, details={}", event.sessionHandle, event.details)
-                    updateState(GlobalShortcutsState(error = "Session was closed by the system"))
+                    updateState(GlobalShortcutsState(message = "Session was closed by the system"))
                 }
             } catch (e: Exception) {
                 logger.error("Error observing session closed events", e)
