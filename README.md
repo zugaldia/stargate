@@ -33,6 +33,7 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 
 | Portal                    | Low Level | High Level | Example |
 |---------------------------|-----------|------------|---------|
+| Registry (host)           | ✅         | ✅          | ✅       |
 | Account                   | ✅         | ❌          | ❌       |
 | Background                | ✅         | ❌          | ❌       |
 | Camera                    | ✅         | ❌          | ❌       |
@@ -65,6 +66,23 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Trash                     | ✅         | ❌          | ❌       |
 | Usb                       | ✅         | ❌          | ❌       |
 | Wallpaper                 | ✅         | ❌          | ❌       |
+
+## Portal Availability and Sandboxing
+
+Both sandboxed (Flatpak and Snap) and unsandboxed applications can use portal interfaces.
+However, unsandboxed applications running directly on the host may need additional setup for some portals to work.
+
+XDG Desktop Portals rely on an Application ID for permission checks and to show the requesting app's name in dialogs.
+Sandboxed applications get their identity automatically from the sandbox. Unsandboxed applications must register
+their Application ID explicitly using the
+[Registry portal](https://flatpak.github.io/xdg-desktop-portal/docs/doc-org.freedesktop.host.portal.Registry.html)
+before making any portal calls. Without registration some portals like Global Shortcuts will not work and others may
+have degraded functionality.
+
+This library provides access to the Registry portal through `DesktopPortal.registry` and includes a `isSandboxed()`
+utility function to detect if the application is running inside a sandbox. See the
+[demo application](./app/src/main/kotlin/com/zugaldia/stargate/app/App.kt) for a working example.
+This demo application can run both as an unsandboxed app (`make run`) and as a sandboxed Flatpak (`make flatpak-run`).
 
 # Projects Using Stargate
 
