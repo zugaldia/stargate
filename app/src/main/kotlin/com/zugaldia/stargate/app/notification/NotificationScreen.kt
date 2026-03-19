@@ -1,6 +1,6 @@
 package com.zugaldia.stargate.app.notification
 
-import com.zugaldia.stargate.app.ERROR_LABEL_MAX_WIDTH_CHARS
+import com.zugaldia.stargate.app.LABEL_MAX_WIDTH_CHARS
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.app.SPACING
 import com.zugaldia.stargate.app.TEXT_VIEW_HEIGHT
@@ -49,7 +49,7 @@ class NotificationScreen(private val viewModel: NotificationViewModel) {
         }
 
         statusLabel = Label("")
-        statusLabel.maxWidthChars = ERROR_LABEL_MAX_WIDTH_CHARS
+        statusLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
         statusLabel.wrap = true
 
         box.append(scrolledWindow)

@@ -1,6 +1,7 @@
 package com.zugaldia.stargate.app.globalshortcuts
 
-import com.zugaldia.stargate.app.ERROR_LABEL_MAX_WIDTH_CHARS
+import com.zugaldia.stargate.app.LABEL_MAX_WIDTH_CHARS
+import com.zugaldia.stargate.app.PREFERRED_TRIGGER
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.app.SPACING
 import org.gnome.gtk.Align
@@ -11,9 +12,13 @@ import org.gnome.gtk.Orientation
 import org.gnome.gtk.Widget
 
 class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
-    private lateinit var startButton: Button
+    private lateinit var createSessionButton: Button
+    private lateinit var bindButton: Button
+    private lateinit var configureButton: Button
     private lateinit var listButton: Button
     private lateinit var stopButton: Button
+    private lateinit var shortcutsLabel: Label
+    private lateinit var activationsLabel: Label
     private lateinit var errorLabel: Label
 
     fun build(): Widget {
@@ -21,22 +26,42 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
         box.halign = Align.CENTER
         box.valign = Align.CENTER
 
-        startButton = Button.withLabel("Start Session")
-        startButton.onClicked { viewModel.startSession() }
-        box.append(startButton)
+        createSessionButton = Button.withLabel("Create Session")
+        createSessionButton.onClicked { viewModel.createSession() }
+        box.append(createSessionButton)
+
+        bindButton = Button.withLabel("Bind Shortcuts ($PREFERRED_TRIGGER)")
+        bindButton.onClicked { viewModel.bindShortcuts() }
+        box.append(bindButton)
 
         listButton = Button.withLabel("List Shortcuts")
         listButton.onClicked { viewModel.listShortcuts() }
         box.append(listButton)
 
+        configureButton = Button.withLabel("Configure Shortcuts")
+        configureButton.onClicked { viewModel.configureShortcuts() }
+        box.append(configureButton)
+
         stopButton = Button.withLabel("Stop Session")
         stopButton.onClicked { viewModel.stopSession() }
         box.append(stopButton)
 
+        shortcutsLabel = Label("")
+        shortcutsLabel.wrap = true
+        shortcutsLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
+        shortcutsLabel.visible = false
+        box.append(shortcutsLabel)
+
+        activationsLabel = Label("")
+        activationsLabel.wrap = true
+        activationsLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
+        activationsLabel.visible = false
+        box.append(activationsLabel)
+
         errorLabel = Label("")
         errorLabel.addCssClass("error")
         errorLabel.wrap = true
-        errorLabel.maxWidthChars = ERROR_LABEL_MAX_WIDTH_CHARS
+        errorLabel.maxWidthChars = LABEL_MAX_WIDTH_CHARS
         errorLabel.visible = false
         box.append(errorLabel)
 
@@ -51,27 +76,52 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
     }
 
     private fun updateUI(state: GlobalShortcutsState) {
-        updateStartButton(state)
-        updateListButton(state)
-        updateStopButton(state)
+        updateCreateSessionButton(state)
+        updateSessionButtons(state)
+        updateShortcutsLabel(state)
+        updateActivationsLabel(state)
         updateErrorLabel(state)
     }
 
-    private fun updateStartButton(state: GlobalShortcutsState) {
-        startButton.sensitive = !state.isLoading && !state.isSessionActive
-        startButton.label = when {
-            state.isLoading -> "Starting..."
+    private fun updateCreateSessionButton(state: GlobalShortcutsState) {
+        createSessionButton.sensitive = !state.isLoading && !state.isSessionActive
+        createSessionButton.label = when {
+            state.isLoading -> "Creating..."
             state.isSessionActive -> "Session Active"
-            else -> "Start Session"
+            else -> "Create Session"
         }
     }
 
-    private fun updateListButton(state: GlobalShortcutsState) {
+    private fun updateSessionButtons(state: GlobalShortcutsState) {
+        bindButton.sensitive = state.isSessionActive
+        configureButton.sensitive = state.isSessionActive
         listButton.sensitive = state.isSessionActive
+        stopButton.sensitive = state.isSessionActive
     }
 
-    private fun updateStopButton(state: GlobalShortcutsState) {
-        stopButton.sensitive = state.isSessionActive
+    private fun updateShortcutsLabel(state: GlobalShortcutsState) {
+        if (state.shortcuts.isNotEmpty()) {
+            val text = state.shortcuts.joinToString("\n") { shortcut ->
+                "${shortcut.id}: ${shortcut.triggerDescription ?: "No trigger"}"
+            }
+            shortcutsLabel.label = text
+            shortcutsLabel.visible = true
+        } else {
+            shortcutsLabel.visible = false
+        }
+    }
+
+    private fun updateActivationsLabel(state: GlobalShortcutsState) {
+        if (state.activations.isNotEmpty()) {
+            val text = state.activations.joinToString("\n") { activation ->
+                val action = if (activation.activated) "Activated" else "Deactivated"
+                "$action: ${activation.shortcutId} (t=${activation.timestamp})"
+            }
+            activationsLabel.label = text
+            activationsLabel.visible = true
+        } else {
+            activationsLabel.visible = false
+        }
     }
 
     private fun updateErrorLabel(state: GlobalShortcutsState) {

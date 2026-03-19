@@ -11,7 +11,9 @@ import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopViewModel
 import com.zugaldia.stargate.app.settings.SettingsScreen
 import com.zugaldia.stargate.app.settings.SettingsViewModel
 import com.zugaldia.stargate.sdk.DesktopPortal
+import com.zugaldia.stargate.sdk.isSandboxed
 import kotlinx.coroutines.runBlocking
+import org.slf4j.LoggerFactory
 import org.gnome.gio.ApplicationFlags
 import org.gnome.gtk.Application
 import org.gnome.gtk.ApplicationWindow
@@ -20,13 +22,29 @@ import org.gnome.gtk.Orientation
 import org.gnome.gtk.Stack
 import org.gnome.gtk.StackSidebar
 
+private val logger = LoggerFactory.getLogger("com.zugaldia.stargate.app.App")
+
 private const val APPLICATION_ID = "com.zugaldia.Stargate"
 private const val APPLICATION_NAME = "Stargate"
 private const val DEFAULT_WINDOW_WIDTH = 800
 private const val DEFAULT_WINDOW_HEIGHT = 600
 
 fun main(args: Array<String>) {
+    logger.info("Starting $APPLICATION_ID, and connecting to the Desktop Portal via D-Bus")
     val portal = DesktopPortal.connect()
+
+    // Unsandboxed apps must register with the portal so D-Bus calls are
+    // associated with the correct application ID. Sandboxed apps (Flatpak/Snap)
+    // get this automatically. Without registration, portals may not work
+    // or work but with degraded functionality.
+    if (!isSandboxed()) {
+        portal.registry.register(APPLICATION_ID).onSuccess {
+            logger.info("Registered application ID: {}", APPLICATION_ID)
+        }.onFailure {
+            logger.error("Failed to register application ID: {}", APPLICATION_ID, it)
+        }
+    }
+
     val globalShortcutsViewModel = GlobalShortcutsViewModel(portal)
     val notificationViewModel = NotificationViewModel(portal)
     val openUriViewModel = OpenUriViewModel(portal)
@@ -34,13 +52,17 @@ fun main(args: Array<String>) {
     val settingsViewModel = SettingsViewModel(portal)
 
     val app = Application(APPLICATION_ID, ApplicationFlags.DEFAULT_FLAGS)
+
     app.onActivate {
+        logger.info("Application activated")
         activate(
             app, globalShortcutsViewModel, notificationViewModel, openUriViewModel,
             remoteDesktopViewModel, settingsViewModel
         )
     }
+
     app.onShutdown {
+        logger.info("Application shutting down")
         runBlocking {
             globalShortcutsViewModel.closeAndJoin()
             openUriViewModel.closeAndJoin()
@@ -49,6 +71,8 @@ fun main(args: Array<String>) {
         }
         portal.close()
     }
+
+    logger.info("Starting application: {}", APPLICATION_ID)
     app.run(args)
 }
 

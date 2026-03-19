@@ -1,5 +1,6 @@
 package com.zugaldia.stargate.app.globalshortcuts
 
+import com.zugaldia.stargate.app.PREFERRED_TRIGGER
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.sdk.DesktopPortal
 import com.zugaldia.stargate.sdk.globalshortcuts.Shortcut
@@ -21,6 +22,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
     private val scope = CoroutineScope(job + Dispatchers.Default)
 
     private var sessionClosedObserver: Job? = null
+    private var activationsObserver: Job? = null
 
     private var _state: GlobalShortcutsState = GlobalShortcutsState()
     val state: GlobalShortcutsState
@@ -40,7 +42,7 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
     }
 
-    fun startSession() {
+    fun createSession() {
         if (_state.isLoading || _state.isSessionActive) {
             logger.warn("Session already loading or active, ignoring start request")
             return
@@ -49,34 +51,94 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         updateState(_state.copy(isLoading = true, error = null))
 
         scope.launch {
-            val shortcuts = listOf(
-                Shortcut(
-                    id = "stargate-test",
-                    description = "Test shortcut for Stargate",
-                    preferredTrigger = "CTRL+SHIFT+z"
-                )
-            )
-            logger.info("Starting global shortcuts session with {} shortcut(s)", shortcuts.size)
-            val result = portal.globalShortcuts.startSession(shortcuts)
+            logger.info("Creating global shortcuts session")
+            val result = portal.globalShortcuts.createSession()
 
             result.fold(
-                onSuccess = { boundShortcuts ->
-                    logger.info("Session created and shortcuts bound: count={}", boundShortcuts.size)
-                    boundShortcuts.forEach { shortcut ->
-                        logger.info(
-                            "  Bound shortcut: id={}, trigger={}",
-                            shortcut.id,
-                            shortcut.triggerDescription
-                        )
-                    }
+                onSuccess = { response ->
+                    logger.info("Session created: handle={}", response.sessionHandle)
                     updateState(_state.copy(isLoading = false, isSessionActive = true))
                     startObservingSessionClosed()
+                    startObservingActivations()
                 },
                 onFailure = { error ->
                     logger.error("Failed to create session", error)
                     updateState(_state.copy(isLoading = false, error = error.message))
                 }
             )
+        }
+    }
+
+    // This will typically cause the portal to present a system dialog allowing
+    // the user to review and configure the requested shortcuts.
+    fun bindShortcuts() {
+        scope.launch {
+            logger.info("Binding {} shortcut(s)", PREFERRED_TRIGGER)
+            val result = portal.globalShortcuts.bindShortcuts(
+                listOf(
+                    Shortcut(
+                        id = "stargate-test",
+                        description = "Test shortcut for Stargate",
+                        preferredTrigger = PREFERRED_TRIGGER
+                    )
+                )
+            )
+
+            result.fold(
+                onSuccess = { boundShortcuts ->
+                    logger.info("Shortcuts bound: count={}", boundShortcuts.size)
+                    boundShortcuts.forEach { shortcut ->
+                        logger.info(
+                            "Bound shortcut: id={}, trigger={}",
+                            shortcut.id,
+                            shortcut.triggerDescription
+                        )
+                    }
+                    updateState(_state.copy(shortcuts = boundShortcuts))
+                },
+                onFailure = { error ->
+                    logger.error("Failed to bind shortcuts", error)
+                    updateState(_state.copy(error = error.message))
+                }
+            )
+        }
+    }
+
+    fun listShortcuts() {
+        scope.launch {
+            logger.info("Listing shortcuts for active session")
+            val result = portal.globalShortcuts.listShortcuts()
+
+            result.fold(
+                onSuccess = { shortcuts ->
+                    logger.info("Shortcuts listed successfully: count={}", shortcuts.size)
+                    shortcuts.forEach { shortcut ->
+                        logger.info(
+                            "Shortcut: id={}, description={}, trigger={}",
+                            shortcut.id,
+                            shortcut.description,
+                            shortcut.triggerDescription
+                        )
+                    }
+                    updateState(_state.copy(shortcuts = shortcuts))
+                },
+                onFailure = { error ->
+                    logger.error("Failed to list shortcuts", error)
+                    updateState(_state.copy(error = error.message))
+                }
+            )
+        }
+    }
+
+    // Requests the portal to show a system configuration UI for all shortcuts
+    // in the current session.
+    fun configureShortcuts() {
+        scope.launch {
+            logger.info("Opening shortcut configuration dialog")
+            portal.globalShortcuts.configureShortcuts().onFailure { error ->
+                logger.error("Failed to configure shortcuts", error)
+                updateState(_state.copy(error = error.message))
+            }
         }
     }
 
@@ -95,6 +157,27 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
     }
 
+    private fun startObservingActivations() {
+        activationsObserver?.cancel()
+        activationsObserver = scope.launch {
+            @Suppress("TooGenericExceptionCaught")
+            try {
+                portal.globalShortcuts.activations().collect { activation ->
+                    val action = if (activation.activated) "Activated" else "Deactivated"
+                    logger.info(
+                        "Shortcut {}: id={}, timestamp={}",
+                        action,
+                        activation.shortcutId,
+                        activation.timestamp
+                    )
+                    updateState(_state.copy(activations = _state.activations + activation))
+                }
+            } catch (e: Exception) {
+                logger.error("Error observing shortcut activations", e)
+            }
+        }
+    }
+
     fun stopSession() {
         if (!_state.isSessionActive) {
             logger.warn("No active session to stop")
@@ -102,51 +185,18 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
 
         logger.info("Stopping global shortcuts session")
+        activationsObserver?.cancel()
+        activationsObserver = null
         sessionClosedObserver?.cancel()
         sessionClosedObserver = null
         portal.globalShortcuts.clearSession()
         updateState(GlobalShortcutsState())
     }
 
-    fun listShortcuts() {
-        if (!_state.isSessionActive) {
-            logger.warn("No active session, cannot list shortcuts")
-            return
-        }
-
-        scope.launch {
-            val sessionHandle = portal.globalShortcuts.activeSession
-            if (sessionHandle == null) {
-                logger.error("No active session handle available")
-                updateState(_state.copy(error = "No active session handle"))
-                return@launch
-            }
-
-            logger.info("Listing shortcuts for active session")
-            val result = portal.globalShortcuts.listShortcuts(sessionHandle)
-
-            result.fold(
-                onSuccess = { shortcuts ->
-                    logger.info("Shortcuts listed successfully: count={}", shortcuts.size)
-                    shortcuts.forEach { shortcut ->
-                        logger.info(
-                            "  Shortcut: id={}, description={}, trigger={}",
-                            shortcut.id,
-                            shortcut.description,
-                            shortcut.triggerDescription
-                        )
-                    }
-                },
-                onFailure = { error ->
-                    logger.error("Failed to list shortcuts", error)
-                    updateState(_state.copy(error = error.message))
-                }
-            )
-        }
-    }
-
     suspend fun closeAndJoin() {
         logger.info("Closing GlobalShortcutsViewModel, cancelling coroutine scope and awaiting completion")
+        activationsObserver?.cancel()
+        activationsObserver = null
         sessionClosedObserver?.cancel()
         sessionClosedObserver = null
         portal.globalShortcuts.clearSession()
