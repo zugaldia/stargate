@@ -5,10 +5,10 @@ export GRADLE_OPTS = --enable-native-access=ALL-UNNAMED
 	flatpak-sources flatpak-linter flatpak-build flatpak-bundle flatpak-run \
 	publish-local generate-java
 
-run:
+run: clean
 	./gradlew :app:run
 
-build:
+build: clean
 	./gradlew build
 
 check:
