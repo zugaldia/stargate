@@ -24,7 +24,10 @@ class GenerateJava : CliktCommand(name = "generate-java") {
     override fun run() {
         val xmlDir = File(XML_DIR)
         val xmlFiles = xmlDir.listFiles { file ->
-            file.extension == "xml" && file.name.startsWith("org.freedesktop.portal.")
+            file.extension == "xml" && (
+                file.name.startsWith("org.freedesktop.portal.") || // Portals
+                    file.name.startsWith("org.freedesktop.host.portal.") // Registry
+                )
         } ?: emptyArray()
         xmlFiles.forEach { xmlFile ->
             echo("Processing: ${xmlFile.name}")
