@@ -80,8 +80,12 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
      * Bind shortcuts to the active session. This allows the application to receive
      * activation events when the user triggers the shortcuts.
      *
-     * This will typically cause the portal to present a system dialog allowing
-     * the user to review and configure the requested shortcuts.
+     * The first time a shortcut is bound, the portal presents a system dialog for the user
+     * to review and confirm. Subsequent calls with the same shortcut ID bind automatically
+     * without user interaction, as the portal remembers the user's prior approval.
+     *
+     * Shortcuts must be bound in every new session — [listShortcuts] will return an empty
+     * list until this method is called, even if shortcuts were bound in a previous session.
      *
      * Uses the session handle from [createSession] automatically.
      *
@@ -102,8 +106,12 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
      * Bind shortcuts to the session. This allows the application to receive
      * activation events when the user triggers the shortcuts.
      *
-     * This will typically cause the portal to present a system dialog allowing
-     * the user to review and configure the requested shortcuts.
+     * The first time a shortcut is bound, the portal presents a system dialog for the user
+     * to review and confirm. Subsequent calls with the same shortcut ID bind automatically
+     * without user interaction, as the portal remembers the user's prior approval.
+     *
+     * Shortcuts must be bound in every new session — [listShortcuts] will return an empty
+     * list until this method is called, even if shortcuts were bound in a previous session.
      *
      * @param sessionHandle Object path for the session created via [createSession].
      * @param shortcuts List of shortcuts to bind.
@@ -243,14 +251,8 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
 
     @Suppress("UNCHECKED_CAST")
     private fun parseShortcutsResult(results: Map<String, Variant<*>>): List<BoundShortcut> {
-        logger.info("parseShortcutsResult: keys={}", results.keys)
-        results.forEach { (key, variant) ->
-            logger.info("  result key={}, type={}, value={}", key, variant.value?.javaClass, variant.value)
-        }
         val shortcutsRaw = results[RESULT_SHORTCUTS]?.value as? List<*> ?: return emptyList()
-        logger.info("shortcutsRaw: size={}, type={}", shortcutsRaw.size, shortcutsRaw.javaClass)
         return shortcutsRaw.mapNotNull { item ->
-            logger.info("  item: type={}, value={}", item?.javaClass, item)
             // D-Bus structs arrive as Object[] arrays from the signal response
             val struct = (item as? Array<*>)?.toList() ?: return@mapNotNull null
             val id = struct.getOrNull(0) as? String ?: return@mapNotNull null
