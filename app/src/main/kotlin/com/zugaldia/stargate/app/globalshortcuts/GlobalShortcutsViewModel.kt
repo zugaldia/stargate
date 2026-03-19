@@ -150,8 +150,8 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
     }
 
-    private fun startObservingSessionClosed() {
-        sessionClosedObserver?.cancel()
+    private suspend fun startObservingSessionClosed() {
+        sessionClosedObserver?.cancelAndJoin()
         sessionClosedObserver = scope.launch {
             @Suppress("TooGenericExceptionCaught")
             try {
@@ -168,8 +168,8 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
     }
 
-    private fun startObservingActivations() {
-        activationsObserver?.cancel()
+    private suspend fun startObservingActivations() {
+        activationsObserver?.cancelAndJoin()
         activationsObserver = scope.launch {
             @Suppress("TooGenericExceptionCaught")
             try {
@@ -200,19 +200,23 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
         }
 
         logger.info("Stopping global shortcuts session")
-        activationsObserver?.cancel()
-        activationsObserver = null
-        sessionClosedObserver?.cancel()
-        sessionClosedObserver = null
-        portal.globalShortcuts.clearSession()
-        updateState(GlobalShortcutsState())
+        updateState(GlobalShortcutsState(isLoading = true, message = "Stopping session..."))
+
+        scope.launch {
+            activationsObserver?.cancelAndJoin()
+            activationsObserver = null
+            sessionClosedObserver?.cancelAndJoin()
+            sessionClosedObserver = null
+            portal.globalShortcuts.clearSession()
+            updateState(GlobalShortcutsState())
+        }
     }
 
     suspend fun closeAndJoin() {
         logger.info("Closing GlobalShortcutsViewModel, cancelling coroutine scope and awaiting completion")
-        activationsObserver?.cancel()
+        activationsObserver?.cancelAndJoin()
         activationsObserver = null
-        sessionClosedObserver?.cancel()
+        sessionClosedObserver?.cancelAndJoin()
         sessionClosedObserver = null
         portal.globalShortcuts.clearSession()
         job.cancelAndJoin()
