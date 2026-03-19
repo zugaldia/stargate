@@ -243,8 +243,14 @@ class GlobalShortcutsPortal(private val connection: DBusConnection) {
 
     @Suppress("UNCHECKED_CAST")
     private fun parseShortcutsResult(results: Map<String, Variant<*>>): List<BoundShortcut> {
+        logger.info("parseShortcutsResult: keys={}", results.keys)
+        results.forEach { (key, variant) ->
+            logger.info("  result key={}, type={}, value={}", key, variant.value?.javaClass, variant.value)
+        }
         val shortcutsRaw = results[RESULT_SHORTCUTS]?.value as? List<*> ?: return emptyList()
+        logger.info("shortcutsRaw: size={}, type={}", shortcutsRaw.size, shortcutsRaw.javaClass)
         return shortcutsRaw.mapNotNull { item ->
+            logger.info("  item: type={}, value={}", item?.javaClass, item)
             // D-Bus structs arrive as Object[] arrays from the signal response
             val struct = (item as? Array<*>)?.toList() ?: return@mapNotNull null
             val id = struct.getOrNull(0) as? String ?: return@mapNotNull null
