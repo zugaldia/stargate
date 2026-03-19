@@ -1,5 +1,10 @@
 package com.zugaldia.stargate.app.globalshortcuts
 
+// To reset persistent global shortcuts during testing:
+// - List: dconf dump /org/gnome/settings-daemon/global-shortcuts/
+// - Reset: dconf reset -f /org/gnome/settings-daemon/global-shortcuts/com.zugaldia.Stargate/
+// - Restart: systemctl --user restart xdg-desktop-portal.service
+
 import com.zugaldia.stargate.app.PREFERRED_TRIGGER
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.sdk.DesktopPortal
@@ -14,6 +19,8 @@ import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
 import org.slf4j.LoggerFactory
+
+private const val MAX_ACTIVATIONS = 5
 
 class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
     private val logger = LoggerFactory.getLogger(GlobalShortcutsViewModel::class.java)
@@ -170,7 +177,8 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
                         activation.shortcutId,
                         activation.timestamp
                     )
-                    updateState(_state.copy(activations = _state.activations + activation))
+                    val updated = (_state.activations + activation).takeLast(MAX_ACTIVATIONS)
+                    updateState(_state.copy(activations = updated))
                 }
             } catch (e: Exception) {
                 logger.error("Error observing shortcut activations", e)

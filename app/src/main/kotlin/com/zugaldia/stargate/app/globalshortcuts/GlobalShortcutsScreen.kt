@@ -100,14 +100,19 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
     }
 
     private fun updateShortcutsLabel(state: GlobalShortcutsState) {
-        if (state.shortcuts.isNotEmpty()) {
-            val text = state.shortcuts.joinToString("\n") { shortcut ->
-                "${shortcut.id}: ${shortcut.triggerDescription ?: "No trigger"}"
+        when {
+            state.shortcuts == null -> shortcutsLabel.visible = false
+            state.shortcuts.isEmpty() -> {
+                shortcutsLabel.label = "No shortcuts registered."
+                shortcutsLabel.visible = true
             }
-            shortcutsLabel.label = text
-            shortcutsLabel.visible = true
-        } else {
-            shortcutsLabel.visible = false
+            else -> {
+                val text = state.shortcuts.joinToString("\n") { shortcut ->
+                    "${shortcut.id}: ${shortcut.triggerDescription ?: "No trigger"}"
+                }
+                shortcutsLabel.label = text
+                shortcutsLabel.visible = true
+            }
         }
     }
 
