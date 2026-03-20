@@ -40,6 +40,7 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
 
         configureButton = Button.withLabel("Configure Shortcuts")
         configureButton.onClicked { viewModel.configureShortcuts() }
+        configureButton.visible = false
         box.append(configureButton)
 
         stopButton = Button.withLabel("Stop Session")
@@ -93,6 +94,7 @@ class GlobalShortcutsScreen(private val viewModel: GlobalShortcutsViewModel) {
 
     private fun updateSessionButtons(state: GlobalShortcutsState) {
         bindButton.sensitive = state.isSessionActive
+        configureButton.visible = state.isConfigureSupported
         configureButton.sensitive = state.isSessionActive
         listButton.sensitive = state.isSessionActive
         stopButton.sensitive = state.isSessionActive

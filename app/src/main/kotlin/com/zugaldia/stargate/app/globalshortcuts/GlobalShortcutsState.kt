@@ -6,6 +6,7 @@ import com.zugaldia.stargate.sdk.globalshortcuts.ShortcutActivation
 data class GlobalShortcutsState(
     val isLoading: Boolean = false,
     val isSessionActive: Boolean = false,
+    val isConfigureSupported: Boolean = false,
     val shortcuts: List<BoundShortcut>? = null,
     val activations: List<ShortcutActivation> = emptyList(),
     val message: String? = null
