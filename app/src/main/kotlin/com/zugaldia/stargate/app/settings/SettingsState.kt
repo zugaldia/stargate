@@ -7,6 +7,7 @@ import com.zugaldia.stargate.sdk.settings.ReducedMotion
 
 data class SettingsState(
     val version: Int? = null,
+    val isReadOneSupported: Boolean = false,
     val colorScheme: ColorScheme? = null,
     val accentColor: AccentColor? = null,
     val contrast: Contrast? = null,

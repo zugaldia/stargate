@@ -46,10 +46,22 @@ class SettingsScreen(private val viewModel: SettingsViewModel) {
 
     private fun updateLabels(state: SettingsState) {
         versionLabel.label = "Version: ${state.version ?: "Unknown"}"
-        colorSchemeLabel.label = "Color Scheme: ${state.colorScheme ?: "Unknown"}"
-        accentColorLabel.label = "Accent Color: ${formatAccentColor(state)}"
-        contrastLabel.label = "Contrast: ${state.contrast ?: "Unknown"}"
-        reducedMotionLabel.label = "Reduced Motion: ${state.reducedMotion ?: "Unknown"}"
+        if (state.isReadOneSupported) {
+            colorSchemeLabel.visible = true
+            accentColorLabel.visible = true
+            contrastLabel.visible = true
+            reducedMotionLabel.visible = true
+            colorSchemeLabel.label = "Color Scheme: ${state.colorScheme ?: "Unknown"}"
+            accentColorLabel.label = "Accent Color: ${formatAccentColor(state)}"
+            contrastLabel.label = "Contrast: ${state.contrast ?: "Unknown"}"
+            reducedMotionLabel.label = "Reduced Motion: ${state.reducedMotion ?: "Unknown"}"
+        } else {
+            colorSchemeLabel.label = "ReadOne requires Settings portal v2+"
+            colorSchemeLabel.visible = true
+            accentColorLabel.visible = false
+            contrastLabel.visible = false
+            reducedMotionLabel.visible = false
+        }
     }
 
     private fun formatAccentColor(state: SettingsState): String {

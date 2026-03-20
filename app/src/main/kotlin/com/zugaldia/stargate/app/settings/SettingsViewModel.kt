@@ -13,6 +13,8 @@ import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
 
+private const val READ_ONE_MIN_VERSION = 2
+
 class SettingsViewModel(private val portal: DesktopPortal) : GObject() {
     private val logger = LoggerFactory.getLogger(SettingsViewModel::class.java)
 
@@ -44,13 +46,22 @@ class SettingsViewModel(private val portal: DesktopPortal) : GObject() {
     }
 
     private fun loadSettings() {
-        val newState = SettingsState(
-            version = portal.settings.version,
-            colorScheme = portal.settings.getColorScheme().getOrNull(),
-            accentColor = portal.settings.getAccentColor().getOrNull(),
-            contrast = portal.settings.getContrast().getOrNull(),
-            reducedMotion = portal.settings.getReducedMotion().getOrNull()
-        )
+        val version = portal.settings.version
+        val isReadOneSupported = version >= READ_ONE_MIN_VERSION
+        logger.info("Settings portal version={}, readOneSupported={}", version, isReadOneSupported)
+
+        val newState = if (isReadOneSupported) {
+            SettingsState(
+                version = version,
+                isReadOneSupported = true,
+                colorScheme = portal.settings.getColorScheme().getOrNull(),
+                accentColor = portal.settings.getAccentColor().getOrNull(),
+                contrast = portal.settings.getContrast().getOrNull(),
+                reducedMotion = portal.settings.getReducedMotion().getOrNull()
+            )
+        } else {
+            SettingsState(version = version, isReadOneSupported = false)
+        }
 
         logger.info("Initial settings loaded: $newState")
         updateState(newState)

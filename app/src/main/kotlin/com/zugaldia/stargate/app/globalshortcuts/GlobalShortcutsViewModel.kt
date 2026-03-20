@@ -22,6 +22,7 @@ import org.javagi.gobject.annotations.Signal
 import org.slf4j.LoggerFactory
 
 private const val MAX_ACTIVATIONS = 5
+private const val CONFIGURE_SHORTCUTS_MIN_VERSION = 2
 
 class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
     private val logger = LoggerFactory.getLogger(GlobalShortcutsViewModel::class.java)
@@ -64,8 +65,21 @@ class GlobalShortcutsViewModel(private val portal: DesktopPortal) : GObject() {
 
             result.fold(
                 onSuccess = { response ->
-                    logger.info("Session created: handle={}", response.sessionHandle)
-                    updateState(_state.copy(isLoading = false, isSessionActive = true))
+                    val version = portal.globalShortcuts.version
+                    val isConfigureSupported = version >= CONFIGURE_SHORTCUTS_MIN_VERSION
+                    logger.info(
+                        "Session created: handle={}, portalVersion={}, configureSupported={}",
+                        response.sessionHandle,
+                        version,
+                        isConfigureSupported
+                    )
+                    updateState(
+                        _state.copy(
+                            isLoading = false,
+                            isSessionActive = true,
+                            isConfigureSupported = isConfigureSupported
+                        )
+                    )
                     startObservingSessionClosed()
                     startObservingActivations()
                 },
