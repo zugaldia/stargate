@@ -26,7 +26,7 @@ public interface Usb extends DBusInterface {
 
     void ReleaseDevices(List<String> devices, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class DeviceEvents extends DBusSignal {

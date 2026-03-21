@@ -18,7 +18,7 @@ public interface Wallpaper extends DBusInterface {
 
     DBusPath SetWallpaperFile(String parentWindow, FileDescriptor fd, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }

@@ -34,7 +34,7 @@ public interface InputCapture extends DBusInterface {
     @DBusBoundProperty
     UInt32 getSupportedCapabilities();
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class Disabled extends DBusSignal {

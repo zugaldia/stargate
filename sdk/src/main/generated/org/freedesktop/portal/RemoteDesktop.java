@@ -45,7 +45,7 @@ public interface RemoteDesktop extends DBusInterface {
     @DBusBoundProperty
     UInt32 getAvailableDeviceTypes();
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }

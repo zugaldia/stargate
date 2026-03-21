@@ -21,7 +21,7 @@ public interface Camera extends DBusInterface {
     @DBusBoundProperty
     boolean isIsCameraPresent();
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }

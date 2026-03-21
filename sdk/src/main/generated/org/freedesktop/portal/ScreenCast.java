@@ -28,7 +28,7 @@ public interface ScreenCast extends DBusInterface {
     @DBusBoundProperty
     UInt32 getAvailableCursorModes();
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }
