@@ -24,7 +24,7 @@ public interface NetworkMonitor extends DBusInterface {
 
     boolean CanReach(String hostname, UInt32 port);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class changed extends DBusSignal {

@@ -13,24 +13,8 @@ public class AddNamedFullTuple<A, B> extends Tuple {
     private B extraOut;
 
     public AddNamedFullTuple(A docId, B extraOut) {
-      this.docId = docId;
-      this.extraOut = extraOut;
-    }
-
-    public void setDocId(A arg) {
-        docId = arg;
-    }
-
-    public A getDocId() {
-        return docId;
-    }
-
-    public void setExtraOut(B arg) {
-        extraOut = arg;
-    }
-
-    public B getExtraOut() {
-        return extraOut;
+    this.docId = docId;
+    this.extraOut = extraOut;
     }
 
 }

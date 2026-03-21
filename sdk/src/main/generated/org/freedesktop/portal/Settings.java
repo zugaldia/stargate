@@ -21,7 +21,7 @@ public interface Settings extends DBusInterface {
 
     Variant<?> ReadOne(String namespace, String key);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class SettingChanged extends DBusSignal {

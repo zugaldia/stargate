@@ -21,7 +21,7 @@ public interface Inhibit extends DBusInterface {
 
     void QueryEndResponse(DBusPath sessionHandle);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class StateChanged extends DBusSignal {
