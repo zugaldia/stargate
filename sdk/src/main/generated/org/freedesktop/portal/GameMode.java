@@ -32,7 +32,7 @@ public interface GameMode extends DBusInterface {
     @DBusBoundProperty
     boolean isActive();
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }

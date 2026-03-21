@@ -19,7 +19,7 @@ public interface Location extends DBusInterface {
 
     DBusPath Start(DBusPath sessionHandle, String parentWindow, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
     public static class LocationUpdated extends DBusSignal {

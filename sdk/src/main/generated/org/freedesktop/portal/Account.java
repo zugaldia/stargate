@@ -15,7 +15,7 @@ public interface Account extends DBusInterface {
 
     DBusPath GetUserInformation(String window, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }

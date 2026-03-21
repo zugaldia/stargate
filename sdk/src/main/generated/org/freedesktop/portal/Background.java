@@ -17,7 +17,7 @@ public interface Background extends DBusInterface {
 
     void SetStatus(Map<String, Variant<?>> options);
 
-    @DBusBoundProperty(name = "version")
+    @DBusBoundProperty
     UInt32 getVersion();
 
 }
