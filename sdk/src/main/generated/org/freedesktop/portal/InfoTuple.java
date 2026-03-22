@@ -13,8 +13,24 @@ public class InfoTuple<A, B> extends Tuple {
     private B apps;
 
     public InfoTuple(A path, B apps) {
-    this.path = path;
-    this.apps = apps;
+        this.path = path;
+        this.apps = apps;
+    }
+
+    public A getPathFromBus() {
+        return path;
+    }
+
+    public void setPath(A path) {
+        this.path = path;
+    }
+
+    public B getApps() {
+        return apps;
+    }
+
+    public void setApps(B apps) {
+        this.apps = apps;
     }
 
 }

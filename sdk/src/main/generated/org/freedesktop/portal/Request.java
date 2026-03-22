@@ -21,16 +21,16 @@ public interface Request extends DBusInterface {
 
         public Response(String path, UInt32 response, Map<String, Variant<?>> results) throws DBusException {
             super(path, response, results);
-            this.response = response;
-            this.results = results;
+                this.response = response;
+                this.results = results;
         }
 
         public UInt32 getResponse() {
-            return response;
+                return response;
         }
 
         public Map<String, Variant<?>> getResults() {
-            return results;
+                return results;
         }
 
     }

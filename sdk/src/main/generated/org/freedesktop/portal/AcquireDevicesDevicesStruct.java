@@ -15,16 +15,16 @@ public class AcquireDevicesDevicesStruct extends Struct {
     private final Map<String, Variant<?>> member1;
 
     public AcquireDevicesDevicesStruct(String member0, Map<String, Variant<?>> member1) {
-    this.member0 = member0;
-    this.member1 = member1;
+        this.member0 = member0;
+        this.member1 = member1;
     }
 
     public String getMember0() {
-    return member0;
+        return member0;
     }
 
     public Map<String, Variant<?>> getMember1() {
-    return member1;
+        return member1;
     }
 
 }

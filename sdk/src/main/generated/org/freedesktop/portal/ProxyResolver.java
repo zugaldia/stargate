@@ -13,7 +13,7 @@ public interface ProxyResolver extends DBusInterface {
 
     List<String> Lookup(String uri);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }

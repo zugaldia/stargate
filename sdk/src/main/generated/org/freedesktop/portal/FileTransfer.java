@@ -24,7 +24,7 @@ public interface FileTransfer extends DBusInterface {
 
     void StopTransfer(String key);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class TransferClosed extends DBusSignal {
@@ -33,11 +33,11 @@ public interface FileTransfer extends DBusInterface {
 
         public TransferClosed(String path, String key) throws DBusException {
             super(path, key);
-            this.key = key;
+                this.key = key;
         }
 
         public String getKey() {
-            return key;
+                return key;
         }
 
     }

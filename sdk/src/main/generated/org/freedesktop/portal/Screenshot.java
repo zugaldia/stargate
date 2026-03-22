@@ -17,7 +17,7 @@ public interface Screenshot extends DBusInterface {
 
     DBusPath PickColor(String parentWindow, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }

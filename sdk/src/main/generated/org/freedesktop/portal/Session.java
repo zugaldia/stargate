@@ -16,7 +16,7 @@ public interface Session extends DBusInterface {
 
     void Close();
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
     public static class Closed extends DBusSignal {
@@ -25,11 +25,11 @@ public interface Session extends DBusInterface {
 
         public Closed(String path, Map<String, Variant<?>> details) throws DBusException {
             super(path, details);
-            this.details = details;
+                this.details = details;
         }
 
         public Map<String, Variant<?>> getDetails() {
-            return details;
+                return details;
         }
 
     }

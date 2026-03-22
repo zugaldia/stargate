@@ -14,7 +14,7 @@ public interface Registry extends DBusInterface {
 
     void Register(String appId, Map<String, Variant<?>> options);
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }

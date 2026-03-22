@@ -24,7 +24,7 @@ public interface Realtime extends DBusInterface {
     @DBusBoundProperty
     long getRTTimeUSecMax();
 
-    @DBusBoundProperty
+    @DBusBoundProperty(name = "version")
     UInt32 getVersion();
 
 }
