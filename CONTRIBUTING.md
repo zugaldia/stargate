@@ -11,7 +11,7 @@ established patterns.
 
 - **Java 25** — required to build and run the SDK and demo application
 
-On Ubuntu:
+On Debian/Ubuntu:
 
 ```bash
 sudo apt install git make openjdk-25-jdk flatpak flatpak-builder
@@ -24,6 +24,8 @@ On Fedora:
 sudo dnf install git make java-25-openjdk-devel flatpak flatpak-builder
 sudo alternatives --set java /usr/lib/jvm/java-25-openjdk/bin/java
 ```
+
+Feel free to open a PR to add instructions for other distributions not listed here.
 
 ## Clone the Repository
 
