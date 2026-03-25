@@ -90,6 +90,10 @@ This demo application can run both as an unsandboxed app (`make run`) and as a s
 
 If your application, project, or CLI depends on Stargate, feel free to open a PR to add it to this list.
 
+## Contributing
+
+To build the project from source and learn how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 # Built With
 
 Stargate stands on the shoulders of these excellent open source projects:
