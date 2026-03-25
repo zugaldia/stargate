@@ -21,11 +21,11 @@ public interface MemoryMonitor extends DBusInterface {
 
         public LowMemoryWarning(String path, byte level) throws DBusException {
             super(path, level);
-                this.level = level;
+            this.level = level;
         }
 
         public byte getLevel() {
-                return level;
+            return level;
         }
 
     }

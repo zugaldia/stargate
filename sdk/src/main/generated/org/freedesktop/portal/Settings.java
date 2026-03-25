@@ -32,21 +32,21 @@ public interface Settings extends DBusInterface {
 
         public SettingChanged(String path, String namespace, String key, Variant<?> value) throws DBusException {
             super(path, namespace, key, value);
-                this.namespace = namespace;
-                this.key = key;
-                this.value = value;
+            this.namespace = namespace;
+            this.key = key;
+            this.value = value;
         }
 
         public String getNamespace() {
-                return namespace;
+            return namespace;
         }
 
         public String getKey() {
-                return key;
+            return key;
         }
 
         public Variant<?> getValue() {
-                return value;
+            return value;
         }
 
     }

@@ -31,16 +31,16 @@ public interface Inhibit extends DBusInterface {
 
         public StateChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> state) throws DBusException {
             super(path, sessionHandle, state);
-                this.sessionHandle = sessionHandle;
-                this.state = state;
+            this.sessionHandle = sessionHandle;
+            this.state = state;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getState() {
-                return state;
+            return state;
         }
 
     }

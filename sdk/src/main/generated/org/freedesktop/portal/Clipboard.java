@@ -36,16 +36,16 @@ public interface Clipboard extends DBusInterface {
 
         public SelectionOwnerChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
             super(path, sessionHandle, options);
-                this.sessionHandle = sessionHandle;
-                this.options = options;
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getOptions() {
-                return options;
+            return options;
         }
 
     }
@@ -58,21 +58,21 @@ public interface Clipboard extends DBusInterface {
 
         public SelectionTransfer(String path, DBusPath sessionHandle, String mimeType, UInt32 serial) throws DBusException {
             super(path, sessionHandle, mimeType, serial);
-                this.sessionHandle = sessionHandle;
-                this.mimeType = mimeType;
-                this.serial = serial;
+            this.sessionHandle = sessionHandle;
+            this.mimeType = mimeType;
+            this.serial = serial;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public String getMimeType() {
-                return mimeType;
+            return mimeType;
         }
 
         public UInt32 getSerialFromBus() {
-                return serial;
+            return serial;
         }
 
     }

@@ -38,21 +38,21 @@ public interface Notification extends DBusInterface {
 
         public ActionInvoked(String path, String id, String action, List<Variant<?>> parameter) throws DBusException {
             super(path, id, action, parameter);
-                this.id = id;
-                this.action = action;
-                this.parameter = parameter;
+            this.id = id;
+            this.action = action;
+            this.parameter = parameter;
         }
 
         public String getId() {
-                return id;
+            return id;
         }
 
         public String getAction() {
-                return action;
+            return action;
         }
 
         public List<Variant<?>> getParameter() {
-                return parameter;
+            return parameter;
         }
 
     }

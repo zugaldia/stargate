@@ -33,11 +33,11 @@ public interface FileTransfer extends DBusInterface {
 
         public TransferClosed(String path, String key) throws DBusException {
             super(path, key);
-                this.key = key;
+            this.key = key;
         }
 
         public String getKey() {
-                return key;
+            return key;
         }
 
     }

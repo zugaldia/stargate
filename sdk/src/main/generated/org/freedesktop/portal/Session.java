@@ -25,11 +25,11 @@ public interface Session extends DBusInterface {
 
         public Closed(String path, Map<String, Variant<?>> details) throws DBusException {
             super(path, details);
-                this.details = details;
+            this.details = details;
         }
 
         public Map<String, Variant<?>> getDetails() {
-                return details;
+            return details;
         }
 
     }

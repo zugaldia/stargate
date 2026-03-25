@@ -36,16 +36,16 @@ public interface Usb extends DBusInterface {
 
         public DeviceEvents(String path, DBusPath sessionHandle, List<DeviceEventsEventsStruct> events) throws DBusException {
             super(path, sessionHandle, events);
-                this.sessionHandle = sessionHandle;
-                this.events = events;
+            this.sessionHandle = sessionHandle;
+            this.events = events;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public List<DeviceEventsEventsStruct> getEvents() {
-                return events;
+            return events;
         }
 
     }

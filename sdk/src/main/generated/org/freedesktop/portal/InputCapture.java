@@ -44,16 +44,16 @@ public interface InputCapture extends DBusInterface {
 
         public Disabled(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
             super(path, sessionHandle, options);
-                this.sessionHandle = sessionHandle;
-                this.options = options;
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getOptions() {
-                return options;
+            return options;
         }
 
     }
@@ -65,16 +65,16 @@ public interface InputCapture extends DBusInterface {
 
         public Activated(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
             super(path, sessionHandle, options);
-                this.sessionHandle = sessionHandle;
-                this.options = options;
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getOptions() {
-                return options;
+            return options;
         }
 
     }
@@ -86,16 +86,16 @@ public interface InputCapture extends DBusInterface {
 
         public Deactivated(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
             super(path, sessionHandle, options);
-                this.sessionHandle = sessionHandle;
-                this.options = options;
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getOptions() {
-                return options;
+            return options;
         }
 
     }
@@ -107,16 +107,16 @@ public interface InputCapture extends DBusInterface {
 
         public ZonesChanged(String path, DBusPath sessionHandle, Map<String, Variant<?>> options) throws DBusException {
             super(path, sessionHandle, options);
-                this.sessionHandle = sessionHandle;
-                this.options = options;
+            this.sessionHandle = sessionHandle;
+            this.options = options;
         }
 
         public DBusPath getSessionHandle() {
-                return sessionHandle;
+            return sessionHandle;
         }
 
         public Map<String, Variant<?>> getOptions() {
-                return options;
+            return options;
         }
 
     }
