@@ -1,9 +1,6 @@
 package com.zugaldia.stargate.app.globalshortcuts
 
-// To reset persistent global shortcuts during testing:
-// - List: dconf dump /org/gnome/settings-daemon/global-shortcuts/
-// - Reset: dconf reset -f /org/gnome/settings-daemon/global-shortcuts/com.zugaldia.Stargate/
-// - Restart: systemctl --user restart xdg-desktop-portal.service
+// For instructions on resetting persistent global shortcuts during testing, see docs/TESTING.md.
 
 import com.zugaldia.stargate.app.PREFERRED_TRIGGER
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
