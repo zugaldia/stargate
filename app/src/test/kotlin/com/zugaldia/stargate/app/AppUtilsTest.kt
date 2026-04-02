@@ -54,4 +54,27 @@ class AppUtilsTest {
             assertEquals(char.code, roundTripped, "Round-trip failed for '$char' (U+$codeHex)")
         }
     }
+
+    @Test
+    fun `diagnose keysym values for non-Latin characters`() {
+        val unicodeKeySymFlag = 0x01000000
+        val testCases = mapOf(
+            "ASCII" to "abc",
+            "Spanish accents" to "áéíóúñ",
+            "Russian" to "Привет",
+            "Arabic" to "مرحبا",
+            "Chinese" to "你好"
+        )
+
+        for ((label, text) in testCases) {
+            println("--- $label ---")
+            for (char in text) {
+                val keySym = unicodeToKeySym(char.code)
+                val hasUnicodeFlag = keySym and unicodeKeySymFlag != 0
+                val keySymHex = keySym.toString(16).uppercase().padStart(8, '0')
+                val codeHex = char.code.toString(16).uppercase().padStart(4, '0')
+                println("  '$char' U+$codeHex -> keySym=0x$keySymHex unicodeFlag=$hasUnicodeFlag")
+            }
+        }
+    }
 }

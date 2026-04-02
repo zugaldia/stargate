@@ -148,7 +148,7 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
 
     private fun loadResource(name: String): String =
         javaClass.classLoader.getResourceAsStream(name)
-            ?.bufferedReader()?.readText()?.trim()
+            ?.bufferedReader(Charsets.UTF_8)?.readText()?.trim()
             ?: DEFAULT_TEXT
 
     private fun updateErrorLabel(state: RemoteDesktopState) {
