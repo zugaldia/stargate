@@ -13,6 +13,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 import org.gnome.glib.GLib
 import org.gnome.gobject.GObject
 import org.javagi.gobject.annotations.Signal
@@ -110,11 +111,11 @@ class RemoteDesktopViewModel(private val portal: DesktopPortal) : GObject() {
                 // Type the text with a delay between keystrokes
                 logger.info("Typing ${text.length} characters")
                 for (keySym in textToKeySym(text)) {
-                    portal.remoteDesktop.notifyKeyboardKeySym(keySym, InputState.PRESSED)
-                    portal.remoteDesktop.notifyKeyboardKeySym(keySym, InputState.RELEASED)
+                    portal.remoteDesktop.notifyKeyboardKeySym(keySym, InputState.PRESSED).getOrThrow()
+                    portal.remoteDesktop.notifyKeyboardKeySym(keySym, InputState.RELEASED).getOrThrow()
                     delay(TYPING_DELAY_MS)
                 }
-            } catch (e: kotlinx.coroutines.CancellationException) {
+            } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 logger.error("Failed to type text", e)

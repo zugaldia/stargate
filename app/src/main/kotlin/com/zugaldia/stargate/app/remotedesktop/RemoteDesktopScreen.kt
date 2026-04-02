@@ -2,6 +2,7 @@ package com.zugaldia.stargate.app.remotedesktop
 
 import com.zugaldia.stargate.app.DEFAULT_TEXT
 import com.zugaldia.stargate.app.LABEL_MAX_WIDTH_CHARS
+import com.zugaldia.stargate.app.SAMPLE_LANGUAGES
 import com.zugaldia.stargate.app.SIGNAL_STATE_CHANGED
 import com.zugaldia.stargate.app.SPACING
 import com.zugaldia.stargate.app.TEXT_VIEW_HEIGHT
@@ -9,9 +10,11 @@ import com.zugaldia.stargate.app.TEXT_VIEW_WIDTH
 import org.gnome.gtk.Align
 import org.gnome.gtk.Box
 import org.gnome.gtk.Button
+import org.gnome.gtk.DropDown
 import org.gnome.gtk.Label
 import org.gnome.gtk.Orientation
 import org.gnome.gtk.ScrolledWindow
+import org.gnome.gtk.StringList
 import org.gnome.gtk.TextIter
 import org.gnome.gtk.TextView
 import org.gnome.gtk.Widget
@@ -37,6 +40,20 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
         sessionInfoLabel = Label("")
         sessionInfoLabel.visible = false
         box.append(sessionInfoLabel)
+
+        val languageNames = SAMPLE_LANGUAGES.map { it.first }.toTypedArray()
+        val languageDropDown = DropDown(StringList(languageNames), null)
+        languageDropDown.onNotify("selected") {
+            val index = languageDropDown.selected.toInt()
+            val resource = SAMPLE_LANGUAGES[index].second
+            val text = if (resource != null) {
+                loadResource(resource)
+            } else {
+                DEFAULT_TEXT
+            }
+            textView.buffer.setText(text, -1)
+        }
+        box.append(languageDropDown)
 
         textView = TextView()
         textView.buffer.setText(DEFAULT_TEXT, -1)
@@ -116,7 +133,7 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
 
     private fun updateTypingControls(state: RemoteDesktopState) {
         val canType = state.isSessionActive && state.countdownSeconds == null && !state.isTyping
-        textView.sensitive = canType
+        textView.sensitive = state.countdownSeconds == null && !state.isTyping
         typeButton.sensitive = canType
         typeButton.label = when {
             state.countdownSeconds != null -> "Typing in ${state.countdownSeconds}..."
@@ -128,6 +145,11 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
     private fun updateStopButton(state: RemoteDesktopState) {
         stopButton.sensitive = state.isSessionActive && state.countdownSeconds == null && !state.isTyping
     }
+
+    private fun loadResource(name: String): String =
+        javaClass.classLoader.getResourceAsStream(name)
+            ?.bufferedReader(Charsets.UTF_8)?.readText()?.trim()
+            ?: DEFAULT_TEXT
 
     private fun updateErrorLabel(state: RemoteDesktopState) {
         if (state.error != null) {
