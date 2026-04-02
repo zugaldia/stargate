@@ -17,6 +17,8 @@ dependencies {
     // GTK bindings for Java
     implementation(libs.javaGiGtk)
     implementation(libs.javaGiAdw)
+
+    testImplementation(kotlin("test"))
 }
 
 application {
