@@ -9,6 +9,15 @@ const val LABEL_MAX_WIDTH_CHARS = 50
 
 const val PREFERRED_TRIGGER = "CTRL+SHIFT+z"
 
-const val DEFAULT_TEXT = "If you can see this, typing is working.\n" +
-    "I can do special characters too! Like ñ, á, é, í, ó, and ú.\n" +
-    "That's it."
+const val DEFAULT_TEXT = "Select a language above to load sample text, or type your own here.\n" +
+    "Press \"Type Text\" to send it as keystrokes to the focused application."
+
+val SAMPLE_LANGUAGES = listOf(
+    "Custom" to null,
+    "English" to "sample_en.txt",
+    "French" to "sample_fr.txt",
+    "Spanish" to "sample_es.txt",
+    "Russian" to "sample_ru.txt",
+    "Arabic" to "sample_ar.txt",
+    "Chinese" to "sample_zh.txt"
+)
