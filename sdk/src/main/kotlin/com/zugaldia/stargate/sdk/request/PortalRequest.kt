@@ -43,8 +43,9 @@ suspend fun <T> awaitPortalResponse(
                         continuation.resume(Result.success(result))
                     }
                     else -> {
-                        val error = "$methodName failed ($response)"
-                        continuation.resume(Result.failure(IllegalStateException(error)))
+                        continuation.resume(
+                            Result.failure(PortalRequestException(response, methodName))
+                        )
                     }
                 }
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
