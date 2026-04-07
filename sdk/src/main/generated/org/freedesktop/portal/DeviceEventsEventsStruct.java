@@ -17,9 +17,9 @@ public class DeviceEventsEventsStruct extends Struct {
     private final Map<String, Variant<?>> member2;
 
     public DeviceEventsEventsStruct(String member0, String member1, Map<String, Variant<?>> member2) {
-      this.member0 = member0;
-      this.member1 = member1;
-      this.member2 = member2;
+        this.member0 = member0;
+        this.member1 = member1;
+        this.member2 = member2;
     }
 
     public String getMember0() {

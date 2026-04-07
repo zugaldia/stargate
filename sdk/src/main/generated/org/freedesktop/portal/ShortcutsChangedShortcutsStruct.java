@@ -15,8 +15,8 @@ public class ShortcutsChangedShortcutsStruct extends Struct {
     private final Map<String, Variant<?>> member1;
 
     public ShortcutsChangedShortcutsStruct(String member0, Map<String, Variant<?>> member1) {
-      this.member0 = member0;
-      this.member1 = member1;
+        this.member0 = member0;
+        this.member1 = member1;
     }
 
     public String getMember0() {

@@ -13,24 +13,24 @@ public class FinishAcquireDevicesTuple<A, B> extends Tuple {
     private B finished;
 
     public FinishAcquireDevicesTuple(A results, B finished) {
-      this.results = results;
-      this.finished = finished;
-    }
-
-    public void setResults(A arg) {
-        results = arg;
+        this.results = results;
+        this.finished = finished;
     }
 
     public A getResults() {
         return results;
     }
 
-    public void setFinished(B arg) {
-        finished = arg;
+    public void setResults(A results) {
+        this.results = results;
     }
 
     public B getFinished() {
         return finished;
+    }
+
+    public void setFinished(B finished) {
+        this.finished = finished;
     }
 
 }

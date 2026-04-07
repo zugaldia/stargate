@@ -4,7 +4,6 @@ import java.util.Map;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.annotations.DBusBoundProperty;
-import org.freedesktop.dbus.annotations.DBusMemberName;
 import org.freedesktop.dbus.annotations.DBusProperty.Access;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
@@ -72,7 +71,6 @@ public interface Clipboard extends DBusInterface {
             return mimeType;
         }
 
-        @DBusMemberName("Serial")
         public UInt32 getSerialFromBus() {
             return serial;
         }

@@ -16,7 +16,12 @@ val EXCLUDED_PORTALS = listOf<String>()
 
 class Generator : CliktCommand() {
     override fun help(context: Context) = "Stargate code generator CLI"
-    override fun run() = Unit
+    override fun run() {
+        val versionInfo = javaClass.classLoader.getResource("dbus-java.version")?.readText()?.trim()
+        if (versionInfo != null) {
+            echo("dbus-java: ${versionInfo.replace("\n", ", ")}")
+        }
+    }
 }
 
 class GenerateJava : CliktCommand(name = "generate-java") {
