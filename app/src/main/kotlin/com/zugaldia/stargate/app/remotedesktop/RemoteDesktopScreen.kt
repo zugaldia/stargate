@@ -44,7 +44,7 @@ class RemoteDesktopScreen(private val viewModel: RemoteDesktopViewModel) {
         val languageNames = SAMPLE_LANGUAGES.map { it.first }.toTypedArray()
         val languageDropDown = DropDown(StringList(languageNames), null)
         languageDropDown.onNotify("selected") {
-            val index = languageDropDown.selected.toInt()
+            val index = languageDropDown.selected
             val resource = SAMPLE_LANGUAGES[index].second
             val text = if (resource != null) {
                 loadResource(resource)
