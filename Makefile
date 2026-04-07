@@ -1,5 +1,6 @@
 APP_ID = com.zugaldia.Stargate
 export GRADLE_OPTS = --enable-native-access=ALL-UNNAMED
+export JDK_JAVA_OPTIONS = --enable-native-access=ALL-UNNAMED
 
 .PHONY: run build check clean shadow-build shadow-run \
 	flatpak-sources flatpak-linter flatpak-build flatpak-bundle flatpak-run \
