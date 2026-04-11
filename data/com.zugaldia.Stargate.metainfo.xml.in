@@ -17,6 +17,7 @@
     <url type="homepage">https://github.com/zugaldia/stargate</url>
     <url type="vcs-browser">https://github.com/zugaldia/stargate</url>
     <url type="bugtracker">https://github.com/zugaldia/stargate/issues</url>
+    <url type="donation">https://github.com/sponsors/zugaldia</url>
 
     <url type="contact">https://www.zugaldia.com</url>
     <developer id="com.zugaldia">

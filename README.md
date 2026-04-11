@@ -94,6 +94,8 @@ If your application, project, or CLI depends on Stargate, feel free to open a PR
 
 To build the project from source and learn how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
+If you find Stargate useful, consider [sponsoring this work](https://github.com/sponsors/zugaldia).
+
 # Built With
 
 Stargate stands on the shoulders of these excellent open source projects:
