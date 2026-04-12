@@ -4,7 +4,7 @@ export JDK_JAVA_OPTIONS = --enable-native-access=ALL-UNNAMED
 
 .PHONY: run build check clean shadow-build shadow-run \
 	flatpak-sources flatpak-linter flatpak-build flatpak-bundle flatpak-run \
-	publish-local generate-java
+	publish-local generate-java generate-status-notifier
 
 run: clean
 	./gradlew :app:run
@@ -52,3 +52,6 @@ publish-central:
 generate-java:
 	rm -rf sdk/src/main/generated
 	./gradlew :generator:run --args="generate-java"
+
+generate-status-notifier:
+	./gradlew :generator:run --args="generate-status-notifier"

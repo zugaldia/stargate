@@ -14,6 +14,11 @@ const val SDK_GENERATED_DIR = "../sdk/src/main/generated"
 
 val EXCLUDED_PORTALS = listOf<String>()
 
+val STATUS_NOTIFIER_RESOURCES = listOf(
+    Triple("org.kde.StatusNotifierWatcher.xml", "org.kde.StatusNotifierWatcher", "/StatusNotifierWatcher"),
+    Triple("org.kde.StatusNotifierItem.xml", "org.kde.StatusNotifierItem", "/StatusNotifierItem"),
+)
+
 class Generator : CliktCommand() {
     override fun help(context: Context) = "Stargate code generator CLI"
     override fun run() {
@@ -23,6 +28,21 @@ class Generator : CliktCommand() {
         }
     }
 }
+
+// New in dbus-java V6: when true, generates Struct-based return values instead of Tuples.
+// We keep this false so the generated code uses Tuples, which are compatible with dbus-java V5.
+// See: https://github.com/hypfvieh/dbus-java/blob/master/UPGRADE_TO_6x.md
+fun buildGenerator(introspectionData: String, busName: String, objectPath: String): InterfaceCodeGenerator =
+    InterfaceCodeGenerator(
+        /* disableFilter   */ true,
+        introspectionData,
+        objectPath,
+        busName,
+        /* packageName     */ null,
+        /* propertyMethods */ true,
+        /* argumentPrefix  */ null,
+        /* avoidUsingTuple */ false,
+    )
 
 class GenerateJava : CliktCommand(name = "generate-java") {
     override fun help(context: Context) = "Generate Java source files (in the sdk module)"
@@ -41,30 +61,11 @@ class GenerateJava : CliktCommand(name = "generate-java") {
     }
 
     private fun introspect(inputFile: File) {
-        val disableFilter = true
-        val introspectionData: String = inputFile.readText()
-        val objectPath: String = OBJECT_PATH
-        val busName: String = BUS_NAME
-        val packageName: String? = null
-        val propertyMethods = true
-        val argumentPrefix: String? = null
-        // New in dbus-java V6: when true, generates Struct-based return values instead of Tuples.
-        // We keep this false so the generated code uses Tuples, which are compatible with dbus-java V5.
-        // See: https://github.com/hypfvieh/dbus-java/blob/master/UPGRADE_TO_6x.md
-        val avoidUsingTuple = false
-        val generator = InterfaceCodeGenerator(
-            disableFilter,
-            introspectionData,
-            objectPath,
-            busName,
-            packageName,
-            propertyMethods,
-            argumentPrefix,
-            avoidUsingTuple
-        )
-
-        val ignoreDtd = true
-        val result: Map<File, String> = generator.analyze(ignoreDtd)
+        val result: Map<File, String> = buildGenerator(
+            introspectionData = inputFile.readText(),
+            busName = BUS_NAME,
+            objectPath = OBJECT_PATH,
+        ).analyze(true)
         val outputBaseDir = File(SDK_GENERATED_DIR)
         result.forEach { (file, content) ->
             if (file.path in EXCLUDED_PORTALS) {
@@ -79,6 +80,29 @@ class GenerateJava : CliktCommand(name = "generate-java") {
     }
 }
 
+class GenerateStatusNotifier : CliktCommand(name = "generate-status-notifier") {
+    override fun help(context: Context) = "Generate Java source files for StatusNotifier interfaces (in the sdk module)"
+    override fun run() {
+        STATUS_NOTIFIER_RESOURCES.forEach { (resourceName, busName, objectPath) ->
+            echo("Processing: $resourceName")
+            val introspectionData = javaClass.classLoader.getResource(resourceName)?.readText()
+                ?: error("Resource not found: $resourceName")
+            introspect(introspectionData, busName, objectPath)
+        }
+    }
+
+    private fun introspect(introspectionData: String, busName: String, objectPath: String) {
+        val result: Map<File, String> = buildGenerator(introspectionData, busName, objectPath).analyze(true)
+        val outputBaseDir = File(SDK_GENERATED_DIR)
+        result.forEach { (file, content) ->
+            val outputFile = File(outputBaseDir, file.path)
+            outputFile.parentFile.mkdirs()
+            outputFile.writeText(content)
+            echo("Generated: ${outputFile.path}")
+        }
+    }
+}
+
 fun main(args: Array<String>) = Generator()
-    .subcommands(GenerateJava())
+    .subcommands(GenerateJava(), GenerateStatusNotifier())
     .main(args)
