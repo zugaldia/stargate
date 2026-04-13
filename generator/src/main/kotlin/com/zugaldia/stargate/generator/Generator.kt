@@ -17,6 +17,7 @@ val EXCLUDED_PORTALS = listOf<String>()
 val STATUS_NOTIFIER_RESOURCES = listOf(
     Triple("org.kde.StatusNotifierWatcher.xml", "org.kde.StatusNotifierWatcher", "/StatusNotifierWatcher"),
     Triple("org.kde.StatusNotifierItem.xml", "org.kde.StatusNotifierItem", "/StatusNotifierItem"),
+    Triple("com.canonical.dbusmenu.xml", "com.canonical.dbusmenu", "/"),
 )
 
 class Generator : CliktCommand() {
