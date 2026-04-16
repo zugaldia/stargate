@@ -24,7 +24,7 @@ Add the dependency to your project (requires JDK 25+):
 **Gradle (Kotlin DSL)**
 ```kotlin
 dependencies {
-    implementation("com.github.zugaldia:stargate:0.4.0")
+    implementation("com.github.zugaldia:stargate:0.5.0")
 }
 ```
 
