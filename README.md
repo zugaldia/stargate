@@ -10,9 +10,12 @@ A Kotlin library that provides JVM applications with access to
 [XDG Desktop Portals](https://flatpak.github.io/xdg-desktop-portal/docs) on Linux.
 
 XDG Desktop Portals originated from the Flatpak project but have since become a widely adopted Linux desktop standard,
-including Snaps. They are even used outside of sandboxes to provide a standardized API to common desktop features,
-such as taking screenshots, recording, and accessing files, that work consistently across desktop environments, like
-GNOME and KDE, and across display servers including X11 and Wayland.
+including Snaps. They can be used by any application, sandboxed or not, to provide a standardized API to common desktop
+features, such as taking screenshots, recording, and accessing files, that work consistently across desktop
+environments, like GNOME and KDE, and across display servers including X11 and Wayland.
+
+In addition to XDG Desktop Portals, Stargate also includes support for the
+[Freedesktop Status Notifier Item Specification](#support-for-status-notifier-item-specification), which enables system tray icon integration.
 
 # Getting Started
 
@@ -83,6 +86,24 @@ This library provides access to the Registry portal through `DesktopPortal.regis
 utility function to detect if the application is running inside a sandbox. See the
 [demo application](./app/src/main/kotlin/com/zugaldia/stargate/app/App.kt) for a working example.
 This demo application can run both as an unsandboxed app (`make run`) and as a sandboxed Flatpak (`make flatpak-run`).
+
+# Support for Status Notifier Item Specification
+
+While technically not part of the XDG Desktop Portals specification, this library also supports the related
+[Freedesktop Status Notifier Item Specification](https://specifications.freedesktop.org/status-notifier-item/0.1/index.html).
+This is essentially the D-Bus interface that allows applications to provide a system tray icon to report their status,
+and an optional menu.
+
+A word of caution: system tray icons are not well standardized on Linux today and APIs might change if and when desktop
+environments settle on a common framework. Under the hood, the Status Notifier Item Specification relies on a KDE
+specification for items (`org.kde.StatusNotifierItem`) and an Ubuntu specification for menus (`com.canonical.dbusmenu`).
+Support across distributions and desktop environments varies, and some distributions require
+[a dedicated GNOME extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) to be installed.
+
+This mechanism described above is, in turn, different from the indicator icons provided by GNOME Shell Extensions.
+
+This library abstracts away this fragmentation for the application developer, and the bundled demo application provides
+a reference example on the "Status Notifier" screen.
 
 # Projects Using Stargate
 

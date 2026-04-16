@@ -10,6 +10,8 @@ import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopScreen
 import com.zugaldia.stargate.app.remotedesktop.RemoteDesktopViewModel
 import com.zugaldia.stargate.app.settings.SettingsScreen
 import com.zugaldia.stargate.app.settings.SettingsViewModel
+import com.zugaldia.stargate.app.status.StatusNotifierScreen
+import com.zugaldia.stargate.app.status.StatusNotifierViewModel
 import com.zugaldia.stargate.sdk.DesktopPortal
 import com.zugaldia.stargate.sdk.isSandboxed
 import kotlinx.coroutines.runBlocking
@@ -50,6 +52,7 @@ fun main(args: Array<String>) {
     val openUriViewModel = OpenUriViewModel(portal)
     val remoteDesktopViewModel = RemoteDesktopViewModel(portal)
     val settingsViewModel = SettingsViewModel(portal)
+    val statusNotifierViewModel = StatusNotifierViewModel()
 
     val app = Application(APPLICATION_ID, ApplicationFlags.DEFAULT_FLAGS)
 
@@ -57,7 +60,7 @@ fun main(args: Array<String>) {
         logger.info("Application activated")
         activate(
             app, globalShortcutsViewModel, notificationViewModel, openUriViewModel,
-            remoteDesktopViewModel, settingsViewModel
+            remoteDesktopViewModel, settingsViewModel, statusNotifierViewModel
         )
     }
 
@@ -68,6 +71,7 @@ fun main(args: Array<String>) {
             openUriViewModel.closeAndJoin()
             remoteDesktopViewModel.closeAndJoin()
             settingsViewModel.closeAndJoin()
+            statusNotifierViewModel.close()
         }
         portal.close()
     }
@@ -82,11 +86,13 @@ private fun activate(
     notificationViewModel: NotificationViewModel,
     openUriViewModel: OpenUriViewModel,
     remoteDesktopViewModel: RemoteDesktopViewModel,
-    settingsViewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    statusNotifierViewModel: StatusNotifierViewModel
 ) {
     val window = ApplicationWindow(app)
     window.title = APPLICATION_NAME
     window.setDefaultSize(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT)
+    statusNotifierViewModel.setWindow(window)
 
     val stack = Stack()
 
@@ -104,6 +110,9 @@ private fun activate(
 
     val settingsScreen = SettingsScreen(settingsViewModel)
     stack.addTitled(settingsScreen.build(), "settings", "Settings")
+
+    val statusNotifierScreen = StatusNotifierScreen(statusNotifierViewModel)
+    stack.addTitled(statusNotifierScreen.build(), "status-notifier", "Status Notifier")
 
     val sidebar = StackSidebar()
     sidebar.stack = stack
