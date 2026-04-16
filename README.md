@@ -14,8 +14,8 @@ including Snaps. They can be used by any application, sandboxed or not, to provi
 features, such as taking screenshots, recording, and accessing files, that work consistently across desktop
 environments, like GNOME and KDE, and across display servers including X11 and Wayland.
 
-In addition to XDG Desktop Portals, Stargate also includes support for the related Freedesktop Status Notifier Item
-Specification, which enables system tray icon integration.
+In addition to XDG Desktop Portals, Stargate also includes support for the
+[Freedesktop Status Notifier Item Specification](#support-for-status-notifier-item-specification), which enables system tray icon integration.
 
 # Getting Started
 
@@ -96,7 +96,7 @@ and an optional menu.
 
 A word of caution: system tray icons are not well standardized on Linux today and APIs might change if and when desktop
 environments settle on a common framework. Under the hood, the Status Notifier Item Specification relies on a KDE
-extension for items (`org.kde.StatusNotifierItem`) and an Ubuntu extension for menus (`com.canonical.dbusmenu`).
+specification for items (`org.kde.StatusNotifierItem`) and an Ubuntu specification for menus (`com.canonical.dbusmenu`).
 Support across distributions and desktop environments varies, and some distributions require
 [a dedicated GNOME extension](https://github.com/ubuntu/gnome-shell-extension-appindicator) to be installed.
 
