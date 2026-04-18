@@ -11,9 +11,9 @@ sealed class StargateMenuItem {
 
     /**
      * A clickable menu entry with a text label.
-     * [onClick] is invoked on the D-Bus thread with a [tokenSupplier] that lazily consumes
-     * the pending XDG activation token. Call [tokenSupplier] from the GTK main thread
-     * (e.g. inside [org.gnome.glib.GLib.idleAdd]) to guarantee the token has been set by
+     * [onClick] is invoked on the D-Bus thread with a `tokenSupplier` that lazily consumes
+     * the pending XDG activation token. Call `tokenSupplier` from the GTK main thread
+     * (e.g. inside `GLib.idleAdd`) to guarantee the token has been set by
      * a concurrent [org.kde.StatusNotifierItem.ProvideXdgActivationToken] call.
      */
     data class Action(

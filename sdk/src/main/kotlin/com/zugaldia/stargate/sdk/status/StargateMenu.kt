@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 /**
  * Server-side implementation of the com.canonical.dbusmenu interface.
  * Export this object at [DBUS_MENU_OBJECT_PATH] alongside the StatusNotifierItem,
- * and return [DBUS_MENU_OBJECT_PATH] from [getMenu] so the tray host can find it.
+ * and return [DBUS_MENU_OBJECT_PATH] from [StargateStatusNotifierItem.getMenu] so the tray host can find it.
  */
 class StargateMenu(
     private val items: List<StargateMenuItem>,

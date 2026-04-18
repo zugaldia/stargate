@@ -7,6 +7,7 @@ clikt = "5.1.0"
 dbusJavaV5 = "5.2.0"
 dbusJavaV6 = "6.0.0-SNAPSHOT"
 detekt = "2.0.0-alpha.2"
+dokka = "2.2.0"
 flatpakGradleGenerator = "1.7.0"
 javaGi = "0.14.1"
 kotlin = "2.3.10"
@@ -40,6 +41,7 @@ kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutine
 
 [plugins]
 detekt = { id = "dev.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 flatpakGradleGenerator = { id = "io.github.jwharm.flatpak-gradle-generator", version.ref = "flatpakGradleGenerator" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 kotlinPluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
