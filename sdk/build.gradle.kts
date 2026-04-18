@@ -3,6 +3,7 @@ plugins {
     // The shared code is located in `buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts`.
     id("buildsrc.convention.kotlin-jvm")
     `java-library`
+    alias(libs.plugins.dokka)
     alias(libs.plugins.flatpakGradleGenerator)
     alias(libs.plugins.kotlinPluginSerialization)
     alias(libs.plugins.mavenPublish)
@@ -69,4 +70,15 @@ tasks.flatpakGradleGenerator {
     outputFile = file("flatpak-sources.json")
     downloadDirectory = "offline-repository"
     excludeConfigurations = listOf("testCompileClasspath", "testRuntimeClasspath")
+}
+
+dokka {
+    moduleName.set("Stargate SDK")
+    dokkaSourceSets.named("main") {
+        sourceLink {
+            localDirectory.set(file("src/main/kotlin"))
+            remoteUrl("https://github.com/zugaldia/stargate/tree/main/sdk/src/main/kotlin")
+            remoteLineSuffix.set("#L")
+        }
+    }
 }

@@ -4,7 +4,7 @@ export JDK_JAVA_OPTIONS = --enable-native-access=ALL-UNNAMED
 
 .PHONY: run build check clean shadow-build shadow-run \
 	flatpak-sources flatpak-linter flatpak-build flatpak-bundle flatpak-run \
-	publish-local generate-java generate-status-notifier
+	publish-local generate-java generate-status-notifier kdocs
 
 run: clean
 	./gradlew :app:run
@@ -55,3 +55,6 @@ generate-java:
 
 generate-status-notifier:
 	./gradlew :generator:run --args="generate-status-notifier"
+
+kdocs:
+	./gradlew :sdk:dokkaGenerate

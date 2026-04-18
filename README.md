@@ -28,7 +28,8 @@ dependencies {
 }
 ```
 
-Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples.
+Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples,
+or browse the [API reference (KDocs)](https://zugaldia.github.io/stargate/).
 
 # Supported Portals
 
