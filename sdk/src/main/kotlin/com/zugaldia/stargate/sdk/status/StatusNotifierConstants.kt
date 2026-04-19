@@ -24,7 +24,7 @@ const val STATUS_NOTIFIER_ITEM_SERVICE_PREFIX = "org.kde.StatusNotifierItem"
 /**
  * D-Bus object path for the DBusMenu exported alongside a StatusNotifierItem.
  */
-const val DBUS_MENU_OBJECT_PATH = "/StatusNotifierItem/Menu"
+const val DBUS_MENU_OBJECT_PATH = "/StatusNotifierItem/menu"
 
 /**
  * com.canonical.dbusmenu protocol version implemented by this library.
