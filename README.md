@@ -35,41 +35,90 @@ or browse the [API reference (KDocs)](https://zugaldia.github.io/stargate/).
 
 Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/xdg-desktop-portal) version [1.21.0](https://github.com/flatpak/xdg-desktop-portal/releases/tag/1.21.0).
 
-| Portal                    | Low Level | High Level | Example |
-|---------------------------|-----------|------------|---------|
-| Registry (host)           | ✅         | ✅          | ✅       |
-| Account                   | ✅         | ❌          | ❌       |
-| Background                | ✅         | ❌          | ❌       |
-| Camera                    | ✅         | ❌          | ❌       |
-| Clipboard                 | ✅         | ❌          | ❌       |
-| Documents                 | ✅         | ❌          | ❌       |
-| Dynamic Launcher          | ✅         | ❌          | ❌       |
-| Email                     | ✅         | ❌          | ❌       |
-| File Chooser              | ✅         | ❌          | ❌       |
-| File Transfer             | ✅         | ❌          | ❌       |
-| Game Mode                 | ✅         | ❌          | ❌       |
-| Global Shortcuts          | ✅         | ✅          | ✅       |
-| Inhibit                   | ✅         | ❌          | ❌       |
-| Input Capture             | ✅         | ❌          | ❌       |
-| Location                  | ✅         | ❌          | ❌       |
-| Memory Monitor            | ✅         | ❌          | ❌       |
-| Network Monitor           | ✅         | ❌          | ❌       |
-| Notification              | ✅         | ✅          | ✅       |
-| OpenURI                   | ✅         | ✅          | ✅       |
-| Power Profile Monitor     | ✅         | ❌          | ❌       |
-| Print                     | ✅         | ❌          | ❌       |
-| Proxy Resolver            | ✅         | ❌          | ❌       |
-| Realtime                  | ✅         | ❌          | ❌       |
-| Remote Desktop            | ✅         | ✅          | ✅       |
-| Request                   | ✅         | ❌          | ❌       |
-| ScreenCast                | ✅         | ✅          | ❌       |
-| Screenshot                | ✅         | ❌          | ❌       |
-| Secret                    | ✅         | ❌          | ❌       |
-| Session                   | ✅         | ❌          | ❌       |
-| Settings                  | ✅         | ✅          | ✅       |
-| Trash                     | ✅         | ❌          | ❌       |
-| Usb                       | ✅         | ❌          | ❌       |
-| Wallpaper                 | ✅         | ❌          | ❌       |
+| Portal                | Low Level                      | High Level                 | Example                   |
+|-----------------------|--------------------------------|----------------------------|---------------------------|
+| Registry (host)       | [docs][ll-registry]            | [docs][hl-registry]        | [app][ex-registry]        |
+| Account               | [docs][ll-account]             | ❌                          | ❌                         |
+| Background            | [docs][ll-background]          | ❌                          | ❌                         |
+| Camera                | [docs][ll-camera]              | ❌                          | ❌                         |
+| Clipboard             | [docs][ll-clipboard]           | ❌                          | ❌                         |
+| Documents             | [docs][ll-documents]           | ❌                          | ❌                         |
+| Dynamic Launcher      | [docs][ll-dynamiclauncher]     | ❌                          | ❌                         |
+| Email                 | [docs][ll-email]               | ❌                          | ❌                         |
+| File Chooser          | [docs][ll-filechooser]         | ❌                          | ❌                         |
+| File Transfer         | [docs][ll-filetransfer]        | ❌                          | ❌                         |
+| Game Mode             | [docs][ll-gamemode]            | ❌                          | ❌                         |
+| Global Shortcuts      | [docs][ll-globalshortcuts]     | [docs][hl-globalshortcuts] | [app][ex-globalshortcuts] |
+| Inhibit               | [docs][ll-inhibit]             | ❌                          | ❌                         |
+| Input Capture         | [docs][ll-inputcapture]        | ❌                          | ❌                         |
+| Location              | [docs][ll-location]            | ❌                          | ❌                         |
+| Memory Monitor        | [docs][ll-memorymonitor]       | ❌                          | ❌                         |
+| Network Monitor       | [docs][ll-networkmonitor]      | ❌                          | ❌                         |
+| Notification          | [docs][ll-notification]        | [docs][hl-notification]    | [app][ex-notification]    |
+| OpenURI               | [docs][ll-openuri]             | [docs][hl-openuri]         | [app][ex-openuri]         |
+| Power Profile Monitor | [docs][ll-powerprofilemonitor] | ❌                          | ❌                         |
+| Print                 | [docs][ll-print]               | ❌                          | ❌                         |
+| Proxy Resolver        | [docs][ll-proxyresolver]       | ❌                          | ❌                         |
+| Realtime              | [docs][ll-realtime]            | ❌                          | ❌                         |
+| Remote Desktop        | [docs][ll-remotedesktop]       | [docs][hl-remotedesktop]   | [app][ex-remotedesktop]   |
+| Request               | [docs][ll-request]             | ❌                          | ❌                         |
+| ScreenCast            | [docs][ll-screencast]          | [docs][hl-screencast]      | ❌                         |
+| Screenshot            | [docs][ll-screenshot]          | ❌                          | ❌                         |
+| Secret                | [docs][ll-secret]              | ❌                          | ❌                         |
+| Session               | [docs][ll-session]             | ❌                          | ❌                         |
+| Settings              | [docs][ll-settings]            | [docs][hl-settings]        | [app][ex-settings]        |
+| Trash                 | [docs][ll-trash]               | ❌                          | ❌                         |
+| Usb                   | [docs][ll-usb]                 | ❌                          | ❌                         |
+| Wallpaper             | [docs][ll-wallpaper]           | ❌                          | ❌                         |
+
+[ll-registry]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.host.portal/-registry/index.html
+[ll-account]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-account/index.html            
+[ll-background]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-background/index.html
+[ll-camera]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-camera/index.html
+[ll-clipboard]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-clipboard/index.html
+[ll-documents]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-documents/index.html
+[ll-dynamiclauncher]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-dynamic-launcher/index.html
+[ll-email]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-email/index.html
+[ll-filechooser]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-file-chooser/index.html
+[ll-filetransfer]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-file-transfer/index.html
+[ll-gamemode]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-game-mode/index.html
+[ll-globalshortcuts]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-global-shortcuts/index.html
+[ll-inhibit]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-inhibit/index.html
+[ll-inputcapture]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-input-capture/index.html
+[ll-location]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-location/index.html
+[ll-memorymonitor]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-memory-monitor/index.html
+[ll-networkmonitor]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-network-monitor/index.html
+[ll-notification]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-notification/index.html
+[ll-openuri]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-open-u-r-i/index.html
+[ll-powerprofilemonitor]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-power-profile-monitor/index.html
+[ll-print]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-print/index.html
+[ll-proxyresolver]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-proxy-resolver/index.html
+[ll-realtime]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-realtime/index.html
+[ll-remotedesktop]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-remote-desktop/index.html
+[ll-request]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-request/index.html
+[ll-screencast]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-screen-cast/index.html
+[ll-screenshot]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-screenshot/index.html
+[ll-secret]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-secret/index.html
+[ll-session]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-session/index.html
+[ll-settings]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-settings/index.html
+[ll-trash]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-trash/index.html
+[ll-usb]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-usb/index.html
+[ll-wallpaper]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-wallpaper/index.html
+
+[hl-registry]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.registry/-registry-portal/index.html
+[hl-globalshortcuts]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.globalshortcuts/-global-shortcuts-portal/index.html
+[hl-notification]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.notification/-notification-portal/index.html
+[hl-openuri]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.openuri/-open-uri-portal/index.html
+[hl-remotedesktop]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.remotedesktop/-remote-desktop-portal/index.html
+[hl-screencast]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.screencast/-screen-cast-portal/index.html
+[hl-settings]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.settings/-settings-portal/index.html
+
+[ex-registry]: https://github.com/zugaldia/stargate/blob/main/app/src/main/kotlin/com/zugaldia/stargate/app/App.kt
+[ex-globalshortcuts]: https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/globalshortcuts
+[ex-notification]: https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/notification
+[ex-openuri]: https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/openuri
+[ex-remotedesktop]: https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/remotedesktop
+[ex-settings]: https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/settings
 
 ## Portal Availability and Sandboxing
 
@@ -104,7 +153,7 @@ Support across distributions and desktop environments varies, and some distribut
 This mechanism described above is, in turn, different from the indicator icons provided by GNOME Shell Extensions.
 
 This library abstracts away this fragmentation for the application developer, and the bundled demo application provides
-a reference example on the "Status Notifier" screen.
+a reference example on the ["Status Notifier" screen](https://github.com/zugaldia/stargate/tree/main/app/src/main/kotlin/com/zugaldia/stargate/app/status).
 
 # Projects Using Stargate
 
