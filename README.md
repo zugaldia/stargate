@@ -62,7 +62,7 @@ Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/
 | Realtime                  | ✅         | ❌          | ❌       |
 | Remote Desktop            | ✅         | ✅          | ✅       |
 | Request                   | ✅         | ❌          | ❌       |
-| ScreenCast                | ✅         | ❌          | ❌       |
+| ScreenCast                | ✅         | ✅          | ❌       |
 | Screenshot                | ✅         | ❌          | ❌       |
 | Secret                    | ✅         | ❌          | ❌       |
 | Session                   | ✅         | ❌          | ❌       |

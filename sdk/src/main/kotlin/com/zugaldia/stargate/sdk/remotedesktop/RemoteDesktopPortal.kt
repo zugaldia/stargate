@@ -1,8 +1,14 @@
 package com.zugaldia.stargate.sdk.remotedesktop
 
 import com.zugaldia.stargate.sdk.BUS_NAME
+import com.zugaldia.stargate.sdk.EMPTY_OPTIONS
 import com.zugaldia.stargate.sdk.OBJECT_PATH
 import com.zugaldia.stargate.sdk.OPTION_HANDLE_TOKEN
+import com.zugaldia.stargate.sdk.OPTION_PERSIST_MODE
+import com.zugaldia.stargate.sdk.OPTION_RESTORE_TOKEN
+import com.zugaldia.stargate.sdk.OPTION_TYPES
+import com.zugaldia.stargate.sdk.PersistMode
+import com.zugaldia.stargate.sdk.RESULT_RESTORE_TOKEN
 import com.zugaldia.stargate.sdk.generateToken
 import com.zugaldia.stargate.sdk.request.awaitPortalResponse
 import com.zugaldia.stargate.sdk.session.CreateSessionResponse
@@ -16,8 +22,6 @@ import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.types.UInt32
 import org.freedesktop.dbus.types.Variant
 import org.freedesktop.portal.RemoteDesktop
-
-private val EMPTY_OPTIONS = emptyMap<String, Variant<*>>()
 
 /**
  * Wrapper around the org.freedesktop.portal.RemoteDesktop D-Bus interface.

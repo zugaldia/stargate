@@ -1,10 +1,10 @@
-package com.zugaldia.stargate.sdk.remotedesktop
+package com.zugaldia.stargate.sdk
 
 import org.freedesktop.dbus.types.UInt32
 
 /**
- * Represents how a remote desktop session should persist.
- * Added in version 2 of the RemoteDesktop interface.
+ * Represents how a portal session should persist.
+ * Used by RemoteDesktop and ScreenCast portals.
  */
 enum class PersistMode(val value: UInt32) {
     /**
