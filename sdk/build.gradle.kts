@@ -73,7 +73,7 @@ tasks.flatpakGradleGenerator {
 }
 
 dokka {
-    moduleName.set("Stargate SDK")
+    moduleName.set("sdk")
     dokkaSourceSets.named("main") {
         sourceLink {
             localDirectory.set(file("src/main/kotlin"))
