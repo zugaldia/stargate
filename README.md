@@ -28,12 +28,15 @@ dependencies {
 }
 ```
 
-Check out the [included app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples,
+Check out the [reference app](./app/src/main/kotlin/com/zugaldia/stargate/app) for working examples,
 or browse the [API reference (KDocs)](https://zugaldia.github.io/stargate/).
 
 # Supported Portals
 
 Portal definitions are based on [XDG Desktop Portal](https://github.com/flatpak/xdg-desktop-portal) version [1.21.0](https://github.com/flatpak/xdg-desktop-portal/releases/tag/1.21.0).
+
+Every portal includes a low-level interface auto-generated from the official XML specification. High-level interfaces
+with convenience methods and reference app examples are being added iteratively across all portals:
 
 | Portal                | Low Level                      | High Level                 | Example                   |
 |-----------------------|--------------------------------|----------------------------|---------------------------|
@@ -164,6 +167,8 @@ If your application, project, or CLI depends on Stargate, feel free to open a PR
 ## Contributing
 
 To build the project from source and learn how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
+If you find any issues or limitations, please [open a GitHub issue](https://github.com/zugaldia/stargate/issues)
+with your use case, it helps us prioritize what to build next.
 
 If you find Stargate useful, consider [sponsoring this work](https://github.com/sponsors/zugaldia).
 
