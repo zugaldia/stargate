@@ -5,7 +5,7 @@ import com.zugaldia.stargate.app.textToKeySym
 import com.zugaldia.stargate.sdk.DesktopPortal
 import com.zugaldia.stargate.sdk.remotedesktop.DeviceType
 import com.zugaldia.stargate.sdk.remotedesktop.InputState
-import com.zugaldia.stargate.sdk.remotedesktop.PersistMode
+import com.zugaldia.stargate.sdk.PersistMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

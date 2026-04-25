@@ -5,6 +5,7 @@ import com.zugaldia.stargate.sdk.notification.NotificationPortal
 import com.zugaldia.stargate.sdk.openuri.OpenUriPortal
 import com.zugaldia.stargate.sdk.registry.RegistryPortal
 import com.zugaldia.stargate.sdk.remotedesktop.RemoteDesktopPortal
+import com.zugaldia.stargate.sdk.screencast.ScreenCastPortal
 import com.zugaldia.stargate.sdk.settings.SettingsPortal
 import org.freedesktop.dbus.connections.impl.DBusConnection
 import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder
@@ -44,6 +45,11 @@ class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
      * Access to the OpenURI portal for opening URIs in the user's preferred application.
      */
     val openUri: OpenUriPortal by lazy { OpenUriPortal(connection) }
+
+    /**
+     * Access to the ScreenCast portal for capturing screen content via PipeWire.
+     */
+    val screenCast: ScreenCastPortal by lazy { ScreenCastPortal(connection) }
 
     /**
      * Closes the underlying D-Bus connection.
