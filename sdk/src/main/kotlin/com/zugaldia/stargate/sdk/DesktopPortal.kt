@@ -1,5 +1,6 @@
 package com.zugaldia.stargate.sdk
 
+import com.zugaldia.stargate.sdk.clipboard.ClipboardPortal
 import com.zugaldia.stargate.sdk.globalshortcuts.GlobalShortcutsPortal
 import com.zugaldia.stargate.sdk.notification.NotificationPortal
 import com.zugaldia.stargate.sdk.openuri.OpenUriPortal
@@ -50,6 +51,11 @@ class DesktopPortal(private val connection: DBusConnection) : AutoCloseable {
      * Access to the ScreenCast portal for capturing screen content via PipeWire.
      */
     val screenCast: ScreenCastPortal by lazy { ScreenCastPortal(connection) }
+
+    /**
+     * Access to the Clipboard portal for reading and writing clipboard content within a session.
+     */
+    val clipboard: ClipboardPortal by lazy { ClipboardPortal(connection) }
 
     /**
      * Closes the underlying D-Bus connection.
