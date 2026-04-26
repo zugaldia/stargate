@@ -30,7 +30,7 @@ dependencies {
 }
 
 val releaseVersion: String? = project.findProperty("releaseVersion") as String?
-val baseVersion: String = releaseVersion ?: "0.6.0"
+val baseVersion: String = releaseVersion ?: "0.7.0"
 val isSnapshot: Boolean = releaseVersion == null
 val projectVersion: String = if (isSnapshot) "$baseVersion-SNAPSHOT" else baseVersion
 
