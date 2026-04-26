@@ -44,7 +44,7 @@ with convenience methods and reference app examples are being added iteratively 
 | Account               | [docs][ll-account]             | ❌                          | ❌                         |
 | Background            | [docs][ll-background]          | ❌                          | ❌                         |
 | Camera                | [docs][ll-camera]              | ❌                          | ❌                         |
-| Clipboard             | [docs][ll-clipboard]           | ❌                          | ❌                         |
+| Clipboard             | [docs][ll-clipboard]           | [docs][hl-clipboard]       | ❌                         |
 | Documents             | [docs][ll-documents]           | ❌                          | ❌                         |
 | Dynamic Launcher      | [docs][ll-dynamiclauncher]     | ❌                          | ❌                         |
 | Email                 | [docs][ll-email]               | ❌                          | ❌                         |
@@ -109,6 +109,7 @@ with convenience methods and reference app examples are being added iteratively 
 [ll-wallpaper]: https://zugaldia.github.io/stargate/sdk/org.freedesktop.portal/-wallpaper/index.html
 
 [hl-registry]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.registry/-registry-portal/index.html
+[hl-clipboard]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.clipboard/-clipboard-portal/index.html
 [hl-globalshortcuts]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.globalshortcuts/-global-shortcuts-portal/index.html
 [hl-notification]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.notification/-notification-portal/index.html
 [hl-openuri]: https://zugaldia.github.io/stargate/sdk/com.zugaldia.stargate.sdk.openuri/-open-uri-portal/index.html
